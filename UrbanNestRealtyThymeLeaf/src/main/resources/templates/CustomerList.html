@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="xml:lang" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Clients</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<link rel="icon" type="image/x-icon" th:href="@{/Images/Nest Realty.jpg}">
+<style>
+body {
+    font-family: "Lora", serif;
+    background-color: #D8CCC0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #333;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+    position: relative;
+    top: 8rem;
+}
+
+table {
+    width: 100%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 5rem;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+button, .btn-action, input {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    background-color: #818589;
+    color: white;
+    cursor: pointer;
+    flex: 1;
+    font-family: "Lora", serif;
+    margin: 5px;
+}
+
+label {
+    color: white;
+}
+
+button:hover, .btn-action:hover {
+    background-color: #333;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.search {
+    position: relative;
+    left: 23rem;
+    top: 5rem;
+}
+
+.back {
+    position: relative;
+    right: 27rem;
+    top: 3rem;
+}
+
+.navbar {
+    background-color: #818589;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.nav-item {
+    position: relative;
+    right: 5rem;
+    margin-right: 25px;
+}
+
+.navbar-brand {
+    position: relative;
+    right: 40px;
+}
+
+.navbar-brand img {
+    position: relative;
+    right: 2rem;
+    height: 90px;
+    width: 100px;
+}
+
+#navbarSupportedContent a {
+    font-size: 16px;
+}
+
+#navbarSupportedContent a:hover {
+    border-bottom: 2.5px solid white;
+}
+
+.active:hover {
+    color: black !important;
+    border-radius: 12px;
+}
+
+#logout {
+    position: relative;
+    left: 17rem;
+}
+
+.dropdown-menu {
+    background-color: gray;
+    border: none;
+}
+
+.dropdown-menu {
+    background-color: #818589;
+    border: none;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+.dropdown-item:hover {
+    background-color: #818589;
+    border-radius: 12px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+</style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+ <div class="container">
+     <a class="navbar-brand">
+        <img src="Images/Nest Realty.png" alt="Logo">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/AdminWelcome}">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Clients
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" th:href="@{/SellerCustomerDetails}">Seller</a>
+            <a class="dropdown-item" th:href="@{/CustomerDetails}">Customer</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Seller Properties
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" th:href="@{/PendingProperty}">Pending</a>
+            <a class="dropdown-item" th:href="@{/Authorized}">Authorized</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/ApproveToBuy}">Payment Approval</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/ClosedDeals}">Closed Deals</a>
+        </li>
+        <li class="nav-item dropdown" id="logout">
+          <img src="Images/profile.png" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" th:href="@{/AdProfile}">Profile</a>
+            <a class="dropdown-item" th:href="@{/LogOut}">LogOut</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<h3>Customers</h3>
+<form class="form-inline my-2 my-lg-0" th:action="@{/CustomerSearch}" method="get">
+    <label class="search">Search: <input type="text" name="id" placeholder="Search By Name, ID" class="form-control mr-sm-2"></label>
+</form>
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Email Id</th>
+            <th>Address</th>
+            <th>District</th>
+            <th>State</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <tr th:each="object : ${list}">
+            <td th:text="${object.generatedUserID}"></td>
+            <td th:text="${object.name}"></td>
+            <td th:text="${object.phoneNumber}"></td>
+            <td th:text="${object.emailID}"></td>
+            <td th:text="${object.address}"></td>
+            <td th:text="${object.district}"></td>
+            <td th:text="${object.state}"></td>
+            <td>
+                <form th:action="@{/deletecustomer}" method="post">
+                    <input type="hidden" name="deleteName" th:value="${object.name}">
+                    <input type="submit" name="delete" value="Delete">
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${list == null or #lists.isEmpty(list)}">
+            <td colspan="8">No Records Found</td>
+        </tr>
+    </tbody>
+</table>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Property Details</title>
+<link rel="icon" type="image/x-icon" href="Images/Nest Realty.jpg">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<style>
+    body {
+        font-family: "Lora", serif;
+        background-color: #D8CCC0;
+        margin: 0;
+        padding: 0;
+    }
+    h3 {
+        text-align: center;
+        margin-top: 20px;
+        color: #333;
+        font-size: 28px;
+    }
+    .container {
+        padding: 20px;
+    }
+    .property-display {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin: 20px auto;
+        max-width: 900px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .property-display img {
+        width: 100%;
+        height: auto;
+        border-bottom: 5px solid #ddd;
+    }
+    .property-info {
+        padding: 20px;
+        width: 100%;
+    }
+    .property-info p {
+        margin: 10px 0;
+        color: #555;
+        font-size: 18px;
+    }
+    .property-info p strong {
+        color: #333;
+    }
+    .actions {
+        margin: 20px 0;
+        text-align: center;
+    }
+    .btn-buy {
+        background-color: #6c757d;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    .btn-buy:hover {
+        background-color: #5a6268;
+    }
+    .no-properties {
+        text-align: center;        
+        color: #999; 
+        font-size: 20px;
+        margin-top: 20px;
+    }
+    .back-btn {
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .back-btn:hover {
+        background-color: #5a6268;
+    }
+</style>
+</head>
+<body>
+
+<h3>Property Details</h3>
+<form action="http://localhost:8080/home#realties" style="text-align: center; margin-bottom: 20px;">
+   <button class="back-btn">Back to Home</button>
+</form>
+<div class="container">
+    <div th:if="${list != null}">
+        <div th:each="property : ${list}" class="property-display">
+            <div class="property-info">
+            <img th:src="'data:image/jpeg;base64,' + ${property.base64Image}" alt="Residential">                  
+                <p><strong>Seller ID:</strong> <span th:text="${property.sellerId}">Seller ID</span></p>
+                <p><strong>Property Name:</strong> <span th:text="${property.propertyName}">Property Name</span></p>
+                <p><strong>Property ID:</strong> <span th:text="${property.propertyId}">Property ID</span></p>
+                <p><strong>Approval Status:</strong> <span th:text="${property.approval}">Approval Status</span></p>
+                <p><strong>Property Price:</strong> <span th:text="${property.propertyPrice}">Property Price</span></p>
+                <p><strong>Property Address:</strong> <span th:text="${property.propertyAddress}">Property Address</span></p>
+                <p><strong>Property District:</strong> <span th:text="${property.propertyDistrict}">Property District</span></p>
+                <p><strong>Property State:</strong> <span th:text="${property.propertyState}">Property State</span></p>
+                <p><strong>Registered Date:</strong> <span th:text="${property.registeredDate}">Registered Date</span></p>
+            </div>
+            <div class="actions">
+                <form th:action="@{/BuyNowForm}" method="post">
+                    <input type="hidden" name="sellerId" th:value="${property.sellerId}">
+                    <input type="hidden" name="propertyId" th:value="${property.propertyId}">
+                    <input type="hidden" name="propertyName" th:value="${property.propertyName}">
+                    <input type="hidden" name="propertyAddress" th:value="${property.propertyAddress}">
+                    <input type="hidden" name="propertyPrice" th:value="${property.propertyPrice}">
+                    <input type="submit" class="btn-buy" name="buy" value="Register">
+                </form>
+            </div>
+        </div>
+    </div>
+    <p class="no-properties" th:if="${list == null}">No properties found</p>
+</div>
+</body>
+</html>

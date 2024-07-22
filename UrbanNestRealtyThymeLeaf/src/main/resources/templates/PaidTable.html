@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Completed Deals</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/Images/Nest Realty.jpg}">
+    <style>
+        body {
+            font-family: "Lora", serif;
+            background-color: #D8CCC0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #333;
+        }
+
+        h3 {
+            text-align: center;
+            color: white;
+            position: relative;
+            top: 8rem;
+        }
+
+        .table-container {
+            margin: 10px;
+        }
+
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            top: 8rem;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        td img {
+            max-width: 100px;
+            height: auto;
+            display: block;
+        }
+
+        button, .btn-action, input[type="submit"] {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #818589;
+            color: white;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover, .btn-action:hover, input[type="submit"]:hover {
+            background-color: #333;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .back {
+            position: relative;
+            right: 26rem;
+            top: 35px;
+        }
+
+        .history {
+            position: relative;
+            left: 25rem;
+            bottom: 10px;
+        }
+
+        .navbar {
+            background-color: #818589;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .nav-item {
+            position: relative;
+            right: 5rem;
+            margin-right: 25px;
+        }
+
+        .navbar-brand {
+            position: relative;
+            right: 40px;
+        }
+
+        .navbar-brand img {
+            position: relative;
+            right: 2rem;
+            height: 90px;
+            width: 100px;
+        }
+
+        #navbarSupportedContent a {
+            font-size: 16px;
+        }
+
+        #navbarSupportedContent a:hover {
+            border-bottom: 2.5px solid white;
+        }
+
+        .active:hover {
+            color: black !important;
+            border-radius: 12px;
+        }
+
+        #logout {
+            position: relative;
+            left: 11rem;
+        }
+
+        .dropdown-menu {
+            background-color: gray;
+            border: none;
+        }
+
+        .dropdown-menu {
+            background-color: #818589;
+            border: none;
+        }
+
+        .dropdown-item {
+            color: white;
+        }
+
+        .dropdown-item:hover {
+            background-color: #818589;
+            border-radius: 12px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/Images/Nest Realty.png}" alt="Logo">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/sellerHome}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/Registration}">Post Property</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/RegisteredProperties}">Registered Properties</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/CompletedDeals}">Completed Deals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/SellerHistory}">Transaction History</a>
+                </li>
+                <li class="nav-item dropdown" id="logout">
+                    <img th:src="@{/Images/profile.png}" alt="Profile" width="50" height="50" style="position: relative; left: 2rem;">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/Sellerprofile}">Profile</a>
+                        <a class="dropdown-item" th:href="@{/LogOut}">LogOut</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<h3>Completed Deals</h3>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>Property Address</th>
+            <th>Payment Method</th>
+            <th>Property Total Amount</th>
+            <th>Payable Amount</th>
+            <th>Paid Status</th>
+            <th>Download Receipt</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="sales : ${list}">
+            <td th:text="${sales.customerId}"></td>
+            <td th:text="${sales.propertyAddress}"></td>
+            <td th:text="${sales.paymentMethod}"></td>
+            <td th:text="${sales.totalAmount}"></td>
+            <td th:text="${sales.payableAmount}"></td>
+            <td th:text="${sales.paidStatus}"></td>
+            <!-- <td>
+                <button th:onclick="'generateReceipt(' + ${sales.customerId} + ', ' + ${sales.propertyAddress} + ', ' + ${sales.paymentMethod} + ', ' + ${sales.totalAmount} + ', ' + ${sales.payableAmount} + ', ' + ${sales.customerAccount} + ', ' + ${sales.sellerAccount} + ', ' + ${sales.purchasedDate} + ', ' + ${sales.paidStatus} + ', ' + ${sales.govId} + ')'">
+                    Download
+                </button>
+            </td> -->
+        </tr>
+    </tbody>
+</table>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script type="text/javascript">
+    function generateReceipt(customerId, propertyAddress, paymentMethod, totalAmount, payableAmount, customerAccount, yourAccount, purchasedDate, paymentStatus, govId) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(12);
+        doc.line(9, 10, 200, 10); //topline
+        doc.line(9, 285, 200, 285); //bottomline (200 length, 9 left length, (285, 285) bringing down the line with same line---)
+        
+        doc.line(200, 10, 200, 285); //rightline 
+        doc.line(9, 10, 9, 285);//leftline
+        
+        doc.text("Payment Receipt", 20, 20);
+        doc.line(20, 23, 54, 23);
+        doc.setLineWidth(3); 
+        doc.text("Customer ID: " + customerId, 20, 30);
+        
+        doc.text("Property Address: " + propertyAddress, 20, 40);
+        doc.text("Payment Method: " + paymentMethod, 20, 50);
+        doc.text("Property Total Amount: " + totalAmount, 20, 60);
+        doc.text("Payable Amount: "+ payableAmount, 20, 70);
+        
+        doc.text("Customer Account: "+ customerAccount, 20, 80);
+        doc.text("Your Account: "+ yourAccount, 20, 90);
+        doc.text("Purchased Date: "+ purchasedDate, 20, 100) 
+        doc.text("Payment Status: " + paymentStatus, 20, 110);
+        
+        doc.addImage(govId, 'JPEG', 20, 120, 70, 50);
+        
+        doc.save("receipt_" + customerId + ".pdf");
+    }
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
