@@ -209,6 +209,7 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
             <th>Payment Method</th>
             <th>Approval Status</th>
             <th>Approval</th>
+            <th>Payment Status</th>
             
             
         </tr>
@@ -218,7 +219,7 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
     	<td th:text="${sales.customerId}"></td>
     	<td th:text="${sales.sellerId}"></td>
     	<td>
-                <img th:src="'data:image/jpeg;base64,' + ${#strings.substring(Base64.getEncoder().encodeToString(sales.governmentId), 0, -1)}">
+                <img alt="document" th:src="'data:image/jpeg;base64,' + ${sales.govId}">
             </td>
     	<td th:text="${sales.propertyAddress}"></td>
     	<td th:text="${sales.totalAmount}"></td>
@@ -236,6 +237,7 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
                  <input type="submit" value="Submit">
               </form>
          </td>
+         <td th:text="${sales.paidStatus}"></td>
          </tr>
          <tr th:if="${list == null || list.isEmpty()}">
             <td colspan="15">No Records found</td>

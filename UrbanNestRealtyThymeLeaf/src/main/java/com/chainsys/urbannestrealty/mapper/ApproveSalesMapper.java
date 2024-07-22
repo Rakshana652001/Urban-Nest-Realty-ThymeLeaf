@@ -46,6 +46,9 @@ public class ApproveSalesMapper implements RowMapper<Sales>
         String approval = rs.getString("approval");
         sales.setApproval(approval);
         
+        String pay = rs.getString("payed_status");
+        sales.setPaidStatus(pay);
+        
 		return sales;
 	}
 

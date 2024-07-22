@@ -42,7 +42,7 @@ public class CompletedDealsMapper implements RowMapper<Sales>
         sales.setCustomerAccount(customerAccount);
         
         long sellerAccount = rs.getLong("seller_account");
-        sales.setSellerAccount(sellerAccount);
+        sales.setAccountNumber(sellerAccount);
         
         String purchasedDate = rs.getString("purchased_date");
         sales.setPurchasedDate(purchasedDate);

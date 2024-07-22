@@ -20,7 +20,7 @@ Sales sales = new Sales();
 		sales.setCustomerAccount(customerAccount);
 		
 		long sellerAccount = rs.getLong("seller_account");
-		sales.setSellerAccount(sellerAccount);
+		sales.setAccountNumber(sellerAccount);
 		
 		Double amount = rs.getDouble("payabel_amount");
 		sales.setPayableAmount(amount);

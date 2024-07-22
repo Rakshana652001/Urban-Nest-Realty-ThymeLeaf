@@ -153,7 +153,7 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
           <a class="nav-link active" th:href="@{/sellerHome}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" th:href="@{/Registration}">Post Property</a>
+          <a class="nav-link active" th:href="@{/registration}">Post Property</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" th:href="@{/RegisteredProperties}">Registered Properties</a>
@@ -179,12 +179,11 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
 <table border="1">
     <thead>
         <tr>
-                <th>Seller ID</th>
                 <th>Property Name</th>
                 <th>Property ID</th>
                 <th>Approval Status</th>
-                <!-- <th>Property Images</th>
-                <th>Property Documents Photo Copy</th> -->
+                <th>Property Images</th>
+                <th>Property Documents Photo Copy</th>
                 <th>Property Price</th>
                 <th>Property Address</th>
                 <th>Property District</th>
@@ -198,16 +197,15 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
     </thead>
     <tbody>
     <tr th:each="property : ${list}">
-    	<td th:text="${property.sellerId}"></td>
     	<td th:text="${property.propertyName}"></td>
             <td th:text="${property.propertyId}"></td>
             <td th:text="${property.approval}"></td>
-           <!--  <td>
-                <img th:src="'data:image/jpeg;base64,' + ${#strings.substring(Base64.getEncoder().encodeToString(object.propertyImages), 0, -1)}">
+            <td>
+				<img alt="property" th:src="'data:image/jpeg;base64,' +${property.base64Image}">
             </td>
             <td>
-                <img th:src="'data:image/jpeg;base64,' + ${#strings.substring(Base64.getEncoder().encodeToString(object.propertyDocument), 0, -1)}">
-            </td> -->
+				<img alt="document" th:src="'data:image/jpeg;base64,' +${property.base64Document}">
+            </td>
             <td th:text="${property.propertyPrice}"></td>
             <td th:text="${property.propertyAddress}"></td>
             <td th:text="${property.propertyDistrict}"></td>

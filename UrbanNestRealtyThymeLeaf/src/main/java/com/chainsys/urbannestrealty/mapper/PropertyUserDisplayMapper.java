@@ -51,6 +51,8 @@ Property property = new Property();
         String registeredDate = rs.getString("registered_date");
         property.setRegisteredDate(registeredDate);
         
+        long acc = rs.getLong("account_number");
+        property.setAccountNumber(acc);
         
 		return property;
 	}

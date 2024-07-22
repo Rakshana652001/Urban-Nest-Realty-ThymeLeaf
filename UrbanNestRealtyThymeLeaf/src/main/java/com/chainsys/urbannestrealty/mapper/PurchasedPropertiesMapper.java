@@ -16,8 +16,8 @@ public class PurchasedPropertiesMapper implements RowMapper<Property>
 	{
 		Property property = new Property();
 		
-		String sellerId = rs.getString("seller_id");
-		property.setSellerId(sellerId);
+		String sellerId = rs.getString("seller_name");
+		property.setSellerName(sellerId);
 		
 		String propertyName = rs.getString("property_name");
 		property.setPropertyName(propertyName);

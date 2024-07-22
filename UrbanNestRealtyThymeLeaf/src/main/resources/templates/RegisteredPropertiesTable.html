@@ -203,8 +203,8 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
             <th>Property Name</th>
             <th>Property ID</th>
             <th>Approval Status</th>
-            <!-- <th>Property Images</th>
-            <th>Property Documents Photo Copy</th> -->
+            <th>Property Images</th>
+            <th>Property Documents Photo Copy</th>
             <th>Property Price</th>
             <th>Property Address</th>
             <th>Property District</th>
@@ -222,12 +222,12 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
             <td th:text="${property.propertyName}"></td>
             <td th:text="${property.propertyId}"></td>
             <td th:text="${property.approval}"></td>
-           <!--  <td>
-                <img th:src="'data:image/jpeg;base64,' + ${#strings.substring(Base64.getEncoder().encodeToString(object.propertyImages), 0, -1)}">
+         	 <td>
+                <img alt="prop" th:src="'data:image/jpeg;base64,' + ${property.base64Image}">
             </td>
             <td>
-                <img th:src="'data:image/jpeg;base64,' + ${#strings.substring(Base64.getEncoder().encodeToString(object.propertyDocument), 0, -1)}">
-            </td> -->
+                <img alt="document" th:src="'data:image/jpeg;base64,' + ${property.base64Document}">
+            </td>
             <td th:text="${property.propertyPrice}"></td>
             <td th:text="${property.propertyAddress}"></td>
             <td th:text="${property.propertyDistrict}"></td>

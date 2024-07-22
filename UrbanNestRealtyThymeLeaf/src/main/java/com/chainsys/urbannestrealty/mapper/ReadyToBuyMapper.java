@@ -24,18 +24,15 @@ public class ReadyToBuyMapper implements RowMapper<Sales>
         String propertyAddress = rs.getString("property_address");
         sales.setPropertyAddress(propertyAddress);
         
-        long propertyPrice = rs.getLong("total_amount");
+        long propertyPrice = rs.getLong("property_price");
         sales.setTotalAmount(propertyPrice);
         
-        double payableAmount = rs.getDouble("payabel_amount");
+        double payableAmount = rs.getDouble("payable_amount");
         sales.setPayableAmount(payableAmount);
+         
         
-        String paymentMethod = rs.getString("payment_method");
-        sales.setPaymentMethod(paymentMethod);
-        
-        
-        String approval = rs.getString("approval");
-        sales.setApproval(approval);
+        long acc = rs.getLong("account_number");
+        sales.setAccountNumber(acc);
         
 		return sales;
 	}

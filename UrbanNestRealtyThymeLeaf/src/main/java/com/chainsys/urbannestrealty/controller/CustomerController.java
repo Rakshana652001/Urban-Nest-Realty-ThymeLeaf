@@ -38,7 +38,7 @@ public class CustomerController
 	Validation validation;
 	
 	@PostMapping("/Purchase")
-	public String purchase(@RequestParam("customerId") String customerId, @RequestParam("governmentId") MultipartFile governmentId, @RequestParam("sellerId") String sellerId, @RequestParam("propertyId") String propertyId, @RequestParam("propertyName") String propertyName, @RequestParam("propertyAddress") String propertyAddress, @RequestParam("propertyPrice") long propertyPrice, @RequestParam("payableAmount") double payableAmount, @RequestParam("paymentMethod") String paymentMethod, HttpSession httpSession) throws IOException
+	public String purchase(@RequestParam("accountNumber") long accountNumber,@RequestParam("customerId") String customerId, @RequestParam("governmentId") MultipartFile governmentId, @RequestParam("sellerId") String sellerId, @RequestParam("propertyId") String propertyId, @RequestParam("propertyName") String propertyName, @RequestParam("propertyAddress") String propertyAddress, @RequestParam("propertyPrice") long propertyPrice, @RequestParam("payableAmount") double payableAmount, @RequestParam("paymentMethod") String paymentMethod, HttpSession httpSession) throws IOException
 	{
 		Sales sale = new Sales();
 		if(!governmentId.isEmpty())
@@ -57,16 +57,18 @@ public class CustomerController
 			sale.setApproval("Not Approved");
 			sale.setPaidStatus("Not Paid");		
 			
+			
 			httpSession.setAttribute("propertyAddress", propertyAddress);
 			userDAO.sale(sale);
 			userDAO.updateCustomerId(customerId, propertyAddress);
+			userDAO.updateSellerAccount(accountNumber, propertyAddress);
 		}
 		else
 		{
 			return "Purchase";
 		}
 			
-		return "SuccessPage2";
+		return "CustomerWelcomePage";
 	}
 	
 	@RequestMapping("/PropertiesUnderReview")
@@ -89,6 +91,12 @@ public class CustomerController
 	public String approveToBuy(Model model, HttpSession httpSession)
 	{
 		List<Sales> list = userDAO.approveToBuy();
+		for(Sales object:list)
+		{
+			byte[] getImage = object.getGovernmentId();
+			String toBase = Base64.getEncoder().encodeToString(getImage);
+			object.setGovId(toBase);
+		}
 		model.addAttribute("list", list);
 		return "ApproveToBuyTable";
 	}
@@ -100,7 +108,7 @@ public class CustomerController
 		
 		List<Sales> list = userDAO.approveToBuy();
 		model.addAttribute("list", list);
-		return "ApproveToBuyTable";
+		return "AdminWelcomePage";
 	}
 	
 	@RequestMapping("/RegisterBuyProperties")
@@ -112,8 +120,13 @@ public class CustomerController
 		return "RegisterBuyPropertiesTable";
 	}
 	
+	@RequestMapping("/payNow")
+	public String paynow(HttpSession session)
+	{
+		return "PayNow";
+	}
 	@RequestMapping("/PayNow")
-	public String payNow(Model model,@RequestParam("yourAccountNumber") long yourAccountNumber, @RequestParam("senderAccountNumber") long senderAccountNumber, @RequestParam("amount") Double amount, @RequestParam("purchasedDate") String purchasedDate, HttpSession session)
+	public String payNow1(Model model,@RequestParam("yourAccountNumber") long yourAccountNumber, @RequestParam("senderAccountNumber") long senderAccountNumber, @RequestParam("amount") Double amount, @RequestParam("purchasedDate") String purchasedDate, HttpSession session)
 	{
 		String address = (String)session.getAttribute("propertyAddress");
 		

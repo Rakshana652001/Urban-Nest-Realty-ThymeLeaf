@@ -5,7 +5,6 @@ public class User
 	String generatedUserID;
     String name;
     long   phoneNumber;
-    long accountNumber;
     String emailID;
     String password;
     String address;
@@ -72,18 +71,13 @@ public class User
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-	
-	public long getAccountNumber() {
-		return accountNumber;
-	}
-	public void setAccountNumber(long accountNumber) {
-		this.accountNumber = accountNumber;
-	}
 	@Override
 	public String toString() {
 		return "User [generatedUserID=" + generatedUserID + ", name=" + name + ", phoneNumber=" + phoneNumber
-				+ ", accountNumber=" + accountNumber + ", emailID=" + emailID + ", password=" + password + ", address="
-				+ address + ", district=" + district + ", state=" + state + ", designation=" + designation + "]";
+				+ ", emailID=" + emailID + ", password=" + password + ", address=" + address + ", district=" + district
+				+ ", state=" + state + ", designation=" + designation + "]";
 	}
+	
+	
 	
 }

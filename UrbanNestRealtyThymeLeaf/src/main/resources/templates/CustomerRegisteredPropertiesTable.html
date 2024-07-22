@@ -206,7 +206,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="sales : ${salesList}">
+            <tr th:each="sales : ${list}">
                 <td th:text="${sales.customerId}"></td>
                 <td th:text="${sales.sellerId}"></td>
                 <td>
@@ -219,7 +219,7 @@
                 <td th:text="${sales.approval}"></td>
                 <td th:text="${sales.paidStatus}"></td>
             </tr>
-            <tr th:if="${#lists.isEmpty(salesList)}">
+            <tr th:if="${list==null && list.isEmpty()}">
                 <td colspan="9">No Records found</td>
             </tr>
         </tbody>

@@ -190,28 +190,26 @@
                 <th>Property Address</th>
                 <th>Property Total Amount</th>
                 <th>Payable Amount</th>
-                <th>Payment Method</th>
-                <th>Approval Status</th>
                 <th>Payment</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="sales : ${salesList}">
-                <td th:text="${sales.customerId}"></td>
-                <td th:text="${sales.sellerId}"></td>
-                <td th:text="${sales.propertyAddress}"></td>
-                <td th:text="${sales.totalAmount}"></td>
-                <td th:text="${sales.payableAmount}"></td>
-                <td th:text="${sales.paymentMethod}"></td>
-                <td th:text="${sales.approval}"></td>
+     
+            <tr th:each="property : ${list}">
+                <td th:text="${property.customerId}"></td>
+                <td th:text="${property.sellerId}"></td>
+                <td th:text="${property.propertyAddress}"></td>
+                <td th:text="${property.totalAmount}"></td>
+                <td th:text="${property.payableAmount}"></td>
                 <td>
-                    <form th:action="@{/PayNow}" method="get">
-                        <input type="hidden" name="amount" th:value="${sales.payableAmount}">
+                    <form th:action="@{/payNow}" method="get">
+                        <input type="hidden" name="amount" th:value="${property.payableAmount}">
+                        <input type="hidden" name="senderAccountNumber" th:value="${property.accountNumber}">
                         <button type="submit">Pay Now</button>
                     </form>
                 </td>
             </tr>
-            <tr th:if="${#lists.isEmpty(salesList)}">
+            <tr th:if="${list==null && list.isEmpty()}">
                 <td colspan="8">No Records found</td>
             </tr>
         </tbody>

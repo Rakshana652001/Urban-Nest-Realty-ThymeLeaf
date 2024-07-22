@@ -13,7 +13,7 @@ public class Sales
 	double payableAmount;
 	String paidStatus;
 	long customerAccount;
-	long sellerAccount;
+	long accountNumber;
 	String purchasedDate;
 	
 	String govId;
@@ -89,12 +89,7 @@ public class Sales
 	public void setCustomerAccount(long customerAccount) {
 		this.customerAccount = customerAccount;
 	}
-	public long getSellerAccount() {
-		return sellerAccount;
-	}
-	public void setSellerAccount(long sellerAccount) {
-		this.sellerAccount = sellerAccount;
-	}
+	
 	public String getPurchasedDate() {
 		return purchasedDate;
 	}
@@ -108,14 +103,20 @@ public class Sales
 	public void setGovId(String govId) {
 		this.govId = govId;
 	}
+	public long getAccountNumber() {
+		return accountNumber;
+	}
+	public void setAccountNumber(long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
 	@Override
 	public String toString() {
 		return "Sales [customerId=" + customerId + ", sellerId=" + sellerId + ", propertyId=" + propertyId
 				+ ", propertyName=" + propertyName + ", totalAmount=" + totalAmount + ", paymentMethod=" + paymentMethod
 				+ ", approval=" + approval + ", propertyAddress=" + propertyAddress + ", governmentId="
 				+ Arrays.toString(governmentId) + ", payableAmount=" + payableAmount + ", paidStatus=" + paidStatus
-				+ ", customerAccount=" + customerAccount + ", sellerAccount=" + sellerAccount + ", purchasedDate="
-				+ purchasedDate + "]";
+				+ ", customerAccount=" + customerAccount + ", accountNumber=" + accountNumber + ", purchasedDate="
+				+ purchasedDate + ", govId=" + govId + "]";
 	}
 	
 	

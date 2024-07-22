@@ -37,7 +37,7 @@
             overflow: hidden;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
-            top: 5rem;
+            top: 6rem;
         }
 
         th, td {
@@ -166,7 +166,7 @@
                     <a class="nav-link active" th:href="@{/sellerHome}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/Registration}">Post Property</a>
+                    <a class="nav-link active" th:href="@{/registration}">Post Property</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" th:href="@{/RegisteredProperties}">Registered Properties</a>
@@ -207,7 +207,7 @@
     </thead>
     <tbody>
         <tr th:each="sales : ${list}">
-            <td th:text="${sales.sellerAccount}"></td>
+            <td th:text="${sales.accountNumber}"></td>
             <td th:text="${sales.customerAccount}"></td>
             <td th:text="${sales.customerId}"></td>
             <td th:text="${sales.purchasedDate}"></td>

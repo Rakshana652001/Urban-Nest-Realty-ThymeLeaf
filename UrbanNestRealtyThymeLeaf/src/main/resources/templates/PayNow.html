@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: "Lora", serif;
-            background-color: #818589;
+            background-color: #D8CCC0;
             background-size: cover;
             background-position: center;
             position: relative;
@@ -61,16 +61,16 @@
     <h3>Payment Form</h3>
     <form th:action="@{/PayNow}" id="paymentForm" method="post" onsubmit="return validateForm()">
         <label for="yourAccountNumber">Your Account Number: </label>
-        <input type="number" id="yourAccountNumber" maxlength="12" name="yourAccountNumber" placeholder="Enter your Bank Account Number" readonly/>
+        <input type="number" id="yourAccountNumber" maxlength="12" name="yourAccountNumber" placeholder="Enter your Bank Account Number">
         
-        <label for="senderAccountNumber">Account Number of the Receiver:</label>
-        <input type="number" id="senderAccountNumber" maxlength="12" name="senderAccountNumber" placeholder="Enter the Bank Account Number" required/>
-        
+        <label for="senderAccountNumber">Seller Account Number:</label>
+        <input type="number" id="senderAccountNumber" name="senderAccountNumber" th:value="${param.senderAccountNumber}" readonly/>
+                
         <label for="amount">Enter the Amount to send:</label>
-        <input type="number" id="amount" name="amount" th:value="${amount}" readonly/>
+        <input type="number" id="amount" name="amount" th:value="${param.amount}" readonly/>
         
         <label for="purchasedDate">Purchased Date</label>
-        <input type="date" id="purchasedDate" name="purchasedDate" th:value="${#dates.format(purchasedDate, 'yyyy-MM-dd')}"/>
+        <input type="date" id="purchasedDate" name="purchasedDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly/>
         
         <input type="submit" value="Send Money">
     </form>

@@ -37,8 +37,8 @@ public class UserDAOImplementation implements UserDAO
 	@Override
 	public void saveUserDetails(User user)
 	{
-		String insert = "insert into user (id, name, phone_number, designation, email_id, password, address, district, state, account_number)values(?,?,?,?,?,?,?,?,?,?)";
-		Object[] params = {user.getGeneratedUserID() ,user.getName(),user.getPhoneNumber(), user.getDesignation(),  user.getEmailID(),user.getPassword(), user.getAddress(), user.getDistrict(), user.getState(), user.getAccountNumber()};
+		String insert = "insert into user (id, name, phone_number, designation, email_id, password, address, district, state)values(?,?,?,?,?,?,?,?,?)";
+		Object[] params = {user.getGeneratedUserID() ,user.getName(),user.getPhoneNumber(), user.getDesignation(),  user.getEmailID(),user.getPassword(), user.getAddress(), user.getDistrict(), user.getState()};
 		jdbcTemplate.update(insert, params);
 	}
 
@@ -166,9 +166,9 @@ public class UserDAOImplementation implements UserDAO
 	@Override
 	public void property(Property property) 
 	{
-		String insert = "insert into property_registration (seller_id,property_name, property_id, approval, property_images, property_document, property_price, property_address, property_district, property_state, registered_date, customer_id, register_status, payment_status) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String insert = "insert into property_registration (seller_id,seller_name,property_name, property_id, approval, property_images, property_document, property_price, property_address, property_district, property_state, registered_date, customer_id, register_status, payment_status, account_number, payable_amount) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Object[] params = {property.getSellerId(), property.getPropertyName(), property.getPropertyId(), property.getApproval(), property.getPropertyImages(), property.getPropertyDocument(),property.getPropertyPrice(),
-		property.getPropertyAddress(), property.getPropertyDistrict(), property.getPropertyState(), property.getRegisteredDate(),property.getCustomerId(), property.getRegisterStatus(), property.getPaymentStatus()};
+		property.getPropertyAddress(), property.getPropertyDistrict(), property.getPropertyState(), property.getRegisteredDate(),property.getCustomerId(), property.getRegisterStatus(), property.getPaymentStatus(),property.getAccountNumber(),property.getPayableAmount(), property.getSellerName()};
 		jdbcTemplate.update(insert, params);	
 	}
 
@@ -202,28 +202,28 @@ public class UserDAOImplementation implements UserDAO
 	@Override
 	public List<Property> residential() 
 	{
-		String residential = "select seller_id, property_name, property_id, approval, property_images, property_price, property_address, property_district, property_state, registered_date from property_registration where property_id=101 and deleted_User=0 and approval='Approved' and register_status='Not Registered'";
+		String residential = "select seller_id, property_name, property_id, approval, property_images, property_price, property_address, property_district, property_state, registered_date,account_number from property_registration where property_id=101 and deleted_User=0 and approval='Approved' and register_status='Not Registered'";
 		List<Property> list = jdbcTemplate.query(residential, new PropertyUserDisplayMapper());
 		return list;
 	}
 
 	@Override
 	public List<Property> land() {
-		String residential = "select seller_id, property_name, property_id, approval, property_images, property_price, property_address, property_district, property_state, registered_date from property_registration where property_id=102 and deleted_User=0 and approval='Approved' and register_status='Not Registered'";
+		String residential = "select seller_id, property_name, property_id, approval, property_images, property_price, property_address, property_district, property_state, registered_date,account_number from property_registration where property_id=102 and deleted_User=0 and approval='Approved' and register_status='Not Registered'";
 		List<Property> list = jdbcTemplate.query(residential, new PropertyUserDisplayMapper());
 		return list;
 	}
 
 	@Override
 	public List<Property> industrial() {
-		String residential = "select seller_id, property_name, property_id, approval, property_images, property_price, property_address, property_district, property_state, registered_date from property_registration where property_id=103 and deleted_User=0 and approval='Approved' and register_status='Not Registered'";
+		String residential = "select seller_id, property_name, property_id, approval, property_images, property_price, property_address, property_district, property_state, registered_date,account_number from property_registration where property_id=103 and deleted_User=0 and approval='Approved' and register_status='Not Registered'";
 		List<Property> list = jdbcTemplate.query(residential, new PropertyUserDisplayMapper());
 		return list;
 	}
 
 	@Override
 	public List<Property> commercial() {
-		String residential = "select seller_id, property_name, property_id, approval, property_images, property_price, property_address, property_district, property_state, registered_date from property_registration where property_id=104 and deleted_User=0 and approval='Approved' and register_status='Not Registered'";
+		String residential = "select seller_id, property_name, property_id, approval, property_images, property_price, property_address, property_district, property_state, registered_date,account_number from property_registration where property_id=104 and deleted_User=0 and approval='Approved' and register_status='Not Registered'";
 		List<Property> list = jdbcTemplate.query(residential, new PropertyUserDisplayMapper());
 		return list;
 	}
@@ -248,7 +248,7 @@ public class UserDAOImplementation implements UserDAO
 	public void sale(Sales sale) 
 	{
 		String insert = "insert into sales_record (customer_id,seller_id, government_id, approval, property_address, payment_method, total_amount, payabel_amount, customer_account, seller_account, payed_status) values (?,?,?,?,?,?,?,?,?,?,?)";
-		Object[] params = {sale.getCustomerId(), sale.getSellerId(), sale.getGovernmentId(), sale.getApproval(), sale.getPropertyAddress(), sale.getPaymentMethod(), sale.getTotalAmount(), sale.getPayableAmount(), sale.getCustomerAccount(), sale.getSellerAccount(), sale.getPaidStatus()};
+		Object[] params = {sale.getCustomerId(), sale.getSellerId(), sale.getGovernmentId(), sale.getApproval(), sale.getPropertyAddress(), sale.getPaymentMethod(), sale.getTotalAmount(), sale.getPayableAmount(), sale.getCustomerAccount(), sale.getAccountNumber(), sale.getPaidStatus()};
 		jdbcTemplate.update(insert, params);
 	}
 
@@ -288,7 +288,7 @@ public class UserDAOImplementation implements UserDAO
 	@Override
 	public List<Sales> approveToBuy()
 	{
-		String retrive = "select customer_id, seller_id, property_address, payment_method, total_amount, payabel_amount, approval, government_id from sales_record where approval='Not Approved' and deleted_User=0";
+		String retrive = "select customer_id, seller_id, property_address, payment_method, total_amount, payabel_amount, approval, government_id,payed_status from sales_record where payed_status='Not Paid' and deleted_User=0";
 		List<Sales> list = jdbcTemplate.query(retrive, new ApproveSalesMapper());
 		return list;
 	}
@@ -304,14 +304,15 @@ public class UserDAOImplementation implements UserDAO
 	@Override
 	public List<Sales> readyToBuy(String id) 
 	{
-		String retrive = "select customer_id, seller_id, property_address ,total_amount, payabel_amount, payment_method, approval from sales_record where customer_id=? and deleted_User=0 and payed_status='Not Paid'";
+		String retrive = "select customer_id, seller_id, property_address ,property_price, payable_amount ,account_number from property_registration where customer_id=? and deleted_User=0 and payment_status='Not Paid'";
 		List<Sales> list = jdbcTemplate.query(retrive, new ReadyToBuyMapper(), id);
 		return list;		
 	}
 
 	@Override
 	public void updatePayment(String address, long yourAccountNumber, long senderAccountNumber,
-			String purchasedDate) {
+			String purchasedDate)
+	{
 		String update= "update sales_record set customer_account=?, seller_account=?, purchased_date=?, payed_status=? where property_address=?";
 		Object[] params = {yourAccountNumber, senderAccountNumber, purchasedDate, "Paid",address};
 		jdbcTemplate.update(update,params);
@@ -341,7 +342,7 @@ public class UserDAOImplementation implements UserDAO
 	@Override
 	public List<Property> purchasedProperties(String id)
 	{
-		String retrive = "select seller_id, property_name, property_document, property_price, property_address, property_district, registered_date, purchased_date, customer_id, register_status, payment_status from property_registration where customer_id=? and payment_status='Paid'";
+		String retrive = "select seller_name, property_name, property_document, property_price, property_address, property_district, registered_date, purchased_date, customer_id, register_status, payment_status from property_registration where customer_id=? and payment_status='Paid'";
 		List<Property> list = jdbcTemplate.query(retrive, new PurchasedPropertiesMapper(), id);
 		return list;
 	}
@@ -401,5 +402,22 @@ public class UserDAOImplementation implements UserDAO
 		String history = "select seller_id, customer_account, seller_account, payabel_amount, purchased_date from sales_record where customer_id=? and purchased_date>=? and purchased_date<=?";
 		List<Sales> list = jdbcTemplate.query(history, new CustomerHistoryMapper(), id, fromDate,toDate);
 		return list;
+	}
+
+	@Override
+	public void updateSellerAccount(long accountNumber, String address) 
+	{
+		String update = "update sales_record set seller_account=? where property_address=?";
+		Object[] params1 = {update, accountNumber, address};
+		jdbcTemplate.update(update, params1);
+		
+	}
+	
+	@Override
+	public String getsellerName(String generatedUserID)
+	{
+		String name = "select name from user where id=? and designation = 'Seller' and deleted_User=0";
+		String seller = jdbcTemplate.queryForObject(name, String.class, generatedUserID);
+		return seller;
 	}
 }

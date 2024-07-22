@@ -7,6 +7,7 @@ import java.util.Arrays;
 public class Property
 {
 	String sellerId;
+	String sellerName;
     String propertyName;
     String propertyId;
     long   propertyPrice;
@@ -24,6 +25,9 @@ public class Property
     String fromDate;
     String toDate;
 	private String base64Image;
+	private String base64Document;
+	long accountNumber;
+	double payableAmount;
     
     
 	public String getFromDate() {
@@ -128,16 +132,7 @@ public class Property
 	public void setPurchasedDate(String purchasedDate) {
 		this.purchasedDate = purchasedDate;
 	}
-	@Override
-	public String toString() {
-		return "Property [sellerId=" + sellerId + ", propertyName=" + propertyName + ", propertyId=" + propertyId
-				+ ", propertyPrice=" + propertyPrice + ", propertyAddress=" + propertyAddress + ", propertyDistrict="
-				+ propertyDistrict + ", propertyState=" + propertyState + ", propertyImages="
-				+ Arrays.toString(propertyImages) + ", propertyDocument=" + Arrays.toString(propertyDocument)
-				+ ", approval=" + approval + ", registerStatus=" + registerStatus + ", paymentStatus=" + paymentStatus
-				+ ", customerId=" + customerId + ", registeredDate=" + registeredDate + ", purchasedDate="
-				+ purchasedDate + ", fromDate=" + fromDate + ", toDate=" + toDate + "]";
-	}
+
 	public String getBase64Image() {
         return base64Image;
     }
@@ -145,6 +140,45 @@ public class Property
     public void setBase64Image(String base64Image) {
         this.base64Image = base64Image;
     }
+    
+    public String getBase64Document()
+    {
+    	return base64Document;
+    }
+	public void setBase64Document(String getDocument) 
+	{
+		this.base64Document = getDocument;
+	}
+	public long getAccountNumber() {
+		return accountNumber;
+	}
+	public void setAccountNumber(long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	public double getPayableAmount() {
+		return payableAmount;
+	}
+	public void setPayableAmount(double payableAmount) {
+		this.payableAmount = payableAmount;
+	}
 	
-		
+	public String getSellerName() {
+		return sellerName;
+	}
+	public void setSellerName(String sellerName) {
+		this.sellerName = sellerName;
+	}
+	@Override
+	public String toString() {
+		return "Property [sellerId=" + sellerId + ", sellerName=" + sellerName + ", propertyName=" + propertyName
+				+ ", propertyId=" + propertyId + ", propertyPrice=" + propertyPrice + ", propertyAddress="
+				+ propertyAddress + ", propertyDistrict=" + propertyDistrict + ", propertyState=" + propertyState
+				+ ", propertyImages=" + Arrays.toString(propertyImages) + ", propertyDocument="
+				+ Arrays.toString(propertyDocument) + ", approval=" + approval + ", registerStatus=" + registerStatus
+				+ ", paymentStatus=" + paymentStatus + ", customerId=" + customerId + ", registeredDate="
+				+ registeredDate + ", purchasedDate=" + purchasedDate + ", fromDate=" + fromDate + ", toDate=" + toDate
+				+ ", base64Image=" + base64Image + ", base64Document=" + base64Document + ", accountNumber="
+				+ accountNumber + ", payableAmount=" + payableAmount + "]";
+	}
+	
 }

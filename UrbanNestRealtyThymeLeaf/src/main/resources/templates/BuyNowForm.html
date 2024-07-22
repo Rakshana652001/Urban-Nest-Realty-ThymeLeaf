@@ -114,7 +114,7 @@
         <label for="customerId">Customer ID:
             <input type="text" id="customerId" name="customerId" 
                    placeholder="Login to your Account then come to Purchase" 
-                   th:value="${customerId}" readonly>
+                   th:value="${session.customerId}" readonly>
         </label>
 
         <label for="governmentId">Government ID:
@@ -123,27 +123,27 @@
 
         <label for="sellerId">Seller ID:
             <input type="text" id="sellerId" name="sellerId" 
-                   th:value="${sellerId}" readonly>
+                   th:value="${param.sellerId}" readonly>
         </label>
 
         <label for="propertyId">Property ID:
             <input type="text" id="propertyId" name="propertyId" 
-                   th:value="${propertyId}" readonly>
+                   th:value="${param.propertyId}" readonly>
         </label><br><br>
 
         <label for="propertyName">Property Name:
             <input type="text" id="propertyName" name="propertyName" 
-                   th:value="${propertyName}" readonly>
+                   th:value="${param.propertyName}" readonly>
         </label><br><br>
 
         <label for="propertyAddress">Property Address:
             <input type="text" id="propertyAddress" name="propertyAddress" 
-                   th:value="${propertyAddress}" readonly>
+                   th:value="${param.propertyAddress}" readonly>
         </label><br><br>
 
         <label for="propertyPrice">Property Price:
             <input type="text" id="propertyPrice" name="propertyPrice" 
-                   th:value="${propertyPrice}" readonly>
+                   th:value="${param.propertyPrice}" readonly>
         </label><br><br>
 
         <label for="payableAmount">Payable Amount:
@@ -155,6 +155,8 @@
                 <option value="bankTransfer">Bank Transfer</option>
             </select>
         </label><br><br>
+        
+        <input type="hidden" id="accountNumber" name="accountNumber" th:value="${param.accountNumber}" readonly="readonly">
 
         <p><strong>Terms and Conditions</strong></p>
         <p>Our Terms and Conditions were last updated on [_01-01-2024_].</p>

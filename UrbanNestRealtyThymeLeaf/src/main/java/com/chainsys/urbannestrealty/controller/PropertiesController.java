@@ -29,10 +29,15 @@ public class PropertiesController
 	@Autowired 
 	UserDAO userDAO;
 	
+	@RequestMapping("/registration")
+	public String registration()
+	{
+		return "PropertyRegistration";
+	}
 
 	@PostMapping("/Registration")
-	public String saveUserDetails(@RequestParam("sellerId") String sellerId ,@RequestParam ("propertyName") String propertyName ,@RequestParam("propertyId") String propertyId ,@RequestParam ("registeredDate") String registeredDate, @RequestParam ("propertyPrice") long propertyPrice, @RequestParam ("propertyImages") MultipartFile propertyImages, @RequestParam("propertyDocument") MultipartFile propertyDocument, @RequestParam("propertyAddress") String propertyAddress, @RequestParam("propertyDistrict") String propertyDistrict, @RequestParam("propertyState") String propertyState, HttpSession httpSession) throws IOException
-	{
+	public String saveUserDetails(@RequestParam("sellerName") String sellerName,@RequestParam("payableAmount") double payableAmount,@RequestParam("accountNumber") long accountNumber,@RequestParam("sellerId") String sellerId ,@RequestParam ("propertyName") String propertyName ,@RequestParam("propertyId") String propertyId ,@RequestParam ("registeredDate") String registeredDate, @RequestParam ("propertyPrice") long propertyPrice, @RequestParam ("propertyImages") MultipartFile propertyImages, @RequestParam("propertyDocument") MultipartFile propertyDocument, @RequestParam("propertyAddress") String propertyAddress, @RequestParam("propertyDistrict") String propertyDistrict, @RequestParam("propertyState") String propertyState, HttpSession httpSession) throws IOException 
+	{ 
 		if(!propertyImages.isEmpty() && !propertyDocument.isEmpty())
 		{
 			
@@ -54,10 +59,13 @@ public class PropertiesController
 		property.setCustomerId("Not Purchased");
 		property.setRegisterStatus("Not Registered");
 		property.setPaymentStatus("Not Paid");
+		property.setAccountNumber(accountNumber);
+		property.setPayableAmount(payableAmount);
+		property.setSellerName(sellerName);
 		
 		httpSession.setAttribute("sellerId", sellerId);
 		httpSession.setAttribute("propertyName", propertyName);
-		httpSession.setAttribute("propImage", imagebytes);
+		
 		userDAO.property(property);
 		}
 		else
@@ -65,15 +73,35 @@ public class PropertiesController
 			return "Registration";
 		}
 		
-		return "SuccessPage3";
+		return "SellerWelcomePage";
 	}
 	
+	@RequestMapping("/Buynow")
+	public String buyNow(HttpSession session)
+	{
+		session.getAttribute("customerId");
+		return "BuyNowForm";
+	}
 	
 	@RequestMapping("/RegisteredProperties")
 	public String registeredPropertiesRetrive(Model model, HttpSession session)
 	{
 		String id = (String)session.getAttribute("sellerId");
 		List<Property> list = userDAO.sellerRegisteredProperties(id);
+		for(Property property:list)
+		{
+			byte[] image = property.getPropertyImages();
+			String getImage = Base64.getEncoder().encodeToString(image);
+			property.setBase64Image(getImage);
+			
+		}
+		
+		for(Property object:list)
+		{
+			byte[] document = object.getPropertyDocument();
+			String getDocument = Base64.getEncoder().encodeToString(document);
+			object.setBase64Document(getDocument);
+		}
 		model.addAttribute("list",list);
 		return "PropertiesTableSellerView";
 	}
@@ -82,6 +110,20 @@ public class PropertiesController
 	public String pendingProperties(Model model)
 	{
 		List<Property> list = userDAO.pendingProperty();
+		for(Property property:list)
+		{
+			byte[] image = property.getPropertyImages();
+			String getImage = Base64.getEncoder().encodeToString(image);
+			property.setBase64Image(getImage);
+			
+		}
+		
+		for(Property object:list)
+		{
+			byte[] document = object.getPropertyDocument();
+			String getDocument = Base64.getEncoder().encodeToString(document);
+			object.setBase64Document(getDocument);
+		}
 		model.addAttribute("list",list);
 		return "RegisteredPropertyAdminView";
 	}
@@ -90,6 +132,20 @@ public class PropertiesController
 	public String authorized(Model model)
 	{
 		List<Property> list = userDAO.authorizedProperties();
+		for(Property property:list)
+		{
+			byte[] image = property.getPropertyImages();
+			String getImage = Base64.getEncoder().encodeToString(image);
+			property.setBase64Image(getImage);
+			
+		}
+		
+		for(Property object:list)
+		{
+			byte[] document = object.getPropertyDocument();
+			String getDocument = Base64.getEncoder().encodeToString(document);
+			object.setBase64Document(getDocument);
+		}
 		model.addAttribute("list",list);
 		return "RegisteredPropertiesTable";
 	}
@@ -105,6 +161,20 @@ public class PropertiesController
 		userDAO.approval(property);
 		
 		List<Property> list = userDAO.pendingProperty();
+		for(Property property1:list)
+		{
+			byte[] image = property1.getPropertyImages();
+			String getImage = Base64.getEncoder().encodeToString(image);
+			property1.setBase64Image(getImage);
+			
+		}
+		
+		for(Property object:list)
+		{
+			byte[] document = object.getPropertyDocument();
+			String getDocument = Base64.getEncoder().encodeToString(document);
+			object.setBase64Document(getDocument);
+		}
 		model.addAttribute("list",list);
 		return "RegisteredPropertyAdminView";
 	}
@@ -170,6 +240,20 @@ public class PropertiesController
 	{
 		userDAO.registerUpdate(address, registerStatus);
 		List<Property> list = userDAO.authorizedProperties();
+		for(Property property:list)
+		{
+			byte[] image = property.getPropertyImages();
+			String getImage = Base64.getEncoder().encodeToString(image);
+			property.setBase64Image(getImage);
+			
+		}
+		
+		for(Property object:list)
+		{
+			byte[] document = object.getPropertyDocument();
+			String getDocument = Base64.getEncoder().encodeToString(document);
+			object.setBase64Document(getDocument);
+		}
 		model.addAttribute("list",list);
 		return "RegisteredPropertiesTable";
 	}

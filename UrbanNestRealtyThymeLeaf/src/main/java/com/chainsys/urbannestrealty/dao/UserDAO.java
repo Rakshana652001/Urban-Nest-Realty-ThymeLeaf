@@ -55,4 +55,6 @@ public interface UserDAO
 	List<Sales> sellerHistory(String id);
 	List<Sales> sellerDate(String id, String fromDate, String toDate);
 	List<Sales> customerDate(String id, String fromDate, String toDate);
+	void updateSellerAccount(long accountNumber, String propertyAddress);
+	String getsellerName(String generatedUserID);
 }

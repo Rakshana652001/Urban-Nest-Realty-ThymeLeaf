@@ -47,7 +47,7 @@ label {
     color: black;
 }
 
-input[type="text"], input[type="number"], textarea, select, input[type="file"], input[type="date"] {
+input[type="text"], input[type="number"], textarea, select, input[type="file"], input[type="date"],input[type="tel"] {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -76,9 +76,13 @@ button:hover {
 </head>
 <body>
 <div class="container">
-<form th:action="@{/PropertyRegistration}" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
+<form th:action="@{/Registration}" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
     <h4>Property Registration</h4>
     <label>Seller ID: <input type="text" name="sellerId" id="sellerId" placeholder="Enter the ID given by the company" th:value="${session.sellerId}" readonly></label><br><br>
+    <input type="hidden" name="sellerName" id="sellerName" th:value="${session.sellerName}">
+    <label for="accountNumber" style="position: relative; bottom: 10px">Account Number: 
+    <input  type="tel" id="accountNumber" maxlength="12" name="accountNumber" placeholder="Enter your Bank Account Number" required/>
+   </label>
     <label>Property Name: 
         <select id="propertyNameSelect" name="propertyNameSelect" onchange="autoFillPropertyDetails()" required>
             <option value="">Select Property</option>
@@ -91,51 +95,54 @@ button:hover {
     <label>Property ID: <input type="text" id="propertyId" name="propertyId" readonly/></label><br><br>
     <label>Property Name: <input type="text" id="propertyName" name="propertyName" placeholder="PG, house, land, showroom.." required/></label><br><br>
     <label>Registration Date: <input type="date" id="registeredDate" name="registeredDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly></label><br><br>
-    <label>Property Price: <input type="number" id="propertyPrice" name="propertyPrice" required/></label><br><br>
+    <label>Property Price: <input type="number" id="propertyPrice" name="propertyPrice" oninput="calculatePayableAmount()" required/></label><br><br>
+    <label for="payableAmount">Payable Amount:
+       <input type="text" id="payableAmount" name="payableAmount" readonly>
+    </label><br><br>
     <label>Add Images: <input type="file" id="propertyImages" name="propertyImages" required/></label><br><br>
     <label>Property Documents Photo Copy: <input type="file" id="propertyDocument" name="propertyDocument" required/></label><br><br>
     <label>Property Address: <textarea id="propertyAddress" name="propertyAddress" placeholder="Enter detail address includes your Property type, Door no, Street name, Landmark" rows="4" cols="30" required></textarea></label><br><br>
     <label>Property District: 
         <select id="propertyDistrict" name="propertyDistrict" onchange="autoFillPropertyDistrict()" required>
             <option value="1">Select District</option>
-            <option value="2" data-name="Ariyalur">Ariyalur</option>
-            <option value="3" data-name="Chengalpattu">Chengalpattu</option>
-            <option value="4" data-name="Chennai">Chennai</option>
-            <option value="5" data-name="Coimbatore">Coimbatore</option>
-            <option value="6" data-name="Cuddalore">Cuddalore</option>
-            <option value="7" data-name="Dharmapuri">Dharmapuri</option>
-            <option value="8" data-name="Dindigul">Dindigul</option>
-            <option value="9" data-name="Erode">Erode</option>
-            <option value="10" data-name="Kallakurichi">Kallakurichi</option>
-            <option value="11" data-name="Kancheepuram">Kancheepuram</option>
-            <option value="12" data-name="Karur">Karur</option>
-            <option value="13" data-name="Krishnagiri">Krishnagiri</option>
-            <option value="14" data-name="Madurai">Madurai</option>
-            <option value="15" data-name="Mayiladuthurai">Mayiladuthurai</option>
-            <option value="16" data-name="Nagapattinam">Nagapattinam</option>
-            <option value="17" data-name="Kanniyakumari">Kanniyakumari</option>
-            <option value="18" data-name="Namakkal">Namakkal</option>
-            <option value="19" data-name="Perambalur">Perambalur</option>
-            <option value="20" data-name="Pudukottai">Pudukottai</option>
-            <option value="21" data-name="Ramanathapuram">Ramanathapuram</option>
-            <option value="22" data-name="Ranipet">Ranipet</option>
-            <option value="23" data-name="Salem">Salem</option>
-            <option value="24" data-name="Sivagangai">Sivagangai</option>
-            <option value="25" data-name="Tenkasi">Tenkasi</option>
-            <option value="26" data-name="Tanjavur">Tanjavur</option>
-            <option value="27" data-name="Theni">Theni</option>
-            <option value="28" data-name="Thiruvallur">Thiruvallur</option>
-            <option value="29" data-name="Thiruvarur">Thiruvarur</option>
-            <option value="30" data-name="Thoothukudi">Thoothukudi</option>
-            <option value="31" data-name="Trichirappalli">Trichirappalli</option>
-            <option value="32" data-name="Thirunelveli">Thirunelveli</option>
-            <option value="33" data-name="Tirupathur">Tirupathur</option>
-            <option value="34" data-name="Tiruppur">Tiruppur</option>
-            <option value="35" data-name="Thiruvanamalai">Thiruvanamalai</option>
-            <option value="36" data-name="The Nilgiris">The Nilgiris</option>
-            <option value="37" data-name="Vellore">Vellore</option>
-            <option value="38" data-name="Viluppuram">Viluppuram</option>
-            <option value="39" data-name="Viruthunagar">Viruthunagar</option>            
+            <option value="Ariyalur" data-name="Ariyalur">Ariyalur</option>
+            <option value="Chengalpattu" data-name="Chengalpattu">Chengalpattu</option>
+            <option value="Chennai" data-name="Chennai">Chennai</option>
+            <option value="Coimbatore" data-name="Coimbatore">Coimbatore</option>
+            <option value="Cuddalore" data-name="Cuddalore">Cuddalore</option>
+            <option value="Dharmapuri" data-name="Dharmapuri">Dharmapuri</option>
+            <option value="Dindigul" data-name="Dindigul">Dindigul</option>
+            <option value="Erode" data-name="Erode">Erode</option>
+            <option value="Kallakurichi" data-name="Kallakurichi">Kallakurichi</option>
+            <option value="Kancheepuram" data-name="Kancheepuram">Kancheepuram</option>
+            <option value="Karur" data-name="Karur">Karur</option>
+            <option value="Krishnagiri" data-name="Krishnagiri">Krishnagiri</option>
+            <option value="Madurai" data-name="Madurai">Madurai</option>
+            <option value="Mayiladuthurai" data-name="Mayiladuthurai">Mayiladuthurai</option>
+            <option value="Nagapattinam" data-name="Nagapattinam">Nagapattinam</option>
+            <option value="Kanniyakumari" data-name="Kanniyakumari">Kanniyakumari</option>
+            <option value="Namakkal" data-name="Namakkal">Namakkal</option>
+            <option value="Perambalur" data-name="Perambalur">Perambalur</option>
+            <option value="Pudukottai" data-name="Pudukottai">Pudukottai</option>
+            <option value="Ramanathapuram" data-name="Ramanathapuram">Ramanathapuram</option>
+            <option value="Ranipet" data-name="Ranipet">Ranipet</option>
+            <option value="Salem" data-name="Salem">Salem</option>
+            <option value="Sivagangai" data-name="Sivagangai">Sivagangai</option>
+            <option value="Sivagangai" data-name="Tenkasi">Tenkasi</option>
+            <option value="Tanjavur" data-name="Tanjavur">Tanjavur</option>
+            <option value="Theni" data-name="Theni">Theni</option>
+            <option value="Thiruvallur" data-name="Thiruvallur">Thiruvallur</option>
+            <option value="Thiruvarur" data-name="Thiruvarur">Thiruvarur</option>
+            <option value="Thoothukudi" data-name="Thoothukudi">Thoothukudi</option>
+            <option value="Trichirappalli" data-name="Trichirappalli">Trichirappalli</option>
+            <option value="Thirunelveli" data-name="Thirunelveli">Thirunelveli</option>
+            <option value="Tirupathur" data-name="Tirupathur">Tirupathur</option>
+            <option value="Tiruppur" data-name="Tiruppur">Tiruppur</option>
+            <option value="Thiruvanamalai" data-name="Thiruvanamalai">Thiruvanamalai</option>
+            <option value="Nilgiri" data-name="Nilgiri">Nilgiri</option>
+            <option value="Vellore" data-name="Vellore">Vellore</option>
+            <option value="Viluppuram" data-name="Viluppuram">Viluppuram</option>
+            <option value="Viruthunagar" data-name="Viruthunagar">Viruthunagar</option>            
         </select>
     </label><br><br>
     <label>Property State: <input type="text" id="propertyState" name="propertyState" value="Tamil Nadu" readonly/></label><br><br>
@@ -176,6 +183,18 @@ function validateForm()
     }
 
     return true;
+}
+function calculatePayableAmount()
+{
+    var propertyPrice = parseFloat(document.getElementById('propertyPrice').value);
+    var payableAmountInput = document.getElementById('payableAmount');
+
+    if (!isNaN(propertyPrice)) {
+        var payableAmount = propertyPrice / 2;
+        payableAmountInput.value = payableAmount.toFixed(2);
+    } else {
+        payableAmountInput.value = '';
+    }
 }
 </script>
 </body>

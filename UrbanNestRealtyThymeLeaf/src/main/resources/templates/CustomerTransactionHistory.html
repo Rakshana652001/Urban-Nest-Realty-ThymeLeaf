@@ -198,11 +198,11 @@
     </div>
 </nav>
 
-<!-- <form action="/customerDate" class="fromDate">
-    <label>From Date: <input type="date" name="fromDate" id="fromDate" min="2013-01-01" th:value="${#dates.format(LocalDate.now(), 'yyyy-MM-dd')}"></label>
-    <label>To Date: <input type="date" name="toDate" id="toDate" th:value="${#dates.format(LocalDate.now(), 'yyyy-MM-dd')}"></label>
-    <button type="submit">Submit</button>
-</form> -->
+<form action="customerDate" class="fromDate">
+    <label>From Date: <input type="date" name="fromDate" id="fromDate" min="2014-01-01" th:max="${#dates.format(today, 'yyyy-MM-dd')}"></label>
+    <label>To Date: <input type="date" name="toDate" id="toDate" th:value="${#dates.format(today, 'yyyy-MM-dd')}"></label>
+    <button>Submit</button>
+</form>
 
 <h3>Transaction History</h3>
 <div class="table-container">
@@ -219,7 +219,7 @@
         <tbody>
             <tr th:each="sale : ${list}">
                 <td th:text="${sale.customerAccount}"></td>
-                <td th:text="${sale.sellerAccount}"></td>
+                <td th:text="${sale.accountNumber}"></td>
                 <td th:text="${sale.sellerId}"></td>
                 <td th:text="${sale.purchasedDate}"></td>
                 <td th:text="${sale.payableAmount}"></td>

@@ -107,12 +107,13 @@
                 <p><strong>Registered Date:</strong> <span th:text="${property.registeredDate}">Registered Date</span></p>
             </div>
             <div class="actions">
-                <form th:action="@{/BuyNowForm}" method="post">
+                <form th:action="@{/Buynow}" method="post">
                     <input type="hidden" name="sellerId" th:value="${property.sellerId}">
                     <input type="hidden" name="propertyId" th:value="${property.propertyId}">
                     <input type="hidden" name="propertyName" th:value="${property.propertyName}">
                     <input type="hidden" name="propertyAddress" th:value="${property.propertyAddress}">
                     <input type="hidden" name="propertyPrice" th:value="${property.propertyPrice}">
+                    <input type="hidden" name="accountNumber" th:value= "${property.accountNumber}">
                     <input type="submit" class="btn-buy" name="buy" value="Register">
                 </form>
             </div>

@@ -198,7 +198,7 @@
     <table>
         <thead>
             <tr>
-                <th>Seller ID</th>
+                <th>Seller Name</th>
                 <th>Customer ID</th>
                 <th>Property Name</th>
                 <th>Property Document</th>
@@ -214,7 +214,7 @@
         </thead>
         <tbody>
             <tr th:each="property : ${list}">
-                <td th:text="${property.sellerId}"></td>
+                <td th:text="${property.sellerName}"></td>
                 <td th:text="${property.customerId}"></td>
                 <td th:text="${property.propertyName}"></td>
                 <td>

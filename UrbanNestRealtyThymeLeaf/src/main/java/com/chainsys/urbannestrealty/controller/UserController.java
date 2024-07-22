@@ -39,11 +39,7 @@ public class UserController
 	{
 		return "UserRegistration";
 	}
-	@RequestMapping("/Login")
-	public String login()
-	{
-		return "AdminLogin";
-	}
+	
 	@RequestMapping("/AdminWelcome")
 	public String adminWelcome()
 	{
@@ -85,7 +81,8 @@ public class UserController
 		user.setDistrict(district);
 		user.setState(state);
 		user.setAddress(address);
-		user.setAccountNumber(accountNumber);
+		
+		session.setAttribute("sellerAccount", accountNumber);
 		
 		if(Boolean.FALSE.equals(validation.nameValidation(name, model))||Boolean.FALSE.equals(validation.phoneNumberValidation(phoneNumber,model))||Boolean.FALSE.equals(validation.emailValidation(emailID, model))||Boolean.FALSE.equals(validation.passwordValidation(password,model)))
 		{
@@ -95,9 +92,15 @@ public class UserController
 		else
 		{
 			userDAO.saveUserDetails(user);
-			return "SuccessPage";
+			return "AdminLogin";
 		}
 		
+	}
+	
+	@RequestMapping("/Login")
+	public String login()
+	{
+		return "AdminLogin";
 	}
 	
 	@PostMapping("/login")
@@ -129,6 +132,10 @@ public class UserController
 		{
 			if(generatedUserID.equals(userDAO.getsellerId(generatedUserID))&& bcrypt.matches(password, userDAO.getsellerPassword(generatedUserID))||Boolean.FALSE.equals(validation.passwordValidation(password,model)))
 			{
+				String name = userDAO.getsellerName(generatedUserID);
+				System.out.println(name);
+				
+				httpSession.setAttribute("sellerName", name);
 				httpSession.setAttribute("sellerId", generatedUserID);
 				return "SellerWelcomePage";
 			}
@@ -202,7 +209,7 @@ public class UserController
 	}
 	
 	@PostMapping("/UpdateCustomer")
-	public String updateCustomer(@RequestParam("phoneNumber") long phoneNumber, @RequestParam("password") String password, @RequestParam("address") String address, @RequestParam("name") String name, Model model,HttpSession httpSession)
+	public String updateCustomer1(@RequestParam("phoneNumber") long phoneNumber, @RequestParam("password") String password, @RequestParam("address") String address, @RequestParam("name") String name, Model model,HttpSession httpSession)
 	{
 		User user = new User();
 		
@@ -228,7 +235,7 @@ public class UserController
 		return "UpdateSellerDetails";
 	}
 	@PostMapping("/UpdateSeller")
-	public String updateSeller(@RequestParam("phoneNumber") long phoneNumber, @RequestParam("password") String password, @RequestParam("address") String address, @RequestParam("name") String name, Model model,HttpSession httpSession)
+	public String updateSeller1(@RequestParam("phoneNumber") long phoneNumber, @RequestParam("password") String password, @RequestParam("address") String address, @RequestParam("name") String name, Model model,HttpSession httpSession)
 	{
 		User user = new User();
 		

@@ -17,7 +17,7 @@ body {
     align-items: center;
     flex-direction: column;
     color: #333;
-    width: 120%;
+    width: 130%;
 }
 
 h3 {
@@ -206,9 +206,9 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
                 <th>Seller ID</th>
                 <th>Property Name</th>
                 <th>Property ID</th>
-                <th>Approval Status</th>
                 <th>Property Images</th>
                 <th>Property Documents Photo Copy</th>
+                <th>Approval Status</th>
                 <th>Property Price</th>
                 <th>Property Address</th>
                 <th>Property District</th>
@@ -225,6 +225,14 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
                 <td th:text="${object.sellerId}"></td>
                 <td th:text="${object.propertyName}"></td>
                 <td th:text="${object.propertyId}"></td>
+          
+                <td>
+            		<img th:src="'data:image/jpeg;base64,' + ${object.base64Image}" alt="Residential">                  
+                </td>
+                <td>
+		            <img  th:src="'data:image/jpeg;base64,' + ${object.base64Document}" alt="Residential">      					
+                </td>
+                
                 <td>
                     <span th:text="${object.approval}"></span>
                     <form th:action="@{/Approval}" method="post">
@@ -236,12 +244,6 @@ button:hover, .btn-action:hover, input[type="submit"]:hover {
                         </select>
                         <input type="submit" value="Submit">
                     </form>
-                </td>
-                <td>
-                    <img th:src="'data:image/jpeg;base64,' + ${#strings.substring(Base64.getEncoder().encodeToString(object.propertyImages), 0, -1)}">
-                </td>
-                <td>
-                    <img th:src="'data:image/jpeg;base64,' + ${#strings.substring(Base64.getEncoder().encodeToString(object.propertyDocument), 0, -1)}">
                 </td>
                 <td th:text="${object.propertyPrice}"></td>
                 <td th:text="${object.propertyAddress}"></td>
