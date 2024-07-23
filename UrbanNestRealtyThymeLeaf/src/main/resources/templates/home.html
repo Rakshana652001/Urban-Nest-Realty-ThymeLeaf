@@ -3,153 +3,17 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Urban Nest Realty</title>
-<link rel="icon" type="image/x-icon" href="Images/Nest Realty.jpg">
+<link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg" >
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+<link rel="stylesheet" href="/CSS/Home.css">
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Lora", serif;
-}
-body {
-    overflow-x: hidden;
-}
-section {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-h1, p {
-    color: #343a40;
-}
-
-.navbar {
-    background-color: #818589;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-.nav-item {
-    position: relative;
-    right: 20px;
-    margin-right: 50px;
-}
-
-.nav-item.active {
-    border-bottom: 2.5px solid white;
-}
-
-.navbar-brand {
-    position: relative;
-    right: 40px;
-}
-
-.navbar-brand img {
-    position: relative;
-    right: 1rem;
-    height: 90px;
-    width: 100px;
-}
-
-#navbarSupportedContent a {
-    font-size: 19px;
-}
-#navbarSupportedContent a:hover {
-    border-bottom: 2.5px solid white;
-}
-.active:hover {
-    color: black !important;
-    border-radius: 12px;
-}
-
-.form-control {
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-    padding: 8px 15px;
-}
-
-.card img {
-    height: 200px;
-    object-fit: cover;
-}
-
-
-
-#footer {
-    color: white;
-    background-color: gray;
-    padding: 10px 0;
-    text-align: center;
-}
-#footer p {
-    color: white;
-}
-
-#home {
-    background: url('Images/welcome.jpg') no-repeat center center;
-    background-size: cover;
-    color: white;
-    text-align: center;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.card {
-    box-shadow: 5px 5px 20px rgb(19, 19, 21);
-    border-radius: 20px !important;
-    overflow: hidden;
-    justify-content: center;
-    align-items: center;
-    margin: 15px;
-    position: relative;
-    top: 50px;
-}
-
-#contact h2 {
-    margin-bottom: 20px;
-}
-
-#contact .form-group {
-    margin-bottom: 20px;
-}
-#search {
-    position: relative;
-    left: 10rem;
-}
-div.scroll-container {
-    background-color: #333;
-    width: 100%;
-    display: flex;
-    overflow: auto;
-    white-space: nowrap;
-    position: relative;
-    top: 30px;
-}
-
-div.scroll-container img {
-    padding: 5px;
-}
-</style>
 </head>
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
  <div class="container">
      <a class="navbar-brand">
-        <img th:src="@{/Images/Nest Realty.png}" alt="Logo">
+        <img th:src="@{/Assets/Nest Realty.png}" alt="Logo">
     </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -182,34 +46,82 @@ div.scroll-container img {
     
 </section>
 <section id="realties" class="container mt-5">
+
+<div id="district">
+<form th:action="@{/districtSearch}" id="" name="district">
+<label>Search by District:  
+        <select id="district2" name="district" required>
+            <option value="1" >Select District</option>
+            <option value="Ariyalur" data-name="Ariyalur">Ariyalur</option>
+            <option value="Chengalpattu" data-name="Chengalpattu" >Chengalpattu</option>
+            <option value="Chennai" data-name="Chennai">Chennai</option>
+            <option value="Coimbatore" data-name="Coimbatore">Coimbatore</option>
+            <option value="Cuddalore" data-name="Cuddalore">Cuddalore</option>
+            <option value="Dharmapuri" data-name="Dharmapuri">Dharmapuri</option>
+            <option value="Dindigul" data-name="Dindigul">Dindigul</option>
+            <option value="Erode" data-name="Erode">Erode</option>
+            <option value="Kallakurichi" data-name="Kallakurichi">Kallakurichi</option>
+            <option value="Kancheepuram" data-name="Kancheepuram">Kancheepuram</option>
+            <option value="Karur" data-name="Karur">Karur</option>
+            <option value="Krishnagiri" data-name="Krishnagiri">Krishnagiri</option>
+            <option value="Madurai" data-name="Madurai">Madurai</option>
+            <option value="Mayiladuthurai" data-name="Mayiladuthurai">Mayiladuthurai</option>
+            <option value="Nagapattinam" data-name="Nagapattinam">Nagapattinam</option>
+            <option value="Kanniyakumari" data-name="Kanniyakumari">Kanniyakumari</option>
+            <option value="Namakkal" data-name="Namakkal">Namakkal</option>
+            <option value="Perambalur" data-name="Perambalur">Perambalur</option>
+            <option value="Pudukottai" data-name="Pudukottai">Pudukottai</option>
+            <option value="Ramanathapuram" data-name="Ramanathapuram">Ramanathapuram</option>
+            <option value="Ranipet" data-name="Ranipet">Ranipet</option>
+            <option value="Salem" data-name="Salem">Salem</option>
+            <option value="24" data-name="Sivagangai">Sivagangai</option>
+            <option value="Sivagangai" data-name="Tenkasi">Tenkasi</option>
+            <option value="Tanjavur" data-name="Tanjavur">Tanjavur</option>
+            <option value="Theni" data-name="Theni">Theni</option>
+            <option value="Thiruvallur" data-name="Thiruvallur">Thiruvallur</option>
+            <option value="Thiruvarur" data-name="Thiruvarur">Thiruvarur</option>
+            <option value="Thoothukudi" data-name="Thoothukudi">Thoothukudi</option>
+            <option value="Trichirappalli" data-name="Trichirappalli">Trichirappalli</option>
+            <option value="Thirunelveli" data-name="Thirunelveli">Thirunelveli</option>
+            <option value="Tirupathur" data-name="Tirupathur">Tirupathur</option>
+            <option value="Tiruppur" data-name="Tiruppur">Tiruppur</option>
+            <option value="Thiruvanamalai" data-name="Thiruvanamalai">Thiruvanamalai</option>
+            <option value="Nilgiri" data-name="Nilgiri">Nilgiri</option>
+            <option value="Vellore" data-name="Vellore">Vellore</option>
+            <option value="Viluppuram" data-name="Viluppuram">Viluppuram</option>
+            <option value="Viruthunagar" data-name="Viruthunagar">Viruthunagar</option>            
+        </select>
+        </label>
+        <button id="submit">Submit</button> </form></div>
 <div class="scroll-container">
-              <img alt="one" th:src="@{/Images/image5.jpg}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/image2.jpg}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/image10.avif}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/image9.webp}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/image4.jpg}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/image1.jpg}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/image3.jpg}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/image7.webp}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/image8.avif}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/image6.jpg}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/images11.jpg}" width="300" height="300">
-              <img alt="one" th:src="@{/Images/Land.jpg}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image5.jpg}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image2.jpg}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image10.avif}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image9.webp}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image4.jpg}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image1.jpg}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image3.jpg}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image7.webp}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image8.avif}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/image6.jpg}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/images11.jpg}" width="300" height="300">
+              <img alt="one" th:src="@{/Assets/Land.jpg}" width="300" height="300">
 
             </div>
-    <div class="row justify-content-around">
-        <div class="col-lg-3 col-md-4 col-12 mb-4">
+            
+    	<div class="row justify-content-around">
+        	<div class="col-lg-3 col-md-4 col-12 mb-4">
+            	<div class="card">
+                	<img th:src="@{/Assets/House.jpg}" class="card-img-top" alt="House">
+                	<div class="card-body text-center">
+                  		<h5 class="card-title">Residential</h5>
+                  		<a th:href="@{/Residential}" class="btn btn-outline-dark">See More</a>
+                	</div>
+            	</div>
+        	</div>
+        	<div class="col-lg-3 col-md-4 col-12 mb-4">
             <div class="card">
-                <img th:src="@{/Images/House.jpg}" class="card-img-top" alt="House">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Residential</h5>
-                  <a th:href="@{/Residential}" class="btn btn-outline-dark">See More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-12 mb-4">
-            <div class="card">
-                <img th:src="@{/Images/Land.jpg}" class="card-img-top" alt="Land">
+                <img th:src="@{/Assets/Land.jpg}" class="card-img-top" alt="Land">
                 <div class="card-body text-center">
                   <h5 class="card-title">Land</h5>
                   <a th:href="@{/Land}" class="btn btn-outline-dark">See More</a>
@@ -218,7 +130,7 @@ div.scroll-container img {
         </div>
         <div class="col-lg-3 col-md-4 col-12 mb-4">
             <div class="card">
-                <img th:src="@{/Images/Flat.webp}" class="card-img-top" alt="Industrial">
+                <img th:src="@{/Assets/Flat.webp}" class="card-img-top" alt="Industrial">
                 <div class="card-body text-center">
                   <h5 class="card-title">Industrial</h5>
                   <a th:href="@{/Industrial}" class="btn btn-outline-dark">See More</a>
@@ -227,7 +139,7 @@ div.scroll-container img {
         </div>
         <div class="col-lg-3 col-md-4 col-12 mb-4">
             <div class="card">
-                <img th:src="@{/Images/comercial.webp}" class="card-img-top" alt="Commercial">
+                <img th:src="@{/Assets/comercial.webp}" class="card-img-top" alt="Commercial">
                 <div class="card-body text-center">
                   <h5 class="card-title">Commercial</h5>
                   <a th:href="@{/Commercial}" class="btn btn-outline-dark">See More</a>
@@ -239,7 +151,7 @@ div.scroll-container img {
 <section id="about" class="container mt-5">
     <div class="row">
         <div class="col-lg-6 mb-4">
-            <img th:src="@{/Images/quality.jpg}" alt="About Us">
+            <img th:src="@{/Assets/quality.jpg}" alt="About Us">
         </div>
         <div class="col-lg-6">
             <h1>About Urban Nest Realty</h1>
@@ -272,21 +184,6 @@ div.scroll-container img {
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-document.addEventListener('DOMContentLoaded',
-        function () {
-            const navItems = document
-                .querySelectorAll('.nav-item');
- 
-            navItems.forEach(item => {
-                item.addEventListener('click',
-                    function () {
-                        navItems.forEach(navItem => navItem
-                            .classList.remove('active'));
-                        this.classList.add('active');
-                    });
-            });
-        });
-</script>
+<script src="/JS/Home.js"></script>
 </body>
 </html>

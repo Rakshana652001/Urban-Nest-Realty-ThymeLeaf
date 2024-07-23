@@ -38,7 +38,7 @@ public class CustomerController
 	Validation validation;
 	
 	@PostMapping("/Purchase")
-	public String purchase(@RequestParam("accountNumber") long accountNumber,@RequestParam("customerId") String customerId, @RequestParam("governmentId") MultipartFile governmentId, @RequestParam("sellerId") String sellerId, @RequestParam("propertyId") String propertyId, @RequestParam("propertyName") String propertyName, @RequestParam("propertyAddress") String propertyAddress, @RequestParam("propertyPrice") long propertyPrice, @RequestParam("payableAmount") double payableAmount, @RequestParam("paymentMethod") String paymentMethod, HttpSession httpSession) throws IOException
+	public String purchase(@RequestParam("customerName") String customerName,@RequestParam("sellerName") String sellerName,@RequestParam("accountNumber") long accountNumber,@RequestParam("customerId") String customerId, @RequestParam("governmentId") MultipartFile governmentId, @RequestParam("sellerId") String sellerId, @RequestParam("propertyId") String propertyId, @RequestParam("propertyName") String propertyName, @RequestParam("propertyAddress") String propertyAddress, @RequestParam("propertyPrice") long propertyPrice, @RequestParam("payableAmount") double payableAmount, @RequestParam("paymentMethod") String paymentMethod, HttpSession httpSession) throws IOException
 	{
 		Sales sale = new Sales();
 		if(!governmentId.isEmpty())
@@ -55,13 +55,15 @@ public class CustomerController
 			sale.setPayableAmount(payableAmount);
 			sale.setPaymentMethod(paymentMethod);
 			sale.setApproval("Not Approved");
-			sale.setPaidStatus("Not Paid");		
+			sale.setPaidStatus("Not Paid");	
+			
 			
 			
 			httpSession.setAttribute("propertyAddress", propertyAddress);
 			userDAO.sale(sale);
-			userDAO.updateCustomerId(customerId, propertyAddress);
-			userDAO.updateSellerAccount(accountNumber, propertyAddress);
+			userDAO.updateCustomerId(customerName,customerId, propertyAddress);
+			
+			userDAO.updateSellerAccount(accountNumber, propertyAddress, sellerName, customerName);
 		}
 		else
 		{

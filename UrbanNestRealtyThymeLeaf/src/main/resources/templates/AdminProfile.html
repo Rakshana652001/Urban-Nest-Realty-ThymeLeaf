@@ -4,130 +4,14 @@
     <meta charset="UTF-8">
     <title>Admin Profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="icon" type="image/x-icon" th:href="@{/Images/Nest Realty.jpg}">
-<style>
-
-    body {
-        font-family: "Lora", serif;
-        background-color: #D8CCC0;
-        margin: 0;
-        padding: 0;
-    }
-    h3 {
-        text-align: center;
-        margin-top: 120px;
-        color: white;
-        font-size: 25px;
-    }
-    .cardContainer {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 20px;
-    }
-    .card {
-        background-color: white;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        margin: 15px;
-        padding: 20px;
-        width: 300px;
-        box-sizing: border-box;
-    }
-    
-    button, .btn-action, input {
-    padding: 10px;
-    border: none;
-    border-radius: 12px;
-    background-color: #818589;
-    color: white;
-    cursor: pointer;
-    flex: 1;
-    margin: 5px;
-     font-family: "Lora", serif;
-     position: relative;
-        left: 5rem;
-}
-label{
-	color: white;
-}
-button:hover, .btn-action:hover {
-    background-color: #333;
-}
-.navbar {
-    background-color: #818589;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    position: fixed;
-    top:0;
-  	left: 0;
-  	}
-
-.nav-item {
-	position: relative;
-	right: 5rem;
-	margin-right: 25px;
-}
- 
-.navbar-brand
-{
-	position: relative;
-	right: 40px;
-}
-
-.navbar-brand img {
-    position: relative;
-	right: 2rem;
-    height: 90px;
-    width: 100px;
-}
-#navbarSupportedContent a{
-  font-size: 16px;
-}
-#navbarSupportedContent a:hover{
-  border-bottom: 2.5px solid white;
-}
-.active:hover{
-  color: black !important;
-  border-radius: 12px;
-}
-#logout
-{
-	position: relative;
-	left: 17rem;
-}
-.dropdown-menu {
-    background-color: gray;
-    border: none;
-}
-.dropdown-menu {
-    background-color: #818589;
-    border: none;
-}
-
-.dropdown-item{
-     color: white;
-     }
-
-
-.dropdown-item:hover {
-    background-color: #818589;
-    border-radius: 12px;
-}
-.dropdown:hover .dropdown-menu {
-
-   display: block;
-   margin-top: 0;
-}
-</style>
+    <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+<link rel="stylesheet" href="/CSS/AdminProfile.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
         <a class="navbar-brand">
-            <img th:src="@{/Images/Nest Realty.png}" alt="Logo">
+            <img th:src="@{/Assets/Nest Realty.png}" alt="Logo">
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -159,7 +43,7 @@ button:hover, .btn-action:hover {
                     <a class="nav-link active" th:href="@{/ClosedDeals}">Closed Deals</a>
                 </li>
                 <li class="nav-item dropdown" id ="logout">
-                    <img th:src="@{/Images/profile.png}" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
+                    <img th:src="@{/Assets/profile.png}" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:href="@{/AdminProfile}">Profile</a>
                         <a class="dropdown-item" th:href="@{/LogOut}">LogOut</a>

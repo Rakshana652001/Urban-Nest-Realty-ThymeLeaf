@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.chainsys.urbannestrealty.dao.UserDAO;
 import com.chainsys.urbannestrealty.model.Property;
+import com.chainsys.urbannestrealty.model.Sales;
 import com.chainsys.urbannestrealty.model.User;
 import com.chainsys.urbannestrealty.validation.Validation;
 
@@ -118,6 +119,9 @@ public class UserController
 			
 			else if(generatedUserID.equals(userDAO.getcustomerId(generatedUserID))&& bcrypt.matches(password, userDAO.getCustomerPassword(generatedUserID))||Boolean.FALSE.equals(validation.passwordValidation(password,model)))
 			{
+				String name = userDAO.getcustomerName(generatedUserID);
+				
+				httpSession.setAttribute("customerName", name);
 				httpSession.setAttribute("customerId", generatedUserID);
 				
 				return "CustomerWelcomePage";
@@ -133,7 +137,24 @@ public class UserController
 			if(generatedUserID.equals(userDAO.getsellerId(generatedUserID))&& bcrypt.matches(password, userDAO.getsellerPassword(generatedUserID))||Boolean.FALSE.equals(validation.passwordValidation(password,model)))
 			{
 				String name = userDAO.getsellerName(generatedUserID);
-				System.out.println(name);
+				
+				List<Property> list = userDAO.sellerProperties(generatedUserID);
+				int total = list.size();				
+				httpSession.setAttribute("total", total);
+				
+				List<Sales> completed = userDAO.completedDeals(generatedUserID);
+				int completedTotal = completed.size();
+				httpSession.setAttribute("completedTotal", completedTotal);
+				
+				List<Sales> totalAmount = userDAO.totalAmount(generatedUserID);
+				double totalAmounts = 0.0;
+				
+				for(Sales i : totalAmount)
+				{
+					totalAmounts += i.getTotalAmount();
+					
+				}
+				httpSession.setAttribute("totalAmount", totalAmounts);
 				
 				httpSession.setAttribute("sellerName", name);
 				httpSession.setAttribute("sellerId", generatedUserID);

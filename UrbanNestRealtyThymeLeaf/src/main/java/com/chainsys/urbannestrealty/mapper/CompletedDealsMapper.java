@@ -15,8 +15,8 @@ public class CompletedDealsMapper implements RowMapper<Sales>
 	{
 		Sales sales = new Sales();
 		
-		String customerId = rs.getString("customer_id");
-		sales.setCustomerId(customerId);
+		String customerId = rs.getString("customer_name");
+		sales.setCustomerName(customerId);
 		
 		Blob image = rs.getBlob("government_id");
         if (image != null) 

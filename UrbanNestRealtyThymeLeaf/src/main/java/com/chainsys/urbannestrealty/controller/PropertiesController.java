@@ -88,6 +88,10 @@ public class PropertiesController
 	{
 		String id = (String)session.getAttribute("sellerId");
 		List<Property> list = userDAO.sellerRegisteredProperties(id);
+		
+		int size = list.size();
+		System.out.println(size);
+		
 		for(Property property:list)
 		{
 			byte[] image = property.getPropertyImages();
@@ -102,6 +106,8 @@ public class PropertiesController
 			String getDocument = Base64.getEncoder().encodeToString(document);
 			object.setBase64Document(getDocument);
 		}
+		
+		
 		model.addAttribute("list",list);
 		return "PropertiesTableSellerView";
 	}
@@ -235,6 +241,20 @@ public class PropertiesController
 		return "PropertyTableForUserDisplay";
 	}
 
+	@RequestMapping("/districtSearch")
+	public String districtSearch(@RequestParam("district") String district, Model model)
+	{
+		List<Property> list = userDAO.districtSearch(district);
+		for(Property object:list)
+		{
+			byte[] getImage = object.getPropertyImages();
+			String toBase = Base64.getEncoder().encodeToString(getImage);
+			object.setBase64Image(toBase);
+		}
+		model.addAttribute("list",list);
+		return "PropertyTableForUserDisplay";
+	}
+	
 	@GetMapping("/RegisterStatus")
 	public String registerStatus(@RequestParam("address") String address, @RequestParam("registerStatus") String registerStatus, Model model)
 	{
@@ -257,7 +277,6 @@ public class PropertiesController
 		model.addAttribute("list",list);
 		return "RegisteredPropertiesTable";
 	}
-	
 
 	@RequestMapping("/ClosedDeals")
 	public String registeredProperties(Model model)

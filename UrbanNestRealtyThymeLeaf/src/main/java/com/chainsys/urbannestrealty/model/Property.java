@@ -28,6 +28,7 @@ public class Property
 	private String base64Document;
 	long accountNumber;
 	double payableAmount;
+	String customerName;
     
     
 	public String getFromDate() {
@@ -168,6 +169,13 @@ public class Property
 	public void setSellerName(String sellerName) {
 		this.sellerName = sellerName;
 	}
+	
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
 	@Override
 	public String toString() {
 		return "Property [sellerId=" + sellerId + ", sellerName=" + sellerName + ", propertyName=" + propertyName
@@ -178,7 +186,7 @@ public class Property
 				+ ", paymentStatus=" + paymentStatus + ", customerId=" + customerId + ", registeredDate="
 				+ registeredDate + ", purchasedDate=" + purchasedDate + ", fromDate=" + fromDate + ", toDate=" + toDate
 				+ ", base64Image=" + base64Image + ", base64Document=" + base64Document + ", accountNumber="
-				+ accountNumber + ", payableAmount=" + payableAmount + "]";
+				+ accountNumber + ", payableAmount=" + payableAmount + ", customerName=" + customerName + "]";
 	}
 	
 }

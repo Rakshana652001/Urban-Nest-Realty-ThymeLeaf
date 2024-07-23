@@ -15,8 +15,8 @@ public class CustomerHistoryMapper implements RowMapper<Sales>
 	{
 		Sales sales = new Sales();
 		
-		String seller = rs.getString("seller_id");
-		sales.setSellerId(seller);
+		String seller = rs.getString("seller_name");
+		sales.setSellerName(seller);
 		
 		long customerAccount = rs.getLong("customer_account");
 		sales.setCustomerAccount(customerAccount);

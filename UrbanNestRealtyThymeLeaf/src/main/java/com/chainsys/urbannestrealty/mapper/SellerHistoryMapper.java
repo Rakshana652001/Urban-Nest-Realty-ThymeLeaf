@@ -13,8 +13,8 @@ public class SellerHistoryMapper implements RowMapper<Sales> {
 	public Sales mapRow(ResultSet rs, int rowNum) throws SQLException {
 Sales sales = new Sales();
 		
-		String customer = rs.getString("customer_id");
-		sales.setCustomerId(customer);
+		String customer = rs.getString("customer_name");
+		sales.setCustomerName(customer);
 		
 		long customerAccount = rs.getLong("customer_account");
 		sales.setCustomerAccount(customerAccount);

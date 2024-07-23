@@ -37,7 +37,7 @@ public interface UserDAO
 	List<Property> authorizedProperties();
 	void sale(Sales sale);
 	List<Sales> propertiesUnderReview(String id);
-	void updateCustomerId(String customerId, String propertyAddress);
+	void updateCustomerId(String customerId, String propertyAddress,String name);
 	void registerUpdate(String address, String registerStatus);
 	List<Property> properties(String propertyName, String propertyDistrict);
 	List<Sales> approveToBuy();
@@ -55,6 +55,10 @@ public interface UserDAO
 	List<Sales> sellerHistory(String id);
 	List<Sales> sellerDate(String id, String fromDate, String toDate);
 	List<Sales> customerDate(String id, String fromDate, String toDate);
-	void updateSellerAccount(long accountNumber, String propertyAddress);
+	void updateSellerAccount(long accountNumber, String propertyAddress, String name, String custName);
 	String getsellerName(String generatedUserID);
+	String getcustomerName(String generatedUserID);
+	List<Property> districtSearch(String district);
+	List<Property> sellerProperties(String generatedUserID);
+	List<Sales> totalAmount(String generatedUserID);
 }

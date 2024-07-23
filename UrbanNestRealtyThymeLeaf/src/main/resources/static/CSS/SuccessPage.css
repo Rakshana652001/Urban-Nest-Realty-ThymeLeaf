@@ -1,0 +1,14 @@
+@charset "ISO-8859-1";
+body,button {
+	font-family: "Lora", serif;
+    background-color: #818589;
+    background-size: cover;
+ 	background-position: center;
+  	position: relative;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

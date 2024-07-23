@@ -19,6 +19,9 @@ Property property = new Property();
 		String sellerId = rs.getString("seller_id");
 		property.setSellerId(sellerId);
 		
+		String sellerName = rs.getString("seller_name");
+		property.setSellerName(sellerName);
+		
 		String propertyName = rs.getString("property_name");
 		property.setPropertyName(propertyName);
 		

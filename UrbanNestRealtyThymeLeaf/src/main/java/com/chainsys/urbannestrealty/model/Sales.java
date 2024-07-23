@@ -15,6 +15,8 @@ public class Sales
 	long customerAccount;
 	long accountNumber;
 	String purchasedDate;
+	String sellerName;
+	String customerName;
 	
 	String govId;
 	public String getCustomerId() {
@@ -109,6 +111,20 @@ public class Sales
 	public void setAccountNumber(long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
+	
+	public String getSellerName() {
+		return sellerName;
+	}
+	public void setSellerName(String sellerName) {
+		this.sellerName = sellerName;
+	}
+	
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
 	@Override
 	public String toString() {
 		return "Sales [customerId=" + customerId + ", sellerId=" + sellerId + ", propertyId=" + propertyId
@@ -116,7 +132,8 @@ public class Sales
 				+ ", approval=" + approval + ", propertyAddress=" + propertyAddress + ", governmentId="
 				+ Arrays.toString(governmentId) + ", payableAmount=" + payableAmount + ", paidStatus=" + paidStatus
 				+ ", customerAccount=" + customerAccount + ", accountNumber=" + accountNumber + ", purchasedDate="
-				+ purchasedDate + ", govId=" + govId + "]";
+				+ purchasedDate + ", sellerName=" + sellerName + ", customerName=" + customerName + ", govId=" + govId
+				+ "]";
 	}
 	
 	

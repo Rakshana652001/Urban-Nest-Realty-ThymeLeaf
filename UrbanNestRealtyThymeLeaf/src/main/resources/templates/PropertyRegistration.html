@@ -4,75 +4,8 @@
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Property Registration</title>
-<link rel="icon" type="image/x-icon" href="Images/Nest Realty.jpg">
-<style type="text/css">
-body {
-    font-family: "Lora", serif;
-    background-color: #D8CCC0;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container {
-    max-width: 500px;
-    width: 100%;
-    padding: 20px;
-    background: #fff;
-    border: 12px solid white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-}
-
-h4 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: black;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 10px;
-    color: black;
-}
-
-input[type="text"], input[type="number"], textarea, select, input[type="file"], input[type="date"],input[type="tel"] {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f4f4f4;
-    box-sizing: border-box;
-}
-
-button {
-    padding: 10px 20px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #818589;
-    color: white;
-    font-size: 16px;
-    font-family: "Lora", serif;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #333;
-}
-</style>
+<link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
+<link rel="stylesheet" href="/CSS/Registration.css">
 </head>
 <body>
 <div class="container">
@@ -150,52 +83,6 @@ button:hover {
 </form>
 <form action="javascript:history.back()"><button>Back</button></form>
 </div>
-<script>
-function autoFillPropertyDetails() 
-{
-    var propertySelect = document.getElementById('propertyNameSelect');
-    var selectedOption = propertySelect.options[propertySelect.selectedIndex];
-    var propertyId = selectedOption.value;
-
-    document.getElementById('propertyId').value = propertyId;
-}
-
-function autoFillPropertyDistrict()
-{
-	var propertyDistrict = document.getElementById('propertyDistrict');
-	var selectedOptions = propertyDistrict.options[propertyDistrict.selectedIndex];
-	var propertyDistrict = selectedOptions.value;
-	
-	document.getElementById('propertyDistrict').value = propertyDistrict;
-}
-function validateForm()
-{
-    var propertyNameSelect = document.getElementById('propertyNameSelect').value;
-    var propertyPrice = document.getElementById('propertyPrice').value;
-    var propertyAddress = document.getElementById('propertyAddress').value;
-    var propertyDistrict = document.getElementById('propertyDistrict').value;
-    var propertyState = document.getElementById('propertyState').value;
-
-    if (propertyNameSelect === "" || propertyPrice === "" || propertyAddress === "" || propertyDistrict === "" || propertyState === "")
-    {
-        alert("Please fill in all required fields.");
-        return false;
-    }
-
-    return true;
-}
-function calculatePayableAmount()
-{
-    var propertyPrice = parseFloat(document.getElementById('propertyPrice').value);
-    var payableAmountInput = document.getElementById('payableAmount');
-
-    if (!isNaN(propertyPrice)) {
-        var payableAmount = propertyPrice / 2;
-        payableAmountInput.value = payableAmount.toFixed(2);
-    } else {
-        payableAmountInput.value = '';
-    }
-}
-</script>
+<script src="/JS/PropertyRegistration.js"></script>
 </body>
 </html>

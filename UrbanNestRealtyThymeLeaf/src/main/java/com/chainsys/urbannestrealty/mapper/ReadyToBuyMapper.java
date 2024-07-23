@@ -18,8 +18,8 @@ public class ReadyToBuyMapper implements RowMapper<Sales>
 		String customerId = rs.getString("customer_id");
 		sales.setCustomerId(customerId);
 		
-		String selelrId = rs.getString("seller_id");
-		sales.setSellerId(selelrId);
+		String sellerName = rs.getString("seller_name");
+		sales.setSellerName(sellerName);
                 
         String propertyAddress = rs.getString("property_address");
         sales.setPropertyAddress(propertyAddress);

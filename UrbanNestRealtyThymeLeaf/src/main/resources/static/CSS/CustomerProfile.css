@@ -1,0 +1,101 @@
+@charset "ISO-8859-1";
+body {
+            font-family: "Lora", serif;
+            background-color: #D8CCC0;
+            margin: 0;
+            padding: 0;
+        }
+        h3 {
+            text-align: center;
+            margin-top: 120px;
+            color: white;
+            font-size: 25px;
+        }
+        .cardContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 15px;
+            padding: 20px;
+            width: 300px;
+            box-sizing: border-box;
+        }
+        button, .btn-action, input {
+            padding: 10px;
+            border: none;
+            border-radius: 12px;
+            background-color: #818589;
+            color: white;
+            cursor: pointer;
+            flex: 1;
+            margin: 5px;
+            font-family: "Lora", serif;
+            position: relative;
+            left: 5rem;
+        }
+        label {
+            color: white;
+        }
+        button:hover, .btn-action:hover {
+            background-color: #333;
+        }
+        .navbar {
+            background-color: #818589;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        .nav-item {
+            position: relative;
+            right: 5rem;
+            margin-right: 25px;
+        }
+        .navbar-brand {
+            position: relative;
+            right: 40px;
+        }
+        .dropdown-menu {
+            background-color: #818589;
+            border: none;
+        }
+        .dropdown-item {
+            color: white;
+        }
+        .dropdown-item:hover {
+            background-color: #818589;
+            border-radius: 12px;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+        .navbar-brand img {
+            position: relative;
+            right: 2rem;
+            height: 90px;
+            width: 100px;
+        }
+        #navbarSupportedContent a {
+            font-size: 16.7px;
+        }
+        #navbarSupportedContent a:hover {
+            border-bottom: 2.5px solid white;
+        }
+        .active:hover {
+            color: black !important;
+            border-radius: 12px;
+        }
+        #logout {
+            position: relative;
+            left: 5rem;
+        }

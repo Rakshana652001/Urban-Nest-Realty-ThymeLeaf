@@ -4,165 +4,14 @@
     <meta charset="ISO-8859-1">
     <title>Purchased Properties</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="icon" type="image/x-icon" href="Images/Nest Realty.jpg">
-    <style>
-        body {
-            font-family: "Lora", serif;
-            background-color: #D8CCC0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            color: #333;
-            width: 120%;
-        }
-
-        h3 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: white;
-            position: relative;
-            top: 8rem;
-        }
-
-        .table-container {
-            margin: 10px;
-        }
-
-        table {
-            width: 100%;
-            max-width: 1000px;
-            border-collapse: collapse;
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-            top: 8rem;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f4f4f4;
-        }
-
-        td img {
-            max-width: 100px;
-            height: auto;
-            display: block;
-        }
-
-        button, .btn-action, input[type="submit"] {
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            background-color: #818589;
-            color: white;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        button:hover, .btn-action:hover, input[type="submit"]:hover {
-            background-color: #333;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .back {
-            position: relative;
-            right: 35rem;
-            top: 35px;
-        }
-
-        .history {
-            position: relative;
-            left: 35rem;
-            top: 11rem;
-        }
-
-        .navbar {
-            background-color: #818589;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            margin-bottom: 25px;
-        }
-
-        .nav-item {
-            position: relative;
-            right: 5rem;
-            margin-right: 25px;
-        }
-
-        .dropdown-menu {
-            background-color: #818589;
-            border: none;
-        }
-
-        .dropdown-item {
-            color: white;
-        }
-
-        .dropdown-item:hover {
-            background-color: #818589;
-            border-radius: 12px;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            display: block;
-            margin-top: 0;
-        }
-
-        .navbar-brand {
-            position: relative;
-            right: 40px;
-        }
-
-        .navbar-brand img {
-            position: relative;
-            right: 2rem;
-            height: 90px;
-            width: 100px;
-        }
-
-        #navbarSupportedContent a {
-            font-size: 16.7px;
-        }
-
-        #navbarSupportedContent a:hover {
-            border-bottom: 2.5px solid white;
-        }
-
-        .active:hover {
-            color: black !important;
-            border-radius: 12px;
-        }
-
-        #logout {
-            position: relative;
-            left: 5rem;
-        }
-    </style>
+    <link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
+    <link rel="stylesheet" href="/CSS/BuyedProperties.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
         <a class="navbar-brand">
-            <img src="Images/Nest Realty.png" alt="Logo">
+            <img src="/Assets/Nest Realty.png" alt="Logo">
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -182,7 +31,7 @@
                     <a class="nav-link active" href="/CustomerHistory">Transaction History</a>
                 </li>
                 <li class="nav-item dropdown" id="logout">
-                    <img src="Images/profile.png" alt="Profile" width="50" height="50" style="position: relative; left: 2rem;">
+                    <img src="/Assets/profile.png" alt="Profile" width="50" height="50" style="position: relative; left: 2rem;">
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/Customerprofile">Profile</a>
                         <a class="dropdown-item" href="/LogOut">LogOut</a>
@@ -199,7 +48,6 @@
         <thead>
             <tr>
                 <th>Seller Name</th>
-                <th>Customer ID</th>
                 <th>Property Name</th>
                 <th>Property Document</th>
                 <th>Property Price</th>
@@ -215,7 +63,6 @@
         <tbody>
             <tr th:each="property : ${list}">
                 <td th:text="${property.sellerName}"></td>
-                <td th:text="${property.customerId}"></td>
                 <td th:text="${property.propertyName}"></td>
                 <td>
                     <img alt="documents" th:src="'data:image/jpeg;base64,' + ${property.base64Image}"/>
