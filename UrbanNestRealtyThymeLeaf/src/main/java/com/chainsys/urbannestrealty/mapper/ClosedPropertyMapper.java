@@ -13,10 +13,10 @@ public class ClosedPropertyMapper implements RowMapper<Property>
 
 	@Override
 	public Property mapRow(ResultSet rs, int rowNum) throws SQLException {
-Property property = new Property();
+		Property property = new Property();
 		
-		String sellerId = rs.getString("seller_id");
-		property.setSellerId(sellerId);
+		String sellerId = rs.getString("seller_name");
+		property.setSellerName(sellerId);
 		
 		String propertyName = rs.getString("property_name");
 		property.setPropertyName(propertyName);
@@ -47,8 +47,8 @@ Property property = new Property();
         String purchasedDate = rs.getString("purchased_date");
         property.setPurchasedDate(purchasedDate);
         
-        String customerId = rs.getString("customer_id");
-        property.setCustomerId(customerId);
+        String customerId = rs.getString("customer_name");
+        property.setCustomerName(customerId);
                 
         String paymentStatus = rs.getString("payment_status");
         property.setPaymentStatus(paymentStatus);

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Ready-to-Purchase</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
+    <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
+    <link rel="stylesheet" href="/CSS/List.css">
     <link rel="stylesheet" href="/CSS/BuyTable.css">
 </head>
 <body>
@@ -42,41 +44,79 @@
     </div>
 </nav>
 
-<h3>Ready-To-Purchase</h3>
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Customer ID</th>
-                <th>Seller Name</th>
-                <th>Property Address</th>
-                <th>Property Total Amount</th>
-                <th>Payable Amount</th>
-                <th>Payment</th>
-            </tr>
-        </thead>
-        <tbody>
-     
-            <tr th:each="property : ${list}">
-                <td th:text="${property.customerId}"></td>
-                <td th:text="${property.sellerName}"></td>
-                <td th:text="${property.propertyAddress}"></td>
-                <td th:text="${property.totalAmount}"></td>
-                <td th:text="${property.payableAmount}"></td>
-                <td>
-                    <form th:action="@{/payNow}" method="get">
-                        <input type="hidden" name="amount" th:value="${property.payableAmount}">
-                        <input type="hidden" name="senderAccountNumber" th:value="${property.accountNumber}">
-                        <button type="submit">Pay Now</button>
-                    </form>
-                </td>
-            </tr>
-            <tr th:if="${list==null && list.isEmpty()}">
-                <td colspan="8">No Records found</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<h3>Ready-to-Purchase</h3>
+
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div> 
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var columns = [
+            { id: "customerName", name: "Customer Name", field: "customerName", width: 100 },
+            { id: "sellerName", name: "Seller Name", field: "sellerName", sortable: true },
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress" },
+            { id: "totalAmount", name: "Property Total Amount", field: "totalAmount" },
+            { id: "payableAmount", name: "Payable Amount", field: "payableAmount" },
+            { id: "paymentMethod", name: "Payment", field: "paymentMethod", formatter: payNowButtonFormatter, width: 150 }
+        ];
+
+        var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            forceFitColumns: true,
+            rowHeight: 45,
+            enableSorting: true
+        };
+
+        var data = /*[[${list}]]*/ [];
+
+        function payNowButtonFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/payNow" method="post">
+                    <input type="hidden" name="amount" value="${dataContext.payableAmount}">
+                    <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                    <input type="hidden" name="senderAccountNumber" value="${dataContext.accountNumber}">
+                    <button type="submit" style="position:relative; bottom:14px; left: 70px;">Pay Now</button>
+                </form>
+            `;
+        }
+
+        var grid = new Slick.Grid("#myGrid", data, columns, options);
+
+        grid.onSort.subscribe(function (e, args) {
+            var field = args.sortCol.field;
+            data.sort(function (a, b) {
+                var result = 
+                    a[field] > b[field] ? 1 :
+                    a[field] < b[field] ? -1 :
+                    0;
+                return args.sortAsc ? result : -result;
+            });
+            grid.invalidate();
+            grid.render();
+        });
+
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            var filteredData = data.filter(function(item) {
+                return Object.values(item).some(function(value) {
+                    return String(value).toLowerCase().includes(searchTerm);
+                });
+            });
+            grid.setData(filteredData);
+            grid.invalidate();
+            grid.render();
+        });
+    });
+</script>
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

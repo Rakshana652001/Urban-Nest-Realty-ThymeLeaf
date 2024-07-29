@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="xml:lang" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Unapproved Properties</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-<link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
-<link rel="stylesheet" href="/CSS/AdminView.css">
+    <meta charset="UTF-8">
+    <title>Unapproved Properties</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
+    <link rel="stylesheet" href="/CSS/List.css">
+    <link rel="stylesheet" href="/CSS/ApproveToBuy.css">
+    <link rel="stylesheet" href="/CSS/AdminNavbar.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -40,9 +42,6 @@
         <li class="nav-item">
           <a class="nav-link active" th:href="@{/ApproveToBuy}">Payment Approval</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" th:href="@{/ClosedDeals}">Closed Deals</a>
-        </li>
         <li class="nav-item dropdown" id ="logout">
           <img src="/Assets/profile.png" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -55,70 +54,97 @@
   </div>
 </nav>
 
-<div class="table-container">
 <h3>Unapproved Properties</h3>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Seller ID</th>
-                <th>Property Name</th>
-                <th>Property ID</th>
-                <th>Property Images</th>
-                <th>Property Documents Photo Copy</th>
-                <th>Approval Status</th>
-                <th>Property Price</th>
-                <th>Property Address</th>
-                <th>Property District</th>
-                <th>Property State</th>
-                <th>Registered Date</th>
-                <th>Purchased Date</th>
-                <th>Customer ID</th>
-                <th>Registered Status</th>
-                <th>Payment Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="object : ${list}">
-                <td th:text="${object.sellerId}"></td>
-                <td th:text="${object.propertyName}"></td>
-                <td th:text="${object.propertyId}"></td>
-          
-                <td>
-            		<img th:src="'data:image/jpeg;base64,' + ${object.base64Image}" alt="Residential">                  
-                </td>
-                <td>
-		            <img  th:src="'data:image/jpeg;base64,' + ${object.base64Document}" alt="Residential">      					
-                </td>
-                
-                <td>
-                    <span th:text="${object.approval}"></span>
-                    <form th:action="@{/Approval}" method="post">
-                        <input type="hidden" name="address" th:value="${object.propertyAddress}">
-                        <select name="approvalStatus">
-                            <option value="Select">Select</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                        </select>
-                        <input type="submit" value="Submit">
-                    </form>
-                </td>
-                <td th:text="${object.propertyPrice}"></td>
-                <td th:text="${object.propertyAddress}"></td>
-                <td th:text="${object.propertyDistrict}"></td>
-                <td th:text="${object.propertyState}"></td>
-                <td th:text="${object.registeredDate}"></td>
-                <td th:text="${object.purchasedDate}"></td>
-                <td th:text="${object.customerId}"></td>
-                <td th:text="${object.registerStatus}"></td>
-                <td th:text="${object.paymentStatus}"></td>
-            </tr>
-            <tr th:if="${list == null or #lists.isEmpty(list)}">
-                <td colspan="15">No Records found</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div>
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var columns = [
+            { id: "sellerName", name: "Seller Name", field: "sellerName", width: 100, sortable: true },
+            { id: "propertyAddress", name: "Property Images", field: "propertyAddress", width: 100, formatter: viewButtonFormatter },
+            { id: "propertyAddress", name: "Property Documents Photo Copy", field: "propertyAddress", width: 100, formatter: viewButtonFormatter1 },
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
+            { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100},
+            { id: "approvalStatus", name: "Approval Status", field: "approvalStatus", width: 150, formatter: approvalSelectFormatter }
+        ];
+
+        var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            forceFitColumns: true,
+            rowHeight: 45,
+            enableSorting: true
+        };
+
+        var data = /*[[${list}]]*/ [];
+
+        function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/viewProperty" method="post">
+                    <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                    <button type="submit" style="position: relative; left:20px; bottom:10px;">View</button>
+                </form>`;
+        }
+        
+        function viewButtonFormatter1(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/view" method="post">
+                    <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                    <button type="submit" style="position: relative; left:20px; bottom:10px;">View</button>
+                </form>`;
+        }
+
+    
+        function approvalSelectFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/Approval" method="post">
+                    <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                    <select name="approvalStatus" style="position:relative; bottom:12px;">
+                        <option value="Select">Select</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Not Approved">Rejected</option>
+                    </select>
+                    <input type="submit" value="Submit" style="position:relative; bottom:10px;">
+                </form>`;
+        }
+
+        var grid = new Slick.Grid("#myGrid", data, columns, options);
+
+        grid.onSort.subscribe(function (e, args) {
+            var field = args.sortCol.field;
+            data.sort(function (a, b) {
+                var result = (a[field] > b[field]) ? 1 : ((a[field] < b[field]) ? -1 : 0);
+                return args.sortAsc ? result : -result;
+            });
+            grid.invalidate();
+            grid.render();
+        });
+
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            var filteredData = data.filter(function(item) {
+                return Object.values(item).some(function(value) {
+                    return String(value).toLowerCase().includes(searchTerm);
+                });
+            });
+            grid.setData(filteredData);
+            grid.invalidate();
+            grid.render();
+        });
+    });
+</script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
+ 

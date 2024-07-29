@@ -18,76 +18,7 @@ section {
     flex-direction: column;
 }
 
-.navbar {
-    background-color: #818589;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    position: fixed;
-  	top: 0;
-  	left: 0;
-}
 
-.nav-item {
-	position: relative;
-	right: 5rem;
-	margin-right: 20px;
-}
-.nav-item.active {
-	border-bottom: 2.5px solid white;
-	}
-
-.dropdown-menu {
-    background-color: gray;
-    border: none;
-}
-
-.navbar-brand img {
-	position: relative;
-	right: 4rem;
-    height: 90px;
-    width: 100px;
-    
-}
-
-#logout
-{
-	position: relative;
-	left: 17rem;
-}
-
-.dropdown:hover .dropdown-menu {
-
-   display: block;
-   margin-top: 0;
-}
-
-#navbarSupportedContent a{
-  font-size: 16px;
-}
-
-#navbarSupportedContent a:hover{
-  border-bottom: 2.5px solid white;
-}
-.active:hover{
-  color: black !important;
-  border-radius: 12px;
-}
-
-.dropdown-menu {
-    background-color: #818589;
-    border: none;
-}
-
-.dropdown-item{
-     color: white;
-     }
-
-
-.dropdown-item:hover {
-    background-color: #818589;
-    border-radius: 12px;
-}
 
 #home{
     background: url('/Assets/Admin.jpg') no-repeat center;
@@ -98,3 +29,57 @@ section {
     justify-content: center;
     background-attachment: fixed;
     }
+    
+#closedDeals
+{
+   position: relative;
+   top:1rem !important;  
+   right: 1.9rem; 
+   padding: 10px;
+   border-radius: 12px;
+}
+
+#dashboard
+{
+	padding: 3rem;
+	position: relative;
+	top: 6rem;
+	width: 300px;
+	border-radius: 12px;
+	border-color: black;
+	border: 2px solid;
+	background: transparent;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 1, 1);
+}
+
+#display
+{
+	position: relative;
+	border: none;
+	width: 35px;
+	font-size: 20px;
+	bottom: 18px;
+	background: transparent;
+}
+
+#display1
+{
+	position: relative;
+	border: none;
+	width: 40px;
+	font-size: 20px;
+	bottom: 25px;
+	left: 160px;
+	background: transparent;
+}
+
+#display3
+{
+	position: relative;
+	border: none;
+	width: 150px;
+	font-size: 20px;
+	bottom: 5px;
+	left: 140px;
+	background: transparent;
+}

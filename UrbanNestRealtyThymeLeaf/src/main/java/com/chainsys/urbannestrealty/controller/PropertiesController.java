@@ -18,10 +18,10 @@ import com.chainsys.urbannestrealty.dao.UserDAO;
 import com.chainsys.urbannestrealty.model.Property;
 import com.chainsys.urbannestrealty.model.Sales;
 
+
 import jakarta.servlet.http.HttpSession;
 
 
-//@RestController
 @Controller
 
 public class PropertiesController 
@@ -88,18 +88,7 @@ public class PropertiesController
 	{
 		String id = (String)session.getAttribute("sellerId");
 		List<Property> list = userDAO.sellerRegisteredProperties(id);
-		
-		int size = list.size();
-		System.out.println(size);
-		
-		for(Property property:list)
-		{
-			byte[] image = property.getPropertyImages();
-			String getImage = Base64.getEncoder().encodeToString(image);
-			property.setBase64Image(getImage);
-			
-		}
-		
+				
 		for(Property object:list)
 		{
 			byte[] document = object.getPropertyDocument();
@@ -138,13 +127,6 @@ public class PropertiesController
 	public String authorized(Model model)
 	{
 		List<Property> list = userDAO.authorizedProperties();
-		for(Property property:list)
-		{
-			byte[] image = property.getPropertyImages();
-			String getImage = Base64.getEncoder().encodeToString(image);
-			property.setBase64Image(getImage);
-			
-		}
 		
 		for(Property object:list)
 		{
@@ -153,6 +135,7 @@ public class PropertiesController
 			object.setBase64Document(getDocument);
 		}
 		model.addAttribute("list",list);
+		
 		return "RegisteredPropertiesTable";
 	}
 	
@@ -224,7 +207,7 @@ public class PropertiesController
 			object.setBase64Image(toBase);
 		}
 		model.addAttribute("list",list);
-		return "PropertyTableForUserDisplay";
+		return "PropertyTableForUserDisplay"; 
 	}
 	
 	@RequestMapping("/Commercial")
@@ -259,14 +242,8 @@ public class PropertiesController
 	public String registerStatus(@RequestParam("address") String address, @RequestParam("registerStatus") String registerStatus, Model model)
 	{
 		userDAO.registerUpdate(address, registerStatus);
+		
 		List<Property> list = userDAO.authorizedProperties();
-		for(Property property:list)
-		{
-			byte[] image = property.getPropertyImages();
-			String getImage = Base64.getEncoder().encodeToString(image);
-			property.setBase64Image(getImage);
-			
-		}
 		
 		for(Property object:list)
 		{
@@ -275,19 +252,14 @@ public class PropertiesController
 			object.setBase64Document(getDocument);
 		}
 		model.addAttribute("list",list);
+		
 		return "RegisteredPropertiesTable";
 	}
 
 	@RequestMapping("/ClosedDeals")
 	public String registeredProperties(Model model)
 	{
-		List<Property> list = userDAO.registeredProperties();
-		for (Property object : list)
-		{
-            byte[] images = object.getPropertyImages();
-            String getImage = Base64.getEncoder().encodeToString(images);
-            object.setBase64Image(getImage);
-		}    
+		List<Property> list = userDAO.registeredProperties();  
 		
 		model.addAttribute("list", list);
 		return "RetrivePropertiesTable";
@@ -309,15 +281,21 @@ public class PropertiesController
 		model.addAttribute("list", list);
 		return "RetrivePropertiesTable";
 	}
-	
-	@RequestMapping("/View")
-	public String view(HttpSession session, Model model)
+
+	@RequestMapping("/id")
+	public String view(Model model, @RequestParam("address") String address)
 	{
-		String image = (String)session.getAttribute("propImage");
-		List<Property> list = userDAO.viewImage(image);
-		model.addAttribute("list",list);
-		return "Image.jsp";
+		List<Sales> getImage = userDAO.viewID(address);
+		for(Sales property:getImage)
+		{
+			byte[] getImage1 = property.getGovernmentId();
+			String toBase = Base64.getEncoder().encodeToString(getImage1);
+		    property.setBase64(toBase);
+		}
+		model.addAttribute("list", getImage);
+		return "IdView";
 	}
+	
 	
 	@RequestMapping("/SellerHistory")
 	public String sellerHistory(HttpSession session, Model model)
@@ -328,7 +306,7 @@ public class PropertiesController
 		return "SellerHistory";
 	}
 	
-	@RequestMapping("/SellerDate")
+	@PostMapping("/SellerDate")
 	public String sellerDate(HttpSession session, Model model,  @RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate)
 	{
 		String id = (String)session.getAttribute("sellerId");
@@ -336,4 +314,79 @@ public class PropertiesController
 		model.addAttribute("list",list);
 		return "SellerHistory";
 	}
+	
+	
+//	@RequestMapping("/download")
+//	public void download(HttpServletResponse response, HttpSession session, Model model, @RequestParam("address") String address) throws DocumentException, IOException
+//	{		
+//		response.setContentType("application/pdf");
+//        response.setHeader("Content-Disposition", "attachment; filename=\"Document.pdf\"");
+//        
+//		List<Property> list = userDAO.forDownload(address);
+//		
+//		Document document = new Document();
+//	    PdfWriter.getInstance(document, response.getOutputStream());
+//	    document.open();
+//	   
+//	    
+//	    Font headingFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+//        Paragraph heading = new Paragraph("Receipt", headingFont);
+//        heading.setAlignment(Element.ALIGN_CENTER);
+//        heading.setSpacingBefore(20f);
+//        heading.setSpacingAfter(10f); 
+//        document.add(heading);
+//        
+//        
+//        
+//        PdfPTable table = new PdfPTable(2);
+//	    table.getDefaultCell().setPadding(10);
+//	    table.setWidthPercentage(100);
+//	    
+//	    for(Property object:list)
+//		{
+//			byte[] document1 = object.getPropertyDocument();
+//			String getDocument = Base64.getEncoder().encodeToString(document1);
+//			object.setBase64Document(getDocument);
+//		}
+//	    
+//		for(Property property : list)
+//		{
+//			table.addCell("Seller Name");
+//			table.addCell(property.getSellerName());
+//			table.addCell("Property Name");
+//			table.addCell(property.getPropertyName());
+//			table.addCell("Property Price");
+//			table.addCell(String.valueOf(property.getPropertyPrice()));
+//			table.addCell("Property Address");
+//			table.addCell(property.getPropertyAddress());
+//			table.addCell("Property District");
+//			table.addCell(property.getPropertyDistrict());
+//			table.addCell("Purchased Date");
+//			table.addCell(property.getPurchasedDate());
+//			table.addCell("Payment Status");
+//			table.addCell(property.getPaymentStatus());
+//			table.addCell("Document");
+//			byte[] decodedBytes = Base64.getDecoder().decode(property.getBase64Document());
+//		    
+//		    // Create an image from the byte array
+//		    Image img = Image.getInstance(decodedBytes);
+//		    
+//		    // Scale image to fit cell
+//		    img.scaleToFit(100, 100); // Adjust size as needed
+//
+//		    PdfPCell imgCell = new PdfPCell(img);
+//		    imgCell.setColspan(7); // Span across all columns
+//		    imgCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//		    table.addCell(imgCell);
+//			
+//		}
+//				
+//		table.setWidthPercentage(50);
+//		
+//		table.setHorizontalAlignment(Element.ALIGN_CENTER);
+//	
+//		
+//		document.add(table);
+//        document.close();
+//	}
 }

@@ -4,7 +4,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Lora", serif;
 }
 
 section {
@@ -23,6 +22,7 @@ section {
     position: fixed;
   	top: 0;
   	left: 0;
+  	z-index: 1;
 }
 .nav-item
 {
@@ -70,7 +70,7 @@ section {
 #logout
 {
 	position: relative;
-	left: 9rem;
+	left: 11rem;
 }
 .dropdown-menu {
     background-color: #818589;
@@ -88,22 +88,57 @@ section {
 }
 #dashBoard
 {
-	position:relative;
-	top: 80px;
-	background: none;
-	padding: 40px;
+	background: #a5a8ab;
+	width: 60%;
+	padding: 20px;
 	border-radius: 12px;
-	border-color: black;
-	border-style: solid;
-	border-width: 5px;
-	color: black;
-	width: 70%;
-	height: 20%;
-	letter-spacing: 5px;
-	border-bottom: 3px;
-	font-size: 30px;
-	font-style: oblique;
-	
+    position: relative;
+    overflow-y:hidden;
+    overflow-x:hidden;
+	top: 80px;
+	height: 200px;	
+	margin-top: 50px;
+	border: solid 1.5px;
+	justify-content: center;
+}
+
+#one
+{
+	background: white;
+	border-radius: 12px;
+	padding: 10px;
+	height: 5rem;
+	width: 5rem;
+	position: relative;
+	left: 20px;
+	top: 2.5rem;
+	border: solid 1px;
+}
+
+#two
+{
+	background: white;
+	border-radius: 12px;
+	padding: 10px;
+	height: 5rem;
+	width: 5rem;
+	position: relative;
+	left: 14rem;
+	bottom: 40px;
+	border: solid 1px;
+}
+
+#three
+{
+	background: white;
+	border-radius: 12px;
+	padding: 10px;
+	height: 5rem;
+	width: 18rem;
+	position: relative;
+	left: 27rem;
+	bottom: 120px;
+	border: solid 1px;
 }
 
 #total
@@ -112,4 +147,34 @@ section {
 	background: transparent;
 	color: black;
 	
+}
+
+#six
+{
+	border: none;
+	background: transparent;
+	color: black;
+	position: relative;
+	left: 17px;
+	font-size: 3rem;
+}
+
+#thre
+{
+	border: none;
+	background: transparent;
+	color: black;
+	position: relative;
+	left: 17px;
+	font-size: 3rem;
+}
+
+#profit
+{
+	border: none;
+	background: transparent;
+	color: black;
+	position: relative;
+	left: 17px;
+	font-size: 3rem;
 }

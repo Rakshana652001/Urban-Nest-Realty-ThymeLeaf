@@ -16,16 +16,23 @@ public class ImageMapper implements RowMapper<Property>
 		
 		Property property = new Property();
 		
-		Blob image = rs.getBlob("property_images");
+		Blob image = rs.getBlob("property_document");
         if (image != null) 
         {
             int blobLength = (int) image.length();
             byte[] blobAsBytes = image.getBytes(1, blobLength);
+            property.setPropertyDocument(blobAsBytes);
+        }
+        
+        Blob imageProperty = rs.getBlob("property_images");
+        if (imageProperty != null) 
+        {
+            int blobLength = (int) imageProperty.length();
+            byte[] blobAsBytes = imageProperty.getBytes(1, blobLength);
             property.setPropertyImages(blobAsBytes);
         }
         
         return property;
 	}
 	
-
 }

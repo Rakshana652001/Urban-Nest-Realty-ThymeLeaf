@@ -6,6 +6,7 @@
 <link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="/CSS/AdminWelcomePage.css">
+<link rel="stylesheet" href="/CSS/AdminNavbar.css">
 </head>
 
 <body>
@@ -16,7 +17,7 @@
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <li class="nav-item"> 
           <a class="nav-link active" th:href="@{/home}">Home</a>
         </li>
         <li class="nav-item dropdown">
@@ -40,9 +41,6 @@
         <li class="nav-item">
           <a class="nav-link active" th:href=@{/ApproveToBuy}>Payment Approval</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" th:href=@{/ClosedDeals}>Closed Deals</a>
-        </li>
         <li class="nav-item dropdown" id ="logout">
           <img th:src="@{/Assets/profile.png}" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -55,7 +53,24 @@
   </div>
 </nav>
 <section id="home">
-    
+
+<div id="dashboard">
+
+<label style="position: relative; bottom: 20px; right: 20px;"><strong style="font-size: 16px;">Total completed sale:</strong></label>
+<input id="display" type="text" name="totalSale" th:value="${session.getTotalSale}" readonly>
+
+<label style="position: relative; top: .5rem; right: 17px;"><strong style="font-size: 17px;">Most saled property: </strong></label>
+<input id="display1" type="text" name="saledProperty" th:value="${session.getsaledProperty}" readonly>
+	
+<label style="position: relative; top: 2rem; right: 60px;"><strong style="font-size: 17px;">Mostly saled area: </strong></label>
+<input id="display3" type="text" name="saledArea" th:value="${session.getSaledArea}" readonly>
+
+<div>
+<a class="nav-link active" th:href=@{/ClosedDeals}><button id="closedDeals">Closed Deals</button></a>
+</div>
+
+</div>
+
 </section>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

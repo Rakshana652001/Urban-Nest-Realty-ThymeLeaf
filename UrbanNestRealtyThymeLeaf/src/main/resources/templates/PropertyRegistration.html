@@ -26,7 +26,9 @@
         </select>
     </label><br><br>
     <label>Property ID: <input type="text" id="propertyId" name="propertyId" readonly/></label><br><br>
-    <label>Property Name: <input type="text" id="propertyName" name="propertyName" placeholder="PG, house, land, showroom.." required/></label><br><br>
+    <label>Property Type: <input type="text" id="propertyName" name="propertyName" placeholder="PG, house, land, showroom.." required/>
+  
+    </label><br><br>
     <label>Registration Date: <input type="date" id="registeredDate" name="registeredDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly></label><br><br>
     <label>Property Price: <input type="number" id="propertyPrice" name="propertyPrice" oninput="calculatePayableAmount()" required/></label><br><br>
     <label for="payableAmount">Payable Amount:

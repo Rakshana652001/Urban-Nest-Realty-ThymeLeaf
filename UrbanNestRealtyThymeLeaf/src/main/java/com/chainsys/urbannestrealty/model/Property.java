@@ -30,7 +30,7 @@ public class Property
 	double payableAmount;
 	String customerName;
     
-    
+
 	public String getFromDate() {
 		return fromDate;
 	}
@@ -176,6 +176,7 @@ public class Property
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
+	
 	@Override
 	public String toString() {
 		return "Property [sellerId=" + sellerId + ", sellerName=" + sellerName + ", propertyName=" + propertyName

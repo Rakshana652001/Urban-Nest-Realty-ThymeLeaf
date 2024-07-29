@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Purchased Properties</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
+    <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
+    <link rel="stylesheet" href="/CSS/List.css">
     <link rel="stylesheet" href="/CSS/BuyedProperties.css">
 </head>
 <body>
@@ -43,79 +45,85 @@
 </nav>
 
 <h3>Purchased Properties</h3>
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Seller Name</th>
-                <th>Property Name</th>
-                <th>Property Document</th>
-                <th>Property Price</th>
-                <th>Property Address</th>
-                <th>Property District</th>
-                <th>Registered Date</th>
-                <th>Purchased Date</th>
-                <th>Register Status</th>
-                <th>Payment Status</th>
-                <th>Download Receipt</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="property : ${list}">
-                <td th:text="${property.sellerName}"></td>
-                <td th:text="${property.propertyName}"></td>
-                <td>
-                    <img alt="documents" th:src="'data:image/jpeg;base64,' + ${property.base64Image}"/>
-                </td>
-                <td th:text="${property.propertyPrice}"></td>
-                <td th:text="${property.propertyAddress}"></td>
-                <td th:text="${property.propertyDistrict}"></td>
-                <td th:text="${property.registeredDate}"></td>
-                <td th:text="${property.purchasedDate}"></td>
-                <td th:text="${property.registerStatus}"></td>
-                <td th:text="${property.paymentStatus}"></td>
-                <td>
-                    <button th:onclick="'generateReceipt('${property.sellerId} + ',' + ${property.customerId} + ',' + ${property.propertyName} + ',' + ${property.propertyPrice} + ',' + ${property.propertyAddress} + ',' + ${property.propertyDistrict} + ',' + ${property.registeredDate} + ',' + ${property.purchasedDate} + ',' + ${property.registerStatus} + ',' + ${property.paymentStatus} + ',' + ${property.base64Image}')'">Download</button>
-                </td>
-            </tr>
-            <tr th:if="${list==null or list.isEmpty()}">
-                <td colspan="12">No Records found</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-<script type="text/javascript">
-    function generateReceipt(sellerId, customerId, propertyName, propertyPrice, propertyAddress, propertyDistrict, registeredDate, purchasedDate, registerStatus, payment, document) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div>
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var columns = [
+            { id: "sellerName", name: "Seller Name", field: "sellerName", width: 100, sortable: true },
+            { id: "propertyAddress", name: "Property Document", field: "propertyAddress", width: 100, formatter: viewButtonFormatter },
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
+            { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100},
+            { id: "registeredDate", name: "Registered Date", field: "registeredDate", width: 100 },
+            { id: "purchasedDate", name: "Purchased Date", field: "purchasedDate", width: 100},
+            { id: "download", name: "Download Receipt", field: "download", width: 100, formatter: downloadButtonFormatter }
+        ];
+
+        var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            forceFitColumns: true,
+            rowHeight: 45,
+            enableSorting: true
+        };
+
+        var data = /*[[${list}]]*/ [];
         
-        doc.setFontSize(12);
-        doc.line(9, 10, 200, 10); //topline
-        doc.line(9, 285, 200, 285); //bottomline
+
+        function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/view" method="post">
+            <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                    <button type="submit" style="position: relative; left:20px; bottom:10px;">View</button>
+                </form>`;
+        }
+
+        function downloadButtonFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/download" method="post">
+            <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                    <button id="submit" style="position:relative; bottom:10px; left:6px;">Download</button>
+                </form>`;
+        }
         
-        doc.line(200, 10, 200, 285); //rightline 
-        doc.line(9, 10, 9, 285); //leftline
-        
-        doc.text("Payment Receipt", 20, 20);
-        doc.line(20, 23, 54, 23);
-        doc.setLineWidth(3); 
-        
-        doc.text("Seller ID: " + sellerId, 20, 30);
-        doc.text("Customer ID: " + customerId, 20, 40);
-        doc.text("Property Name: " + propertyName, 20, 50);
-        doc.text("Property Price: " + propertyPrice, 20, 60);
-        doc.text("Property Address: " + propertyAddress, 20, 70);
-        doc.text("Property District: " + propertyDistrict, 20, 80);
-        doc.text("Registered Date: " + registeredDate, 20, 90);
-        doc.text("Purchased Date: " + purchasedDate, 20, 100);
-        doc.text("Register Status: " + registerStatus, 20, 110);
-        doc.text("Payment Status: " + payment, 20, 120);
-        doc.addImage(document, 'JPEG', 20, 130, 60, 90);
-        doc.save("receipt_" + sellerId + ".pdf");
-    }
+
+        var grid = new Slick.Grid("#myGrid", data, columns, options);
+
+        grid.onSort.subscribe(function (e, args) {
+            var field = args.sortCol.field;
+            data.sort(function (a, b) {
+                var result = (a[field] > b[field]) ? 1 : ((a[field] < b[field]) ? -1 : 0);
+                return args.sortAsc ? result : -result;
+            });
+            grid.invalidate();
+            grid.render();
+        });
+
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            var filteredData = data.filter(function(item) {
+                return Object.values(item).some(function(value) {
+                    return String(value).toLowerCase().includes(searchTerm);
+                });
+            });
+            grid.setData(filteredData);
+            grid.invalidate();
+            grid.render();
+        });
+    });
 </script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
+ 

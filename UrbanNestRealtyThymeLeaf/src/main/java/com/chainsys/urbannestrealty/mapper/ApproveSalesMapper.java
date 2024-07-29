@@ -21,6 +21,13 @@ public class ApproveSalesMapper implements RowMapper<Sales>
         
         String sellerId = rs.getString("seller_id");
         sales.setSellerId(sellerId);
+        
+        String customername = rs.getString("customer_name");
+		sales.setCustomerName(customername);
+		
+        
+        String sellername= rs.getString("seller_name");
+        sales.setSellerName(sellername);
                 
         Blob image = rs.getBlob("government_id");
         if (image != null) 

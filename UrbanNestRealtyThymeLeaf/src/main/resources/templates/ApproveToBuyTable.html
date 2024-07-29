@@ -1,107 +1,138 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Payment Approval</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
-<link rel="stylesheet" href="/CSS/ApproveToBuy.css">
+    <meta charset="UTF-8">
+    <title>Payment Approval</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
+    <link rel="stylesheet" href="/CSS/List.css">
+    <link rel="stylesheet" href="/CSS/ApproveToBuy.css">
+    <link rel="stylesheet" href="/CSS/AdminNavbar.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
- <div class="container">
-     <a class="navbar-brand">
-        <img th:src="@{/Assets/Nest Realty.png}" alt="Logo">
-    </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" th:href="@{/AdminWelcome}">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Clients
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" th:href="@{/SellerCustomerDetails}">Seller</a>
-            <a class="dropdown-item" th:href="@{/CustomerDetails}">Customer</a>
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Seller Properties
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" th:href="@{/PendingProperty}">Pending</a>
-            <a class="dropdown-item" th:href="@{/Authorized}">Authorized</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" th:href=@{/ApproveToBuy}>Payment Approval</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" th:href=@{/ClosedDeals}>Closed Deals</a>
-        </li>
-        <li class="nav-item dropdown" id ="logout">
-          <img src="/Assets/profile.png" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" th:href="@{/AdProfile}">Profile</a>
-            <a class="dropdown-item" th:href="@{/LogOut}">LogOut</a>
-          </div>
-        </li>
-      </ul>
+    <div class="container">
+        <a class="navbar-brand">
+            <img th:src="@{/Assets/Nest Realty.png}" alt="Logo">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/AdminWelcome}">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Clients
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/SellerCustomerDetails}">Seller</a>
+                        <a class="dropdown-item" th:href="@{/CustomerDetails}">Customer</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Seller Properties
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/PendingProperty}">Pending</a>
+                        <a class="dropdown-item" th:href="@{/Authorized}">Authorized</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href=@{/ApproveToBuy}>Payment Approval</a>
+                </li>
+                <li class="nav-item dropdown" id="logout">
+                    <img src="/Assets/profile.png" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/AdProfile}">Profile</a>
+                        <a class="dropdown-item" th:href="@{/LogOut}">LogOut</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 <h3>Payment Approval</h3>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Customer ID</th>
-            <th>Seller ID</th> 
-            <th>Id Proof</th>
-            <th>Property Address</th>                   
-            <th>Property Total Amount</th>
-            <th>Payable Amount</th>
-            <th>Payment Method</th>
-            <th>Approval Status</th>
-            <th>Approval</th>
-            <th>Payment Status</th>
-            
-            
-        </tr>
-    </thead>
-    <tbody>
-    <tr th:each="sales : ${list}">
-    	<td th:text="${sales.customerId}"></td>
-    	<td th:text="${sales.sellerId}"></td>
-    	<td>
-                <img alt="document" th:src="'data:image/jpeg;base64,' + ${sales.govId}">
-            </td>
-    	<td th:text="${sales.propertyAddress}"></td>
-    	<td th:text="${sales.totalAmount}"></td>
-    	<td th:text="${sales.payableAmount}"></td>
-    	<td th:text="${sales.paymentMethod}"></td>
-    	<td th:text="${sales.approval}"></td>
-    	<td>
-             <form th:action="@{/ApprovalToBuy}" method="post">
-                <input type="hidden" name="customerId" th:value="${sales.customerId}">
-                   <select name="approvalStatus">
-                   <option value="Select">Select</option>
-                   <option value="Approved">Approved</option>
-                   <option value="Not Approved">Rejected</option>
-                   </select>
-                 <input type="submit" value="Submit">
-              </form>
-         </td>
-         <td th:text="${sales.paidStatus}"></td>
-         </tr>
-         <tr th:if="${list == null || list.isEmpty()}">
-            <td colspan="15">No Records found</td>
-         </tr>
-    </tbody>
-</table>
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div>
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var columns = [
+            { id: "customerName", name: "Customer Name", field: "customerName", width: 100, sortable: true },
+            { id: "sellerName", name: "Seller Name", field: "sellerName", width: 100},
+            { id: "propertyAddress", name: "Id Proof", field: "propertyAddress", width: 100, formatter: viewButtonFormatter },
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
+            { id: "totalAmount", name: "Property Total Amount", field: "totalAmount", width: 100},
+            { id: "approvalStatus", name: "Approval Status", field: "approvalStatus", width: 150, formatter: approvalSelectFormatter }
+        ];
+
+        var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            forceFitColumns: true,
+            rowHeight: 45,
+            enableSorting: true
+        };
+
+        var data = /*[[${list}]]*/ [];
+
+        function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/id" method="post">
+                    <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                    <button type="submit" style="position: relative; left:20px; bottom:10px;">View</button>
+                </form>`;
+        }
+
+        function approvalSelectFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/ApprovalToBuy" method="post">
+                    <input type="hidden" name="customerId" value="${dataContext.customerId}">
+                    <select name="approvalStatus" style="position:relative; bottom:12px;">
+                        <option value="Select">Select</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Not Approved">Rejected</option>
+                    </select>
+                    <input type="submit" value="Submit" style="position:relative; bottom:10px;">
+                </form>`;
+        }
+
+        var grid = new Slick.Grid("#myGrid", data, columns, options);
+
+        grid.onSort.subscribe(function (e, args) {
+            var field = args.sortCol.field;
+            data.sort(function (a, b) {
+                var result = (a[field] > b[field]) ? 1 : ((a[field] < b[field]) ? -1 : 0);
+                return args.sortAsc ? result : -result;
+            });
+            grid.invalidate();
+            grid.render();
+        });
+
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            var filteredData = data.filter(function(item) {
+                return Object.values(item).some(function(value) {
+                    return String(value).toLowerCase().includes(searchTerm);
+                });
+            });
+            grid.setData(filteredData);
+            grid.invalidate();
+            grid.render();
+        });
+    });
+</script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Completed Deals</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
+    <link rel="stylesheet" href="/CSS/List.css">
     <link rel="stylesheet" href="/CSS/PaidTable.css">
 </head>
 <body>
@@ -42,66 +44,73 @@
     </div>
 </nav>
 <h3>Completed Deals</h3>
-<table border="1">
-    <thead>
-        <tr>
-            <th>Customer Name</th>
-            <th>Property Address</th>
-            <th>Payment Method</th>
-            <th>Property Total Amount</th>
-            <th>Payable Amount</th>
-            <th>Paid Status</th>
-            <th>Download Receipt</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="sales : ${list}">
-            <td th:text="${sales.customerName}"></td>
-            <td th:text="${sales.propertyAddress}"></td>
-            <td th:text="${sales.paymentMethod}"></td>
-            <td th:text="${sales.totalAmount}"></td>
-            <td th:text="${sales.payableAmount}"></td>
-            <td th:text="${sales.paidStatus}"></td>
-            <!-- <td>
-                <button th:onclick="'generateReceipt(' + ${sales.customerId} + ', ' + ${sales.propertyAddress} + ', ' + ${sales.paymentMethod} + ', ' + ${sales.totalAmount} + ', ' + ${sales.payableAmount} + ', ' + ${sales.customerAccount} + ', ' + ${sales.sellerAccount} + ', ' + ${sales.purchasedDate} + ', ' + ${sales.paidStatus} + ', ' + ${sales.govId} + ')'">
-                    Download
-                </button>
-            </td> -->
-        </tr>
-    </tbody>
-</table>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-<script type="text/javascript">
-    function generateReceipt(customerId, propertyAddress, paymentMethod, totalAmount, payableAmount, customerAccount, yourAccount, purchasedDate, paymentStatus, govId) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.setFontSize(12);
-        doc.line(9, 10, 200, 10); //topline
-        doc.line(9, 285, 200, 285); //bottomline (200 length, 9 left length, (285, 285) bringing down the line with same line---)
-        
-        doc.line(200, 10, 200, 285); //rightline 
-        doc.line(9, 10, 9, 285);//leftline
-        
-        doc.text("Payment Receipt", 20, 20);
-        doc.line(20, 23, 54, 23);
-        doc.setLineWidth(3); 
-        doc.text("Customer ID: " + customerId, 20, 30);
-        
-        doc.text("Property Address: " + propertyAddress, 20, 40);
-        doc.text("Payment Method: " + paymentMethod, 20, 50);
-        doc.text("Property Total Amount: " + totalAmount, 20, 60);
-        doc.text("Payable Amount: "+ payableAmount, 20, 70);
-        
-        doc.text("Customer Account: "+ customerAccount, 20, 80);
-        doc.text("Your Account: "+ yourAccount, 20, 90);
-        doc.text("Purchased Date: "+ purchasedDate, 20, 100) 
-        doc.text("Payment Status: " + paymentStatus, 20, 110);
-        
-        doc.addImage(govId, 'JPEG', 20, 120, 70, 50);
-        
-        doc.save("receipt_" + customerId + ".pdf");
-    }
+
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div>
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var columns = [
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
+            { id: "paymentMethod", name: "Payment Method", field: "paymentMethod", sortable: true },
+            { id: "totalAmount", name: "Property Total Amount", field: "totalAmount" },
+            { id: "payableAmount", name: "Payable Amount", field: "payableAmount" },
+            { id: "paidStatus", name: "Paid Status", field: "paidStatus" },
+            { id: "download", name: "Download Receipt", field: "download", formatter: downloadButtonFormatter }
+        ];
+
+        var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            forceFitColumns: true,
+            rowHeight: 45,
+            enableSorting: true
+        };
+
+        var data = /*[[${list}]]*/ [];
+
+        function downloadButtonFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/downloads" method="post">
+            <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                    <button id="submit" style="position:relative; bottom:10px; left:20px;">Download</button>
+                </form>`;
+        }
+
+        var grid = new Slick.Grid("#myGrid", data, columns, options);
+
+        grid.onSort.subscribe(function (e, args) {
+            var field = args.sortCol.field;
+            data.sort(function (a, b) {
+                var result = (a[field] > b[field]) ? 1 : ((a[field] < b[field]) ? -1 : 0);
+                return args.sortAsc ? result : -result;
+            });
+            grid.invalidate();
+            grid.render();
+        });
+
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            var filteredData = data.filter(function(item) {
+                return Object.values(item).some(function(value) {
+                    return String(value).toLowerCase().includes(searchTerm);
+                });
+            });
+            grid.setData(filteredData);
+            grid.invalidate();
+            grid.render();
+        });
+    });
 </script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,92 +1,136 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Registered Properties</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
-<link rel="stylesheet" href="/CSS/SellerView.css">
+    <meta charset="UTF-8">
+    <title>Registered Properties</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
+    <link rel="stylesheet" href="/CSS/List.css">
+    <link rel="stylesheet" href="/CSS/SellerView.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
- <div class="container">
-     <a class="navbar-brand">
-        <img src="/Assets/Nest Realty.png" alt="Logo">
-    </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" th:href="@{/sellerHome}">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" th:href="@{/registration}">Post Property</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" th:href="@{/RegisteredProperties}">Registered Properties</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" th:href="@{/CompletedDeals}">Completed Deals</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" th:href="@{/SellerHistory}">Transaction History</a>
-        </li>
-        <li class="nav-item dropdown" id ="logout">
-          <img src="/Assets/profile.png" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" th:href="@{/Sellerprofile}">Profile</a>
-            <a class="dropdown-item" th:href="@{/LogOut}">LogOut</a>
-          </div>
-        </li>
-      </ul>
+    <div class="container">
+        <a class="navbar-brand">
+            <img src="/Assets/Nest Realty.png" alt="Logo">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/sellerHome}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/registration}">Post Property</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/RegisteredProperties}">Registered Properties</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/CompletedDeals}">Completed Deals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/SellerHistory}">Transaction History</a>
+                </li>
+                <li class="nav-item dropdown" id="logout">
+                    <img src="/Assets/profile.png" alt="Profile" width="50" height="50" style="position: relative; left: 2rem;">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" th:href="@{/Sellerprofile}">Profile</a>
+                        <a class="dropdown-item" th:href="@{/LogOut}">LogOut</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 <h3>Registered Properties</h3>
-<table border="1">
-    <thead>
-        <tr>
-                <th>Property Name</th>
-                <th>Property ID</th>
-                <th>Approval Status</th>
-                <th>Property Images</th>
-                <th>Property Documents Photo Copy</th>
-                <th>Property Price</th>
-                <th>Property Address</th>
-                <th>Property District</th>
-                <th>Property State</th>
-                <th>Registered Date</th>
-                <th>Purchased Date</th>
-                <th>Customer ID</th>
-                <th>Registered Status</th>
-                <th>Payment Status</th>
-            </tr>
-    </thead>
-    <tbody>
-    <tr th:each="property : ${list}">
-    	<td th:text="${property.propertyName}"></td>
-            <td th:text="${property.propertyId}"></td>
-            <td th:text="${property.approval}"></td>
-            <td>
-				<img alt="property" th:src="'data:image/jpeg;base64,' +${property.base64Image}">
-            </td>
-            <td>
-				<img alt="document" th:src="'data:image/jpeg;base64,' +${property.base64Document}">
-            </td>
-            <td th:text="${property.propertyPrice}"></td>
-            <td th:text="${property.propertyAddress}"></td>
-            <td th:text="${property.propertyDistrict}"></td>
-            <td th:text="${property.propertyState}"></td>
-            <td th:text="${property.registeredDate}"></td>
-            <td th:text="${property.purchasedDate}"></td>
-            <td th:text="${property.customerId}"></td>
-            <td th:text="${property.registerStatus}"></td>
-            <td th:text="${property.paymentStatus}"></td>
-            
-            <tr th:if="${list == null || list.isEmpty()}">
-            <td colspan="15">No Records found</td>
-        
-    </tbody>
-</table>
+
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div>
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+<script th:inline="javascript">
+$(document).ready(function () {
+    var columns = [
+        { id: "propertyName", name: "Property Name", field: "propertyName", sortable: true },
+        { id: "propertyAddress", name: "Property Documents Photo Copy", field: "propertyAddress", width: 100, formatter: viewButtonFormatter },
+        { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100 },
+        { id: "registeredDate", name: "Registered Date", field: "registeredDate", width: 100 },
+        { id: "purchasedDate", name: "Purchased Date", field: "purchasedDate", width: 100 },
+        { id: "customerName", name: "Customer name", field: "customerName", width: 100 },
+        { id: "registerStatus", name: "Registered Status", field: "registerStatus", width: 100 },
+        { id: "paymentStatus", name: "Payment Status", field: "paymentStatus", width: 100 }
+    ];
+
+    var options = {
+        enableCellNavigation: true,
+        enableColumnReorder: false,
+        forceFitColumns: true,
+        rowHeight: 45,
+        enableSorting: true
+    };
+
+    var data = /*[[${list}]]*/ [];
+
+    function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
+        return `
+            <form action="/view" method="post">
+        <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                <button type="submit" style="position: relative; left:20px; bottom:12px;">View</button>
+            </form>`;
+    }
+
+    var grid = new Slick.Grid("#myGrid", data, columns, options);
+
+    grid.onSort.subscribe(function (e, args) {
+        var field = args.sortCol.field;
+        data.sort(function (a, b) {
+            var result = (a[field] > b[field]) ? 1 : ((a[field] < b[field]) ? -1 : 0);
+            return args.sortAsc ? result : -result;
+        });
+        grid.invalidate();
+        grid.render();
+    });
+
+    $('#searchInput').on('input', function() {
+        var searchTerm = $(this).val().toLowerCase();
+        var filteredData = data.filter(function(item) {
+            return Object.values(item).some(function(value) {
+                return String(value).toLowerCase().includes(searchTerm);
+            });
+        });
+        grid.setData(filteredData);
+        grid.invalidate();
+        grid.render();
+    });
+
+    $('#myGrid').on('click', '.delete-button', function () {
+        var name = $(this).data('name');
+        $.ajax({
+            type: 'POST',
+            url: /*[[@{/deleteseller}]]*/ [],
+            data: { deleteName: name },
+            success: function () {
+                data = data.filter(function(item) {
+                    return item.name !== name;
+                });
+                grid.setData(data);
+                grid.invalidate();
+                grid.render();
+            },
+            error: function () {
+                alert('Error deleting the seller.');
+            }
+        });
+    });
+});
+</script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

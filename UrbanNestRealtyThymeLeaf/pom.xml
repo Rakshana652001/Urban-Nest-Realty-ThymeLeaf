@@ -9,16 +9,10 @@
         <relativePath/>  <!-- lookup parent from repository -->
     </parent>
     
-    <!--<parent>
-       <groupId>org.springframework.boot</groupId>
-       <artifactId>spring-boot-starter-parent</artifactId>
-       <version>2.7.18</version>
-       <relativePath />  lookup parent from repository 
-   </parent>-->
     <groupId>com.chainsys</groupId>
     <artifactId>UrbanNestRealtyThymeLeaf</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ReadersRealm-LibraryApp</name>
+    <name>Urban Nest Realty</name>
     <description>Demo project for Spring Boot</description>
     <url/>
     <licenses>
@@ -99,10 +93,13 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.0.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
+        
+       <!--<dependency>
+    		<groupId>com.itextpdf</groupId>
+    		<artifactId>itextpdf</artifactId>
+   		    <version>5.5.13.2</version>
+		</dependency>-->
+
     </dependencies>
 
     <build>

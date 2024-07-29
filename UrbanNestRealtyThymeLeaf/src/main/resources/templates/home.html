@@ -6,7 +6,7 @@
 <link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg" >
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="/CSS/Home.css">
-
+<link rel="stylesheet" href="/CSS/AdminLogin.css">
 </head>
 
 <body>
@@ -33,7 +33,7 @@
           <a class="nav-link active" href="#contact">Contact</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" th:href="@{/Login}">Login</a>
+          <a class="nav-link active" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0" th:action="@{/Search}" id="search">
@@ -42,14 +42,40 @@
     </div>
   </div>
 </nav>
-<section id="home">
-    
-</section>
-<section id="realties" class="container mt-5">
 
-<div id="district">
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> 
+      </div>
+      <div class="modal-body">
+        <form th:action="@{/login}" method="post">
+          <div class="form-group">
+            <label for="generatedUserID">ID:</label>
+            <input type="text" id="generatedUserID" name="generatedUserID" class="form-control" placeholder="Enter the Id" required/>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Rakshana@12" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required/>
+          </div>
+          <p>Don't have an account? <a th:href="@{/userRegistration}">Register</a></p>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="home"></section>
+
+<section id="realties" class="container mt-5">
+  <div id="district">
 <form th:action="@{/districtSearch}" id="" name="district">
-<label>Search by District:  
+<label style="color: white;">Search by District:  
         <select id="district2" name="district" required>
             <option value="1" >Select District</option>
             <option value="Ariyalur" data-name="Ariyalur">Ariyalur</option>
@@ -93,7 +119,8 @@
         </select>
         </label>
         <button id="submit">Submit</button> </form></div>
-<div class="scroll-container">
+        
+        <div class="scroll-container">
               <img alt="one" th:src="@{/Assets/image5.jpg}" width="300" height="300">
               <img alt="one" th:src="@{/Assets/image2.jpg}" width="300" height="300">
               <img alt="one" th:src="@{/Assets/image10.avif}" width="300" height="300">
@@ -106,8 +133,7 @@
               <img alt="one" th:src="@{/Assets/image6.jpg}" width="300" height="300">
               <img alt="one" th:src="@{/Assets/images11.jpg}" width="300" height="300">
               <img alt="one" th:src="@{/Assets/Land.jpg}" width="300" height="300">
-
-            </div>
+    </div>
             
     	<div class="row justify-content-around">
         	<div class="col-lg-3 col-md-4 col-12 mb-4">
@@ -147,9 +173,11 @@
             </div>
         </div>
     </div>
+        
 </section>
+
 <section id="about" class="container mt-5">
-    <div class="row">
+  <div class="row">
         <div class="col-lg-6 mb-4">
             <img th:src="@{/Assets/quality.jpg}" alt="About Us">
         </div>
@@ -161,10 +189,12 @@
         </div>
     </div>
 </section>
+
 <section id="contact" class="container mt-5">
-    <div class="text-center">
+   <div class="text-center">
         <h2>Contact Us</h2>
-        <p>If you have any questions, please feel free to reach out to call us at 7339263883.</p>
+        <p>If you have any questions, please feel free to reach out to call us at
+        <a href="tel:7339263883">7339263883</a> .</p>
         <form th:action="@{/Contact}" method="post">
             <div class="form-group">
                 <label for="email">Email address:</label>
@@ -178,12 +208,15 @@
         </form>
     </div>
 </section>
+
 <footer id="footer">
-    <p>&copy; 2024 Urban Nest Realty. All rights reserved.</p>
+  <p>&copy; 2024 Urban Nest Realty. All rights reserved.</p>
 </footer>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/JS/Home.js"></script>
 </body>
 </html>
+ 

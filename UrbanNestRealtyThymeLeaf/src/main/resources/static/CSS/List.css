@@ -1,15 +1,48 @@
 @charset "ISO-8859-1";
-body {
-    font-family: "Lora", serif;
-    background-color: #D8CCC0;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: #333;
-}
+        
+        .slick-header-column {
+            position: fixed;
+            height: 60px !important;
+            padding: 20px !important;
+            font: bold !important;
+            font-size: 18px !important;      
+            padding: 20px !important;
+            text-align: center !important;     
+            background: #818589;
+            color: white;
+        }
+        
+        .slick-cell {
+            padding: 10px !important;
+            text-align: left !important;
+            background-color: white !important;
+        }
+        
+        #myGrid
+        {
+			height: 290px; 
+			position: relative; 
+			top: 5rem; 
+			width: 100%;
+			max-width: 1000px;
+    		border-collapse: collapse;
+    		background-color: white;
+    		border-radius: 10px;
+    		overflow: hidden;
+   			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);        
+        }
+        
+        body 
+        {
+    		background-color: #D8CCC0;
+    		margin: 0;
+    		padding: 0;
+    		display: flex;
+    		justify-content: center;
+   	 		align-items: center;
+    		flex-direction: column;
+   		 	color: #333;
+		}
 
 h3 {
     text-align: center;
@@ -19,37 +52,14 @@ h3 {
     top: 8rem;
 }
 
-table {
-    width: 100%;
-    max-width: 1000px;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    top: 5rem;
-}
-
-th, td {
+input {
     padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-
-th {
-    background-color: #f4f4f4;
-}
-
-button, .btn-action, input {
-    padding: 10px;
-    border: none;
+    border: 2px solid;
+    background: none;
     border-radius: 12px;
-    background-color: #818589;
-    color: white;
+    color: black;
     cursor: pointer;
     flex: 1;
-    font-family: "Lora", serif;
     margin: 5px;
 }
 
@@ -57,94 +67,17 @@ label {
     color: white;
 }
 
-button:hover, .btn-action:hover {
-    background-color: #333;
+#searchInput
+{
+	position: relative;
+	top: 80px;
+	left: 24rem;
+	
 }
 
-.actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
-.search {
-    position: relative;
-    left: 23rem;
-    top: 5rem;
-}
-
-.back {
-    position: relative;
-    right: 27rem;
-    top: 3rem;
-}
-
-.navbar {
-    background-color: #818589;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-.nav-item {
-    position: relative;
-    right: 5rem;
-    margin-right: 25px;
-}
-
-.navbar-brand {
-    position: relative;
-    right: 40px;
-}
-
-.navbar-brand img {
-    position: relative;
-    right: 2rem;
-    height: 90px;
-    width: 100px;
-}
-
-#navbarSupportedContent a {
-    font-size: 16px;
-}
-
-#navbarSupportedContent a:hover {
-    border-bottom: 2.5px solid white;
-}
-
-.active:hover {
-    color: black !important;
-    border-radius: 12px;
-}
-
-#logout {
-    position: relative;
-    left: 17rem;
-}
-
-.dropdown-menu {
-    background-color: gray;
-    border: none;
-}
-
-.dropdown-menu {
-    background-color: #818589;
-    border: none;
-}
-
-.dropdown-item {
-    color: white;
-}
-
-.dropdown:hover .dropdown-menu {
-    display: block;
-    margin-top: 0;
-}
-
-.dropdown-item:hover {
-    background-color: #818589;
-    border-radius: 12px;
+button
+{
+	position: relative;
+	left: 45px;
+	bottom: 7px;	
 }

@@ -25,6 +25,7 @@ import com.chainsys.urbannestrealty.model.Property;
 import com.chainsys.urbannestrealty.model.Sales;
 import com.chainsys.urbannestrealty.validation.Validation;
 
+
 import jakarta.servlet.http.HttpSession;
 
 
@@ -56,14 +57,18 @@ public class CustomerController
 			sale.setPaymentMethod(paymentMethod);
 			sale.setApproval("Not Approved");
 			sale.setPaidStatus("Not Paid");	
+			sale.setCustomerName(customerName);
+			sale.setSellerName(sellerName);
+			
 			
 			
 			
 			httpSession.setAttribute("propertyAddress", propertyAddress);
 			userDAO.sale(sale);
-			userDAO.updateCustomerId(customerName,customerId, propertyAddress);
 			
-			userDAO.updateSellerAccount(accountNumber, propertyAddress, sellerName, customerName);
+			userDAO.updateCustomerId(sale);
+			
+			userDAO.updateSellerAccount(customerName,sellerName, propertyAddress );
 		}
 		else
 		{
@@ -78,12 +83,7 @@ public class CustomerController
 	{
 		String id = (String)httpSession.getAttribute("customerId");
 		List<Sales> list = userDAO.propertiesUnderReview(id);
-		for(Sales object:list)
-		{
-			byte[] getImage = object.getGovernmentId();
-			String toBase = Base64.getEncoder().encodeToString(getImage);
-			object.setGovId(toBase);
-		}
+		
 		model.addAttribute("list",list);
 		return "CustomerRegisteredPropertiesTable";
 		
@@ -117,21 +117,20 @@ public class CustomerController
 	public String registerBuyProperties(Model model, HttpSession session)
 	{
 		String id = (String)session.getAttribute("customerId");
+		
 		List<Sales> list = userDAO.readyToBuy(id);
 		model.addAttribute("list", list);
 		return "RegisterBuyPropertiesTable";
 	}
 	
-	@RequestMapping("/payNow")
+	@PostMapping("/payNow")
 	public String paynow(HttpSession session)
 	{
 		return "PayNow";
 	}
-	@RequestMapping("/PayNow")
-	public String payNow1(Model model,@RequestParam("yourAccountNumber") long yourAccountNumber, @RequestParam("senderAccountNumber") long senderAccountNumber, @RequestParam("amount") Double amount, @RequestParam("purchasedDate") String purchasedDate, HttpSession session)
+	@PostMapping("/PayNow")
+	public String payNow1(Model model,@RequestParam("address") String address,@RequestParam("yourAccountNumber") long yourAccountNumber, @RequestParam("senderAccountNumber") long senderAccountNumber, @RequestParam("amount") Double amount, @RequestParam("purchasedDate") String purchasedDate, HttpSession session)
 	{
-		String address = (String)session.getAttribute("propertyAddress");
-		
 		if(Boolean.FALSE.equals(validation.accountNumber(yourAccountNumber, senderAccountNumber,model)))
 		{
 			userDAO.updatePayment(address, yourAccountNumber, senderAccountNumber, purchasedDate);
@@ -141,7 +140,6 @@ public class CustomerController
 		{
 			return "PayNow";
 		}
-		
 	}
 	
 	@RequestMapping("/PurchasedProperties")
@@ -149,14 +147,37 @@ public class CustomerController
 	{
 		String id = (String)session.getAttribute("customerId");
 		List<Property> list = userDAO.purchasedProperties(id);
-		for(Property property:list)
-		{
-			byte[] getImage = property.getPropertyDocument();
-			String toBase = Base64.getEncoder().encodeToString(getImage);
-			property.setBase64Image(toBase);
-		}
+		
 		model.addAttribute("list", list);
 		return "BuyedPropertiesCustomerViewTable";
+	}
+	
+	@RequestMapping("/view")
+	public String view(Model model, @RequestParam("address") String address)
+	{
+		List<Property> getImage = userDAO.viewImage(address);
+		for(Property property:getImage)
+		{
+			byte[] getImage1 = property.getPropertyDocument();
+			String toBase = Base64.getEncoder().encodeToString(getImage1);
+			property.setBase64Image(toBase);
+		}
+		model.addAttribute("list", getImage);
+		return "ViewImage";
+	}
+	
+	@RequestMapping("/viewProperty")
+	public String viewProperties(Model model, @RequestParam("address") String address)
+	{
+		List<Property> getImage = userDAO.viewProperty(address);
+		for(Property property:getImage)
+		{
+			byte[] getImage1 = property.getPropertyImages();
+			String toBase = Base64.getEncoder().encodeToString(getImage1);
+			property.setBase64Image(toBase);
+		}
+		model.addAttribute("list", getImage);
+		return "PropertyView";
 	}
 	
 	@RequestMapping("/CustomerHistory")
@@ -168,7 +189,7 @@ public class CustomerController
 		return "CustomerTransactionHistory";
 	}
 	
-	@RequestMapping("/customerDate")
+	@PostMapping("/customerDate")
 	public String customerDate(HttpSession session, Model model,  @RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate)
 	{
 		String id = (String)session.getAttribute("customerId");
@@ -176,5 +197,71 @@ public class CustomerController
 		model.addAttribute("list",list);
 		return "CustomerTransactionHistory";
 	}
-
+	
+//	@RequestMapping("/downloads")
+//	public void download(HttpServletResponse response, HttpSession session, Model model, @RequestParam("address") String address) throws DocumentException, IOException
+//	{		
+//		response.setContentType("application/pdf");
+//        response.setHeader("Content-Disposition", "attachment; filename=\"Document.pdf\"");
+//        
+//		List<Sales> list = userDAO.download(address);
+//		
+//		Document document = new Document();
+//	    PdfWriter.getInstance(document, response.getOutputStream());
+//	    document.open();
+//	    
+//	    Font headingFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+//        Paragraph heading = new Paragraph("Receipt", headingFont);
+//        heading.setAlignment(Element.ALIGN_CENTER);
+//        heading.setSpacingBefore(20f);
+//        heading.setSpacingAfter(10f); 
+//        document.add(heading);        
+//        
+//        PdfPTable table = new PdfPTable(2);
+//	    table.getDefaultCell().setPadding(10);
+//	    table.setWidthPercentage(100);
+//	    
+//	    for(Sales object:list)
+//		{
+//			byte[] document1 = object.getGovernmentId();
+//			String getDocument = Base64.getEncoder().encodeToString(document1);
+//			object.setBase64(getDocument);
+//		}
+//	    
+//		for(Sales property : list)
+//		{
+//			table.addCell("Customer Name");
+//			table.addCell(property.getCustomerName());
+//			table.addCell("Property Address");
+//			table.addCell(property.getPropertyAddress());
+//			table.addCell("Property Price");
+//			table.addCell(String.valueOf(property.getTotalAmount()));
+//			table.addCell("Paid Amount");
+//			table.addCell(String.valueOf(property.getPayableAmount()));
+//			table.addCell("Payment Status");
+//			table.addCell(property.getPaidStatus());
+//			table.addCell("Customer GovID proof");
+//			
+//			byte[] decodedBytes = Base64.getDecoder().decode(property.getBase64());
+//		    
+//		    // Create an image from the byte array
+//		    Image img = Image.getInstance(decodedBytes);
+//		    
+//		    // Scale image to fit cell
+//		    img.scaleToFit(120, 120); // Adjust size as needed
+//
+//		    PdfPCell imgCell = new PdfPCell(img);
+//		    imgCell.setPadding(10);
+//		    imgCell.setColspan(7); // Span across all columns
+//		    imgCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//		    table.addCell(imgCell);
+//		    
+//		}
+//				
+//		table.setWidthPercentage(50);
+//		
+//		table.setHorizontalAlignment(Element.ALIGN_CENTER);		
+//		document.add(table);
+//        document.close();
+//	}
 }

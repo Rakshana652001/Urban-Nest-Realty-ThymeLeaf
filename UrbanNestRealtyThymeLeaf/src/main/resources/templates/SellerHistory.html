@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Transaction History</title>
+    <meta charset="UTF-8">
+    <title>Clients</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
     <link rel="stylesheet" href="/CSS/SellerHistory.css">
+    <link rel="stylesheet" href="/CSS/List.css">
+    
+
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -42,32 +46,68 @@
     </div>
 </nav>
 <h3>Transaction History</h3>
-
-<form action="SellerDate" class="fromDate">
-    <label>From Date: <input type="date" name="fromDate" id="fromDate" min="2014-01-01" th:max="${#dates.format(today, 'yyyy-MM-dd')}"></label>
-    <label>To Date: <input type="date" name="toDate" id="toDate" th:value="${#dates.format(today, 'yyyy-MM-dd')}"></label>
-    <button>Submit</button>
+<form action="SellerDate" class="fromDate" method="post">
+    <label><strong>From Date: </strong><input type="date" name="fromDate" id="fromDate" min="2014-01-01" th:max="${#dates.format(today, 'yyyy-MM-dd')}"></label>
+    <label><strong>To Date:</strong> <input type="date" name="toDate" id="toDate" th:value="${#dates.format(today, 'yyyy-MM-dd')}"></label>
+    <button style="position: relative; top: 4px; left: 10px;">Submit</button>
 </form>
-<table border="1">
-    <thead>
-        <tr>
-            <th>Your Account Number</th>
-            <th>Sender Account Number</th>
-            <th>Customer Name</th>
-            <th>Transaction Date</th>
-            <th>Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="sales : ${list}">
-            <td th:text="${sales.accountNumber}"></td>
-            <td th:text="${sales.customerAccount}"></td>
-            <td th:text="${sales.customerName}"></td>
-            <td th:text="${sales.purchasedDate}"></td>
-            <td th:text="${sales.payableAmount}"></td>
-        </tr>
-    </tbody>
-</table>
+
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div> 
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var columns = [
+            { id: "accountNumber", name: "Your Account Number", field: "accountNumber", width: 100 },
+            { id: "customerAccount", name: "Sender Account Number", field: "customerAccount", sortable: true },
+            { id: "customerName", name: "Customer Name", field: "customerName" },
+            { id: "purchasedDate", name: "Transaction Date", field: "purchasedDate" },
+            { id: "payableAmount", name: "Amount", field: "payableAmount" }
+            ];
+
+        var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            forceFitColumns: true,
+            rowHeight: 45,
+            enableSorting: true
+        };
+
+        var data = /*[[${list}]]*/ [];
+
+        var grid = new Slick.Grid("#myGrid", data, columns, options);
+        grid.onSort.subscribe(function (e, args) {
+            var field = args.sortCol.field;
+            data.sort(function (a, b) {
+                var result = 
+                    a[field] > b[field] ? 1 :
+                    a[field] < b[field] ? -1 :
+                    0;
+                return args.sortAsc ? result : -result;
+            });
+            grid.invalidate();
+            grid.render();
+        });
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            filteredData = data.filter(function(item) {
+                return Object.values(item).some(function(value) {
+                    return String(value).toLowerCase().includes(searchTerm);
+                });
+            });
+            grid.setData(filteredData);
+            grid.invalidate();
+            grid.render();
+        });
+    });
+</script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

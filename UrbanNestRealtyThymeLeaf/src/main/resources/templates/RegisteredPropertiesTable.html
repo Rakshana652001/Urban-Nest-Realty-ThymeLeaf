@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Authorized Properties</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-<link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
-<link rel="stylesheet" href="/CSS/PropertyTable.css">
+    <meta charset="UTF-8">
+    <title>Authorized Properties</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
+    <link rel="stylesheet" href="/CSS/List.css">
+    <link rel="stylesheet" href="/CSS/PropertyTable.css">
+    <link rel="stylesheet" href="/CSS/AdminNavbar.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -40,9 +42,6 @@
         <li class="nav-item">
           <a class="nav-link active" th:href="@{/ApproveToBuy}">Payment Approval</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" th:href="@{/ClosedDeals}">Closed Deals</a>
-        </li>
         <li class="nav-item dropdown" id ="logout">
           <img src="/Assets/profile.png" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -54,64 +53,80 @@
     </div>
   </div>
 </nav>
+
 <h3>Authorized Properties</h3>
-<table border="1">
-    <thead>
-        <tr>
-            <th>Seller ID</th>
-            <th>Property Name</th>
-            <th>Property ID</th>
-            <th>Approval Status</th>
-            <th>Property Images</th>
-            <th>Property Documents Photo Copy</th>
-            <th>Property Price</th>
-            <th>Property Address</th>
-            <th>Property District</th>
-            <th>Property State</th>
-            <th>Registered Date</th>
-            <th>Purchased Date</th>
-            <th>Customer ID</th>
-            <th>Registered Status</th>
-            <th>Payment Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="property : ${list}">
-            <td th:text="${property.sellerId}"></td>
-            <td th:text="${property.propertyName}"></td>
-            <td th:text="${property.propertyId}"></td>
-            <td th:text="${property.approval}"></td>
-         	 <td>
-                <img alt="prop" th:src="'data:image/jpeg;base64,' + ${property.base64Image}">
-            </td>
-            <td>
-                <img alt="document" th:src="'data:image/jpeg;base64,' + ${property.base64Document}">
-            </td>
-            <td th:text="${property.propertyPrice}"></td>
-            <td th:text="${property.propertyAddress}"></td>
-            <td th:text="${property.propertyDistrict}"></td>
-            <td th:text="${property.propertyState}"></td>
-            <td th:text="${property.registeredDate}"></td>
-            <td th:text="${property.purchasedDate}"></td>
-            <td th:text="${property.customerId}"></td>
-            <td>
-                <form th:action="@{/RegisterStatus}" method="get">
-                    <input type="hidden" name="address" th:value="${property.propertyAddress}">
-                    <select name="registerStatus">
+
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div>
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var columns = [
+            { id: "sellerName", name: "Seller Name", field: "sellerName", width: 100, sortable: true },
+            { id: "approval", name: "Approval Status", field: "approval", width: 100},
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
+            { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100},
+            { id: "approvalStatus", name: "Registered Status", field: "approvalStatus", width: 150, formatter: approvalSelectFormatter }
+        ];
+
+        var options = {
+            enableCellNavigation: true,
+            enableColumnReorder: false,
+            forceFitColumns: true,
+            rowHeight: 45,
+            enableSorting: true
+        };
+
+        var data = /*[[${list}]]*/ [];
+    
+        function approvalSelectFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <form action="/RegisterStatus">
+                    <input type="hidden" name="address" value="${dataContext.propertyAddress}">
+                    <select name="registerStatus" style="position:relative; bottom:12px; left:18px;">
                         <option value="Select">Select</option>
                         <option value="Registered">Registered</option>
-                        <option value="Not Registered">Not Registered</option>
+                        <option value="Rejected">Rejected</option>
                     </select>
-                    <input type="submit" value="Submit">
-                </form>
-            </td>
-            <td th:text="${property.paymentStatus}"></td>
-        </tr>
-        <tr th:if="${list == null || list.isEmpty()}">
-            <td colspan="15">No Records found</td>
-        </tr>
-    </tbody>
-</table>
+                    <input type="submit" value="Submit" style="position:relative; bottom:10px; left:39px;">
+                </form>`;
+        }
+
+        var grid = new Slick.Grid("#myGrid", data, columns, options);
+
+        grid.onSort.subscribe(function (e, args) {
+            var field = args.sortCol.field;
+            data.sort(function (a, b) {
+                var result = (a[field] > b[field]) ? 1 : ((a[field] < b[field]) ? -1 : 0);
+                return args.sortAsc ? result : -result;
+            });
+            grid.invalidate();
+            grid.render();
+        });
+
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            var filteredData = data.filter(function(item) {
+                return Object.values(item).some(function(value) {
+                    return String(value).toLowerCase().includes(searchTerm);
+                });
+            });
+            grid.setData(filteredData);
+            grid.invalidate();
+            grid.render();
+        });
+    });
+</script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
+ 

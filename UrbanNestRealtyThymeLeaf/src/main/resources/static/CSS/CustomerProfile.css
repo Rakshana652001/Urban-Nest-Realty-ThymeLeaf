@@ -1,6 +1,5 @@
 @charset "ISO-8859-1";
 body {
-            font-family: "Lora", serif;
             background-color: #D8CCC0;
             margin: 0;
             padding: 0;
@@ -54,6 +53,7 @@ body {
             position: fixed;
             top: 0;
             left: 0;
+            z-index: 1;
         }
         .nav-item {
             position: relative;

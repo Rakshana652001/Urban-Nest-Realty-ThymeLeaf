@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Properties Under Review</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
-    <link rel="stylesheet" href="/CSS/CustomerProperties.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
+    <link rel="stylesheet" href="/CSS/List.css">
+    <link rel="stylesheet" href="/CSS/AdminNavbar.css">
+	<link rel="stylesheet" href="/CSS/BuyTable.css">    
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -43,47 +46,74 @@
 </nav>
 
 <h3>Properties Under Review</h3>
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Customer ID</th>
-                <th>Seller ID</th>
-                <th>Government Id</th>
-                <th>Property Address</th>
-                <th>Property Total Amount</th>
-                <th>Payable Amount</th>
-                <th>Payment Method</th>
-                <th>Approval Status</th>
-                <th>Payment Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="sales : ${list}">
-                <td th:text="${sales.customerId}"></td>
-                <td th:text="${sales.sellerId}"></td>
-                <td>
-                    <img th:src="'data:image/jpeg;base64,' + ${sales.govId}" alt="Government ID">
-                </td>
-                <td th:text="${sales.propertyAddress}"></td>
-                <td th:text="${sales.totalAmount}"></td>
-                <td th:text="${sales.payableAmount}"></td>
-                <td th:text="${sales.paymentMethod}"></td>
-                <td th:text="${sales.approval}"></td>
-                <td th:text="${sales.paidStatus}"></td>
-            </tr>
-            <tr th:if="${list==null && list.isEmpty()}">
-                <td colspan="9">No Records found</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div> 
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+
+<script th:inline="javascript">
+$(document).ready(function () {
+    var columns = [
+        { id: "customerName", name: "Customer Name", field: "customerName",width:100 },
+        { id: "sellerName", name: "Seller Name", field: "sellerName", sortable: true,width:100},
+        { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width:100 },
+        { id: "payableAmount", name: "Payable Amount", field: "payableAmount",width:100 },
+        { id: "paymentMethod", name: "Payment Method", field: "paymentMethod",width:100 },
+        { id: "approval", name: "Approval Status", field: "approval" ,width:100},
+        { id: "paidStatus", name: "Payment Status", field: "paidStatus" ,width:100}
+
+    ];
+
+    var options = {
+        enableCellNavigation: true,
+        enableColumnReorder: false,
+        forceFitColumns: true,
+        rowHeight: 45,
+        enableSorting: true
+    };
+
+    var data = /*[[${list}]]*/ [];
+
+    function deleteButtonFormatter(row, cell, value, columnDef, dataContext) {
+        return `<button class="btn btn-danger delete-button" data-name="${dataContext.name}">Delete</button>`;
+    }
+
+    var grid = new Slick.Grid("#myGrid", data, columns, options);
+    grid.onSort.subscribe(function (e, args) {
+        var field = args.sortCol.field;
+        data.sort(function (a, b) {
+            var result = 
+                a[field] > b[field] ? 1 :
+                a[field] < b[field] ? -1 :
+                0;
+            return args.sortAsc ? result : -result;
+        });
+        grid.invalidate();
+        grid.render();
+    });
+
+    $('#searchInput').on('input', function() {
+        var searchTerm = $(this).val().toLowerCase();
+        var filteredData = data.filter(function(item) {
+            return Object.values(item).some(function(value) {
+                return String(value).toLowerCase().includes(searchTerm);
+            });
+        });
+        grid.setData(filteredData);
+        grid.invalidate();
+        grid.render();
+    });
+
+});
+</script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-<script src="/JS/PropertyTable.js"></script>
-
 </body>
 </html>

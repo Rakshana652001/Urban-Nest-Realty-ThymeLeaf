@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Clients</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
-<link rel="stylesheet" href="/CSS/List.css">
+    <meta charset="UTF-8">
+    <title>Clients</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/Assets/Nest Realty.jpg}">
+    <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css">
+    <link rel="stylesheet" href="/CSS/List.css">
+    <link rel="stylesheet" href="/CSS/AdminNavbar.css">
+    
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -37,9 +40,6 @@
                 <li class="nav-item">
                     <a class="nav-link active" th:href="@{/ApproveToBuy}">Payment Approval</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/ClosedDeals}">Closed Deals</a>
-                </li>
                 <li class="nav-item dropdown" id="logout">
                     <img src="/Assets/profile.png" alt="Cinque Terre" width="50" height="50"
                         style="position: relative; left: 2rem;">
@@ -52,46 +52,96 @@
         </div>
     </div>
 </nav>
+
 <h3>Sellers</h3>
 
-<form class="form-inline my-2 my-lg-0" th:action="@{/SellerSearch}" method="get">
-    <label class="search">Search: <input type="text" name="id" placeholder="Search By Name, ID"
-            class="form-control mr-sm-2"></label>
-</form>
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Phone Number</th>
-            <th>Email Id</th>
-            <th>Address</th>
-            <th>District</th>
-            <th>State</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="user : ${list}">
-            <td th:text="${user.generatedUserID}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.phoneNumber}"></td>
-            <td th:text="${user.emailID}"></td>
-            <td th:text="${user.address}"></td>
-            <td th:text="${user.district}"></td>
-            <td th:text="${user.state}"></td>
-            <td>
-                <form th:action="@{/deleteseller}" method="post">
-                    <input type="hidden" name="deleteName" th:value="${user.name}">
-                    <input type="submit" name="delete" value="Delete">
-                </form>
-            </td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(list)}">
-            <td colspan="8">No Records found</td>
-        </tr>
-    </tbody>
-</table>
+
+<input placeholder="Search" type="text" id="searchInput">
+<div id="myGrid"></div> 
+
+<script th:src="@{/lib/jquery-1.7.min.js}"></script>
+<script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+<script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+<script th:src="@{/lib/slick.formatters.js}"></script>
+<script th:src="@{/lib/slick.core.js}"></script>
+<script th:src="@{/lib/slick.dataview.js}"></script>
+<script th:src="@{/lib/slick.grid.js}"></script>
+<script th:inline="javascript">
+$(document).ready(function () {
+    var columns = [
+        { id: "name", name: "Name", field: "name", sortable: true },
+        { id: "phoneNumber", name: "Phone number", field: "phoneNumber", width:100 },
+        { id: "emailID", name: "Email Id", field: "emailID", width:100 },
+        { id: "address", name: "Address", field: "address", width:100 },
+        { id: "state", name: "State", field: "state" , width:100},
+        { id: "delete", name: "Delete", field: "delete", formatter: deleteButtonFormatter, width: 100 }
+    ];
+
+    var options = {
+        enableCellNavigation: true,
+        enableColumnReorder: false,
+        forceFitColumns: true,
+        rowHeight: 45,
+        enableSorting: true
+    };
+
+    var data = /*[[${list}]]*/ [];
+
+    function deleteButtonFormatter(row, cell, value, columnDef, dataContext) {
+        return `<button class="btn btn-danger delete-button" data-name="${dataContext.name}">Delete</button>`;
+    }
+
+    var grid = new Slick.Grid("#myGrid", data, columns, options);
+
+    grid.onSort.subscribe(function (e, args) {
+        var field = args.sortCol.field;
+        data.sort(function (a, b) {
+            var result = 
+                a[field] > b[field] ? 1 :
+                a[field] < b[field] ? -1 :
+                0;
+            return args.sortAsc ? result : -result;
+        });
+        grid.invalidate();
+        grid.render();
+    });
+
+    $('#searchInput').on('input', function() {
+        var searchTerm = $(this).val().toLowerCase();
+        filteredData = data.filter(function(item) {
+            return Object.values(item).some(function(value) {
+                return String(value).toLowerCase().includes(searchTerm);
+            });
+        });
+        grid.setData(filteredData);
+        grid.invalidate();
+        grid.render();
+    });
+
+    $('#myGrid').on('click', '.delete-button', function () {
+        var name = $(this).data('name');
+        $.ajax({
+            type: 'POST',
+            url: /*[[@{/deleteseller}]]*/[],
+            data: { deleteName: name },
+            success: function () {
+                // Refresh the grid or handle success
+                data = data.filter(function(item) {
+                    return item.name !== name;
+                });
+                grid.setData(data);
+                grid.invalidate();
+                grid.render();
+            },
+            error: function () {
+                // Handle error
+                alert('Error deleting the seller.');
+            }
+        });
+    });
+});
+
+</script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

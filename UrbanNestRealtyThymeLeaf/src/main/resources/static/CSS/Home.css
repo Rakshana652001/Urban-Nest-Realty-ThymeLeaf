@@ -30,6 +30,7 @@ h1, p {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 1;
 }
 
 .nav-item {
@@ -140,9 +141,10 @@ div.scroll-container img {
 
 #district
 {
-	background-color: #D8CCC0;
+	background-color: #818589;
 	padding: 8px;
 	border-radius: 4px;
+	color: white;
 }
 #district2
 {
@@ -158,9 +160,10 @@ div.scroll-container img {
 	background-color: white;
 	padding: 3px;
 	border: none;
+	color: black;
 }
 #submit:hover
 {
-	background-color: black;
+	background-color: rgb(62, 62, 62)	;
 	color: white;
 }

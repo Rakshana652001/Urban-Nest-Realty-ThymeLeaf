@@ -11,11 +11,18 @@ import com.chainsys.urbannestrealty.model.Property;
 public class PropertyMapper implements RowMapper<Property>
 {
 	@Override
-	public Property mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Property mapRow(ResultSet rs, int rowNum) throws SQLException 
+	{
 		Property property = new Property();
 		
-		String sellerId = rs.getString("seller_id");
-		property.setSellerId(sellerId);
+		String id= rs.getString("seller_id");
+		property.setSellerId(id);
+		
+		String name= rs.getString("seller_name");
+		property.setSellerName(name);
+		
+		String id2 = rs.getString("customer_id");
+		property.setCustomerId(id2);
 		
 		String propertyName = rs.getString("property_name");
 		property.setPropertyName(propertyName);
@@ -26,20 +33,20 @@ public class PropertyMapper implements RowMapper<Property>
 		String approval = rs.getString("approval");
 		property.setApproval(approval);
 		
-		Blob image = rs.getBlob("property_images");
-        if (image != null) 
-        {
-            int blobLength = (int) image.length();
-            byte[] blobAsBytes = image.getBytes(1, blobLength);
-            property.setPropertyImages(blobAsBytes);
-        }
-        
         Blob document = rs.getBlob("property_document");
         if (document != null) 
         {
             int blobLength = (int) document.length();
             byte[] blobAsBytes = document.getBytes(1, blobLength);
             property.setPropertyDocument(blobAsBytes);
+        }
+        
+        Blob image = rs.getBlob("property_images");
+        if (image != null) 
+        {
+            int blobLength1 = (int) image.length();
+            byte[] blobAsBytes1 = image.getBytes(1, blobLength1);
+            property.setPropertyImages(blobAsBytes1);
         }
         
         long propertyPrice = rs.getLong("property_price");
@@ -60,8 +67,8 @@ public class PropertyMapper implements RowMapper<Property>
         String purchasedDate = rs.getString("purchased_date");
         property.setPurchasedDate(purchasedDate);
         
-        String customerId = rs.getString("customer_id");
-        property.setCustomerId(customerId);
+		String customerId = rs.getString("customer_name");
+		property.setCustomerName(customerId);
         
         String registeredStatus = rs.getString("register_status");
         property.setRegisterStatus(registeredStatus);
