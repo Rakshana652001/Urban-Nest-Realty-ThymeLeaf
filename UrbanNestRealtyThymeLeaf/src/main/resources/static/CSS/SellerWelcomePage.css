@@ -159,6 +159,13 @@ section {
 	font-size: 3rem;
 }
 
+#six:focus
+{
+	background: transparent;
+	outline: none;
+	border: none;
+}
+
 #thre
 {
 	border: none;
@@ -169,6 +176,13 @@ section {
 	font-size: 3rem;
 }
 
+#thre:focus
+{
+	background: transparent;
+	outline: none;
+	border: none;
+}
+
 #profit
 {
 	border: none;
@@ -177,4 +191,11 @@ section {
 	position: relative;
 	left: 17px;
 	font-size: 3rem;
+}
+
+#profit:focus
+{
+	background: transparent;
+	outline: none;
+	border: none;
 }

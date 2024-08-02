@@ -73,7 +73,7 @@ public class Validation
 
 	public Object accountNumber(long yourAccountNumber, long senderAccountNumber, Model model) 
 	{
-		Pattern p = Pattern.compile("[0-9]{12}");
+		Pattern p = Pattern.compile("[\\d]{12}");
 		Matcher m = p.matcher(Long.toString(yourAccountNumber));
 		Matcher m2 = p.matcher(Long.toString(senderAccountNumber));
 		boolean match = m.matches();

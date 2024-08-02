@@ -27,9 +27,6 @@
                     <a class="nav-link active" href="/RegisterBuyProperties">Ready-to-Purchase</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/PurchasedProperties">Purchased Properties</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link active" href="/CustomerHistory">Transaction History</a>
                 </li>
                 <li class="nav-item dropdown" id="logout">
@@ -49,6 +46,24 @@
 <input placeholder="Search" type="text" id="searchInput">
 <div id="myGrid"></div>
 
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">ID Proof</h5>
+            </div>
+            
+            <div class="modal-body">
+                <img id="modalImage" alt="Property" style="position: relative; left: 120px;">
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" style="position: relative; margin-right: 250px;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:src="@{/lib/jquery-1.7.min.js}"></script>
 <script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
 <script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
@@ -58,15 +73,17 @@
 <script th:src="@{/lib/slick.grid.js}"></script>
 
 <script th:inline="javascript">
-    $(document).ready(function () {
+    $(document).ready(function () 
+    {
         var columns = [
             { id: "sellerName", name: "Seller Name", field: "sellerName", width: 100, sortable: true },
+            { id: "propertyName", name: "Property Type", field: "propertyName", width: 100, sortable: true },
             { id: "propertyAddress", name: "Property Document", field: "propertyAddress", width: 100, formatter: viewButtonFormatter },
             { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
             { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100},
             { id: "registeredDate", name: "Registered Date", field: "registeredDate", width: 100 },
             { id: "purchasedDate", name: "Purchased Date", field: "purchasedDate", width: 100},
-            { id: "download", name: "Download Receipt", field: "download", width: 100, formatter: downloadButtonFormatter }
+            { id: "download", name: "Receipt", field: "download", width: 100, formatter: downloadButtonFormatter }
         ];
 
         var options = {
@@ -78,22 +95,27 @@
         };
 
         var data = /*[[${list}]]*/ [];
+
+        
+        function viewButtonFormatter(row, cell, value, columnDef, dataContext) 
+        {
+            return `<button style="position: relative; left:20px; bottom:10px;" type="submit"  onclick="showImageModal('${dataContext.propertyDocument}')">View</button>`;
+        }
         
 
-        function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
-            return `
-                <form action="/view" method="post">
-            <input type="hidden" name="address" value="${dataContext.propertyAddress}">
-                    <button type="submit" style="position: relative; left:20px; bottom:10px;">View</button>
-                </form>`;
-        }
-
-        function downloadButtonFormatter(row, cell, value, columnDef, dataContext) {
+/*         function downloadButtonFormatter(row, cell, value, columnDef, dataContext) {
             return `
                 <form action="/download" method="post">
             <input type="hidden" name="address" value="${dataContext.propertyAddress}">
                     <button id="submit" style="position:relative; bottom:10px; left:6px;">Download</button>
                 </form>`;
+        } */
+        
+        function downloadButtonFormatter(row, cell, value, columnDef, dataContext) {
+            return `
+                <div>
+                    <button id="submit" style="position:relative; bottom:10px; left:1px;" onclick="viewPdf('${dataContext.propertyAddress}')">View Receipt</button>
+                </div>`;
         }
         
 
@@ -121,6 +143,16 @@
             grid.render();
         });
     });
+    
+    function showImageModal(base64Image) 
+    {
+        $('#modalImage').attr('src', 'data:image/jpeg;base64,' + base64Image);
+        $('#imageModal').modal('show');
+    }
+    
+    function viewPdf(address) {
+        window.open(`/downloads?address=${address}&action=view`, '_blank');
+    }
 </script>
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

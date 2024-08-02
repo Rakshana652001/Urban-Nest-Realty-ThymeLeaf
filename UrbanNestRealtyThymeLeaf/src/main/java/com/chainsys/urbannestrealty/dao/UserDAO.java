@@ -8,7 +8,6 @@ import com.chainsys.urbannestrealty.model.User;
 
 public interface UserDAO 
 {
-	void saveUserDetails(User user);
 	String getAdminpassword(String generatedUserID);
 	String getsellerPassword(String generatedUserID);
 	String getCustomerPassword(String generatedUserID);
@@ -21,7 +20,6 @@ public interface UserDAO
 	List<User> retriveSellerProfile(String id);
 	void updateSellerdetails(User user);
 	
-	void property(Property property);
 	void delete(User user);
 	String getsellerId(String generatedUserID);
 	String getcustomerId(String generatedUserID);
@@ -74,4 +72,12 @@ public interface UserDAO
 	int factoryCount();
 	int floorCount();
 	String getDistrict();
+	void saveUserDetails(String generatedUserID, String name, long phoneNumber, String designation, String emailID,
+			String password, String district, String state, String address);
+	void property(Property property);
+	List<String> getPropertyList(String generatedUserID);
+	String getpropertyName(String address);
+	
+	
+
 }

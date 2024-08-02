@@ -6,44 +6,68 @@
 <link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="/CSS/UserDisplay.css">
+<style>
+    .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+    .card-img-top {
+        object-fit: cover;
+        height: 200px; 
+    }
+    .card-body {
+        flex: 1;
+    }
+    .card-footer {
+        background-color: transparent;
+        border-top: none;
+    }
+</style>
 </head>
 <body>
 
-<h3>Property Details</h3>
+<h3 class="text-center">Property Details</h3>
 
-<form action="http://localhost:8080/home#realties" style="text-align: center; margin-bottom: 20px;">
-   <button class="back-btn">Back to Home</button>
-</form>
+<button class="btn btn-secondary" type="button" style=" text-align: center; margin-bottom: 20px; position: relative; left: 47%;" onclick="history.back()">Back</button>
+
 <div class="container">
-    <div th:if="${list != null}">
-        <div th:each="property : ${list}" class="property-display">
-            <div class="property-info">
-            <img th:src="'data:image/jpeg;base64,' + ${property.base64Image}" alt="Residential">                  
-                <p><strong>Seller ID:</strong> <span th:text="${property.sellerId}">Seller ID</span></p>
-                <p><strong>Property Name:</strong> <span th:text="${property.propertyName}">Property Name</span></p>
-                <p><strong>Property ID:</strong> <span th:text="${property.propertyId}">Property ID</span></p>
-                <p><strong>Approval Status:</strong> <span th:text="${property.approval}">Approval Status</span></p>
-                <p><strong>Property Price:</strong> <span th:text="${property.propertyPrice}">Property Price</span></p>
-                <p><strong>Property Address:</strong> <span th:text="${property.propertyAddress}">Property Address</span></p>
-                <p><strong>Property District:</strong> <span th:text="${property.propertyDistrict}">Property District</span></p>
-                <p><strong>Property State:</strong> <span th:text="${property.propertyState}">Property State</span></p>
-                <p><strong>Registered Date:</strong> <span th:text="${property.registeredDate}">Registered Date</span></p>
-            </div>
-            <div class="actions">
-                <form th:action="@{/Buynow}" method="post">
-                    <input type="hidden" name="sellerId" th:value="${property.sellerId}">
-                    <input type="hidden" name="sellerName" id="sellerName" th:value="${property.sellerName}">
-                    <input type="hidden" name="propertyId" th:value="${property.propertyId}">
-                    <input type="hidden" name="propertyName" th:value="${property.propertyName}">
-                    <input type="hidden" name="propertyAddress" th:value="${property.propertyAddress}">
-                    <input type="hidden" name="propertyPrice" th:value="${property.propertyPrice}">
-                    <input type="hidden" name="accountNumber" th:value= "${property.accountNumber}">
-                    <input type="submit" class="btn-buy" name="buy" value="Register">
-                </form>
+    <div class="row" th:if="${list != null}">
+        <div class="col-md-6 mb-4" th:each="property : ${list}">
+            <div class="card h-100">
+                <img class="card-img-top" th:src="'data:image/jpeg;base64,' + ${property.base64Image}" alt="Residential">
+                <div class="card-body">
+                    <p><strong>Seller ID:</strong> <span th:text="${property.sellerId}">Seller ID</span></p>
+                    <p><strong>Property Name:</strong> <span th:text="${property.propertyName}">Property Name</span></p>
+                    <p><strong>Property ID:</strong> <span th:text="${property.propertyId}">Property ID</span></p>
+                    <p><strong>Approval Status:</strong> <span th:text="${property.approval}">Approval Status</span></p>
+                    <p><strong>Property Price:</strong> <span th:text="${property.propertyPrice}">Property Price</span></p>
+                    <p><strong>Property Address:</strong> <span th:text="${property.propertyAddress}">Property Address</span></p>
+                    <p><strong>Property District:</strong> <span th:text="${property.propertyDistrict}">Property District</span></p>
+                    <p><strong>Property State:</strong> <span th:text="${property.propertyState}">Property State</span></p>
+                    <p><strong>Registered Date:</strong> <span th:text="${property.registeredDate}">Registered Date</span></p>
+                </div>
+                <div class="card-footer text-center">
+                    <form th:action="@{/Buynow}" method="post">
+                        <input type="hidden" name="sellerId" th:value="${property.sellerId}">
+                        <input type="hidden" name="sellerName" id="sellerName" th:value="${property.sellerName}">
+                        <input type="hidden" name="propertyId" th:value="${property.propertyId}">
+                        <input type="hidden" name="propertyName" th:value="${property.propertyName}">
+                        <input type="hidden" name="propertyAddress" th:value="${property.propertyAddress}">
+                        <input type="hidden" name="propertyPrice" th:value="${property.propertyPrice}">
+                        <input type="hidden" name="accountNumber" th:value="${property.accountNumber}">
+                        <input type="submit" class="btn-buy" name="buy" value="Register">
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    <p class="no-properties" th:if="${list == null}">No properties found</p>
+    <p class="text-center" th:if="${list == null}">No properties found</p>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

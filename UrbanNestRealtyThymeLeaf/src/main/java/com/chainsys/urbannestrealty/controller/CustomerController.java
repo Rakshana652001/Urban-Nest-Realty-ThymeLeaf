@@ -12,20 +12,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.multipart.MultipartFile;
-
 import com.chainsys.urbannestrealty.dao.UserDAO;
 import com.chainsys.urbannestrealty.model.Property;
 import com.chainsys.urbannestrealty.model.Sales;
+import com.chainsys.urbannestrealty.service.CustomerService;
 import com.chainsys.urbannestrealty.validation.Validation;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
-
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -37,6 +40,14 @@ public class CustomerController
 	UserDAO userDAO;
 	@Autowired
 	Validation validation;
+	CustomerService customerService;
+	
+	
+	public CustomerController(CustomerService customerService) 
+	{
+        this.customerService = customerService;
+    }
+	
 	
 	@PostMapping("/Purchase")
 	public String purchase(@RequestParam("customerName") String customerName,@RequestParam("sellerName") String sellerName,@RequestParam("accountNumber") long accountNumber,@RequestParam("customerId") String customerId, @RequestParam("governmentId") MultipartFile governmentId, @RequestParam("sellerId") String sellerId, @RequestParam("propertyId") String propertyId, @RequestParam("propertyName") String propertyName, @RequestParam("propertyAddress") String propertyAddress, @RequestParam("propertyPrice") long propertyPrice, @RequestParam("payableAmount") double payableAmount, @RequestParam("paymentMethod") String paymentMethod, HttpSession httpSession) throws IOException
@@ -60,9 +71,6 @@ public class CustomerController
 			sale.setCustomerName(customerName);
 			sale.setSellerName(sellerName);
 			
-			
-			
-			
 			httpSession.setAttribute("propertyAddress", propertyAddress);
 			userDAO.sale(sale);
 			
@@ -83,10 +91,8 @@ public class CustomerController
 	{
 		String id = (String)httpSession.getAttribute("customerId");
 		List<Sales> list = userDAO.propertiesUnderReview(id);
-		
 		model.addAttribute("list",list);
 		return "CustomerRegisteredPropertiesTable";
-		
 	}
 	
 	@RequestMapping("/ApproveToBuy")
@@ -117,7 +123,6 @@ public class CustomerController
 	public String registerBuyProperties(Model model, HttpSession session)
 	{
 		String id = (String)session.getAttribute("customerId");
-		
 		List<Sales> list = userDAO.readyToBuy(id);
 		model.addAttribute("list", list);
 		return "RegisterBuyPropertiesTable";
@@ -128,6 +133,7 @@ public class CustomerController
 	{
 		return "PayNow";
 	}
+	
 	@PostMapping("/PayNow")
 	public String payNow1(Model model,@RequestParam("address") String address,@RequestParam("yourAccountNumber") long yourAccountNumber, @RequestParam("senderAccountNumber") long senderAccountNumber, @RequestParam("amount") Double amount, @RequestParam("purchasedDate") String purchasedDate, HttpSession session)
 	{
@@ -198,70 +204,79 @@ public class CustomerController
 		return "CustomerTransactionHistory";
 	}
 	
-//	@RequestMapping("/downloads")
-//	public void download(HttpServletResponse response, HttpSession session, Model model, @RequestParam("address") String address) throws DocumentException, IOException
-//	{		
-//		response.setContentType("application/pdf");
-//        response.setHeader("Content-Disposition", "attachment; filename=\"Document.pdf\"");
-//        
-//		List<Sales> list = userDAO.download(address);
-//		
-//		Document document = new Document();
-//	    PdfWriter.getInstance(document, response.getOutputStream());
-//	    document.open();
-//	    
-//	    Font headingFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
-//        Paragraph heading = new Paragraph("Receipt", headingFont);
-//        heading.setAlignment(Element.ALIGN_CENTER);
-//        heading.setSpacingBefore(20f);
-//        heading.setSpacingAfter(10f); 
-//        document.add(heading);        
-//        
-//        PdfPTable table = new PdfPTable(2);
-//	    table.getDefaultCell().setPadding(10);
-//	    table.setWidthPercentage(100);
-//	    
-//	    for(Sales object:list)
-//		{
-//			byte[] document1 = object.getGovernmentId();
-//			String getDocument = Base64.getEncoder().encodeToString(document1);
-//			object.setBase64(getDocument);
-//		}
-//	    
-//		for(Sales property : list)
-//		{
-//			table.addCell("Customer Name");
-//			table.addCell(property.getCustomerName());
-//			table.addCell("Property Address");
-//			table.addCell(property.getPropertyAddress());
-//			table.addCell("Property Price");
-//			table.addCell(String.valueOf(property.getTotalAmount()));
-//			table.addCell("Paid Amount");
-//			table.addCell(String.valueOf(property.getPayableAmount()));
-//			table.addCell("Payment Status");
-//			table.addCell(property.getPaidStatus());
-//			table.addCell("Customer GovID proof");
-//			
-//			byte[] decodedBytes = Base64.getDecoder().decode(property.getBase64());
-//		    
-//		    // Create an image from the byte array
-//		    Image img = Image.getInstance(decodedBytes);
-//		    
-//		    // Scale image to fit cell
-//		    img.scaleToFit(120, 120); // Adjust size as needed
-//
-//		    PdfPCell imgCell = new PdfPCell(img);
-//		    imgCell.setPadding(10);
-//		    imgCell.setColspan(7); // Span across all columns
-//		    imgCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//		    table.addCell(imgCell);
-//		    
-//		}
-//				
-//		table.setWidthPercentage(50);
-//		
-//		table.setHorizontalAlignment(Element.ALIGN_CENTER);		
-//		document.add(table);
-//        document.close();
-//	}
+	@RequestMapping("/downloads")
+	public void download(HttpServletResponse response,@RequestParam("address") String address,@RequestParam("action") String action	) throws DocumentException, IOException 
+	{        
+	    List<Sales> list = userDAO.download(address);
+	    String getName = userDAO.getpropertyName(address);
+	    
+	    Document document = new Document();
+	    PdfWriter.getInstance(document, response.getOutputStream());
+	    document.open();
+	    
+	    Font headingFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+	    Paragraph heading = new Paragraph("Receipt", headingFont);
+	    heading.setAlignment(Element.ALIGN_CENTER); 
+	    heading.setSpacingBefore(20f);
+	    heading.setSpacingAfter(10f); 
+	    document.add(heading);        
+	    
+	    PdfPTable table = new PdfPTable(2);
+	    table.getDefaultCell().setPadding(10);
+	    table.setWidthPercentage(100);
+	    
+	    for (Sales object : list) 
+	    {
+	        byte[] document1 = object.getGovernmentId();
+	        String getDocument = Base64.getEncoder().encodeToString(document1);
+	        object.setBase64(getDocument);
+	    }
+	    
+	    for (Sales property : list) 
+	    {
+	        table.addCell("Customer Name");
+	        table.addCell(property.getCustomerName());
+	        table.addCell("Property Type");
+	        table.addCell(getName);
+	        table.addCell("Property Address");
+	        table.addCell(property.getPropertyAddress());
+	        table.addCell("Property Price");
+	        table.addCell(String.valueOf(property.getTotalAmount()));
+	        table.addCell("Paid Amount");
+	        table.addCell(String.valueOf(property.getPayableAmount()));
+	        table.addCell("Payment Status");
+	        table.addCell(property.getPaidStatus());
+	        table.addCell("Customer GovID proof");
+	        
+	        byte[] decodedBytes = Base64.getDecoder().decode(property.getBase64());
+	        
+	        Image img = Image.getInstance(decodedBytes);
+	        
+	        img.scaleToFit(120, 120);
+	        
+	        PdfPCell imgCell = new PdfPCell(img);
+	        imgCell.setPadding(10);
+	        imgCell.setColspan(7);
+	        imgCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(imgCell);
+	    }
+	    
+	    table.setWidthPercentage(50);
+	    table.setHorizontalAlignment(Element.ALIGN_CENTER);        
+	    document.add(table);
+	    
+	    document.close();
+	    
+	    if ("view".equals(action)) 
+	    {
+	        response.setContentType("application/pdf");
+	        response.setHeader("Content-Disposition", "inline; filename=\"Document.pdf\"");
+	    } 
+	    else 
+	    {
+	        response.setContentType("application/pdf");
+	        response.setHeader("Content-Disposition", "attachment; filename=\"Document.pdf\"");
+	    }
+	}
+
 }

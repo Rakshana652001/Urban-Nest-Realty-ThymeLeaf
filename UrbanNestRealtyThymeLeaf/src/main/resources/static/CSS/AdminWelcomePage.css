@@ -33,8 +33,7 @@ section {
 #closedDeals
 {
    position: relative;
-   top:1rem !important;  
-   right: 1.9rem; 
+   top:1.5rem !important;  
    padding: 10px;
    border-radius: 12px;
 }
@@ -43,13 +42,14 @@ section {
 {
 	padding: 3rem;
 	position: relative;
-	top: 6rem;
-	width: 300px;
+	top: 3rem;
+	width: 400px;
 	border-radius: 12px;
 	border-color: black;
 	border: 2px solid;
 	background: transparent;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 1, 1);
+	
 }
 
 #display
@@ -68,9 +68,16 @@ section {
 	border: none;
 	width: 40px;
 	font-size: 20px;
-	bottom: 25px;
-	left: 160px;
+	left: 20px;
+	top:21px;
 	background: transparent;
+}
+
+#display1:focus
+{
+	background: transparent;
+	outline: none;
+	border: none;
 }
 
 #display3
@@ -79,7 +86,14 @@ section {
 	border: none;
 	width: 150px;
 	font-size: 20px;
-	bottom: 5px;
-	left: 140px;
+	left: 20px;
+	top:21px;
 	background: transparent;
+}
+
+#display3:focus
+{
+	background: transparent;
+	outline: none;
+	border: none;
 }

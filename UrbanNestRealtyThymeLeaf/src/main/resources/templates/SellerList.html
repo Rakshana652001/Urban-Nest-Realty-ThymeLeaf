@@ -70,10 +70,10 @@
 $(document).ready(function () {
     var columns = [
         { id: "name", name: "Name", field: "name", sortable: true },
-        { id: "phoneNumber", name: "Phone number", field: "phoneNumber", width:100 },
-        { id: "emailID", name: "Email Id", field: "emailID", width:100 },
-        { id: "address", name: "Address", field: "address", width:100 },
-        { id: "state", name: "State", field: "state" , width:100},
+        { id: "phoneNumber", name: "Phone number", field: "phoneNumber", width:100, sortable: true },
+        { id: "emailID", name: "Email Id", field: "emailID", width:100,sortable: true },
+        { id: "address", name: "Address", field: "address", width:100,sortable: true },
+        { id: "state", name: "State", field: "state" , width:100,sortable: true},
         { id: "delete", name: "Delete", field: "delete", formatter: deleteButtonFormatter, width: 100 }
     ];
 

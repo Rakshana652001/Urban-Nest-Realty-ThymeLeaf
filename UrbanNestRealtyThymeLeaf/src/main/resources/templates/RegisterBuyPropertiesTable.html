@@ -27,9 +27,6 @@
                     <a class="nav-link active" href="/RegisterBuyProperties">Ready-to-Purchase</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/PurchasedProperties">Purchased Properties</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link active" href="/CustomerHistory">Transaction History</a>
                 </li>
                 <li class="nav-item dropdown" id="logout">
@@ -61,11 +58,11 @@
     $(document).ready(function () {
         var columns = [
             { id: "customerName", name: "Customer Name", field: "customerName", width: 100 },
-            { id: "sellerName", name: "Seller Name", field: "sellerName", sortable: true },
-            { id: "propertyAddress", name: "Property Address", field: "propertyAddress" },
-            { id: "totalAmount", name: "Property Total Amount", field: "totalAmount" },
-            { id: "payableAmount", name: "Payable Amount", field: "payableAmount" },
-            { id: "paymentMethod", name: "Payment", field: "paymentMethod", formatter: payNowButtonFormatter, width: 150 }
+            { id: "sellerName", name: "Seller Name", field: "sellerName", sortable: true , width: 100 },
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress" , width: 100 },
+            { id: "totalAmount", name: "Property Total Amount", field: "totalAmount" , width: 100 },
+            { id: "payableAmount", name: "Payable Amount", field: "payableAmount" , width: 100 },
+            { id: "paymentMethod", name: "Pay", field: "paymentMethod", formatter: payNowButtonFormatter, width: 100 }
         ];
 
         var options = {

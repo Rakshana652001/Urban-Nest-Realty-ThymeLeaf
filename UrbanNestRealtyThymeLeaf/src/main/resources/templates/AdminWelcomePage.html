@@ -56,22 +56,64 @@
 
 <div id="dashboard">
 
-<label style="position: relative; bottom: 20px; right: 20px;"><strong style="font-size: 16px;">Total completed sale:</strong></label>
-<input id="display" type="text" name="totalSale" th:value="${session.getTotalSale}" readonly>
+<input id="display" type="hidden" name="totalSale" th:value="${session.getTotalSale}" readonly>
 
-<label style="position: relative; top: .5rem; right: 17px;"><strong style="font-size: 17px;">Most saled property: </strong></label>
+<input id="land" type="hidden" name="land" th:value="${session.land}" readonly>
+<input id="residential" type="hidden" name="residential" th:value="${session.residential}" readonly>
+<input id="commercial" type="hidden" name="commercial" th:value="${session.commercial}" readonly>
+<input id="pg" type="hidden" name="pg" th:value="${session.pg}" readonly>
+<input id="showroom" type="hidden" name="showroom" th:value="${session.showroom}" readonly>
+<input id="plot" type="hidden" name="plot" th:value="${session.plot}" readonly>
+<input id="floor" type="hidden" name="floor" th:value="${session.floor}" readonly>
+<input id="factory" type="hidden" name="factory" th:value="${session.factory}" readonly>
+
+
+<canvas id="salesChart" width="500" height="300" style="background: white; border-radius: 12px;"></canvas>
+
+<label style="position: relative; top:20px; left: 10px;"><strong style="font-size: 17px;">Most saled property: </strong></label>
 <input id="display1" type="text" name="saledProperty" th:value="${session.getsaledProperty}" readonly>
 	
-<label style="position: relative; top: 2rem; right: 60px;"><strong style="font-size: 17px;">Mostly saled area: </strong></label>
+<label style="position: relative; top:20px; left: 10px;"><strong style="font-size: 17px;">Mostly saled area: </strong></label>
 <input id="display3" type="text" name="saledArea" th:value="${session.getSaledArea}" readonly>
 
 <div>
 <a class="nav-link active" th:href=@{/ClosedDeals}><button id="closedDeals">Closed Deals</button></a>
 </div>
-
 </div>
 
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var ctx = document.getElementById('salesChart').getContext('2d');
+    var totalSale = parseFloat(document.querySelector('input[name="totalSale"]').value) || 0;
+    var saledProperty = parseFloat(document.querySelector('input[name="saledProperty"]').value) || 0;
+    var saledArea = parseFloat(document.querySelector('input[name="saledArea"]').value) || 0;
+
+    var salesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Total Sale'],
+            datasets: [{
+                label: 'Total Sale',
+                data: [totalSale],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y', 
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

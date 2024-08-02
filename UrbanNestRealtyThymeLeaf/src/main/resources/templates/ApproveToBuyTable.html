@@ -58,6 +58,25 @@
 <input placeholder="Search" type="text" id="searchInput">
 <div id="myGrid"></div>
 
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">ID Proof</h5>
+            </div>
+            
+            <div class="modal-body">
+                <img id="modalImage" alt="Property" style="position: relative; left: 50px;">
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" style="position: relative; margin-right: 250px;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script th:src="@{/lib/jquery-1.7.min.js}"></script>
 <script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
 <script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
@@ -70,10 +89,10 @@
     $(document).ready(function () {
         var columns = [
             { id: "customerName", name: "Customer Name", field: "customerName", width: 100, sortable: true },
-            { id: "sellerName", name: "Seller Name", field: "sellerName", width: 100},
+            { id: "sellerName", name: "Seller Name", field: "sellerName", width: 100,sortable: true},
             { id: "propertyAddress", name: "Id Proof", field: "propertyAddress", width: 100, formatter: viewButtonFormatter },
-            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
-            { id: "totalAmount", name: "Property Total Amount", field: "totalAmount", width: 100},
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 ,sortable: true},
+            { id: "totalAmount", name: "Property Total Amount", field: "totalAmount", width: 100,sortable: true},
             { id: "approvalStatus", name: "Approval Status", field: "approvalStatus", width: 150, formatter: approvalSelectFormatter }
         ];
 
@@ -86,15 +105,14 @@
         };
 
         var data = /*[[${list}]]*/ [];
-
-        function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
+    
+ 		
+ 		function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
             return `
-                <form action="/id" method="post">
-                    <input type="hidden" name="address" value="${dataContext.propertyAddress}">
-                    <button type="submit" style="position: relative; left:20px; bottom:10px;">View</button>
-                </form>`;
+                <button type="submit"  onclick="showImageModal('${dataContext.governmentId}')">View</button>`;
         }
-
+ 		
+ 	
         function approvalSelectFormatter(row, cell, value, columnDef, dataContext) {
             return `
                 <form action="/ApprovalToBuy" method="post">
@@ -132,6 +150,12 @@
             grid.render();
         });
     });
+    
+    function showImageModal(govId) 
+    {
+        $('#modalImage').attr('src', 'data:image/jpeg;base64,' + govId);
+        $('#imageModal').modal('show');
+    }
 </script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

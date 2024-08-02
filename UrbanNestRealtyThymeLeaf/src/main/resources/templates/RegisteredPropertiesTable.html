@@ -71,9 +71,10 @@
     $(document).ready(function () {
         var columns = [
             { id: "sellerName", name: "Seller Name", field: "sellerName", width: 100, sortable: true },
-            { id: "approval", name: "Approval Status", field: "approval", width: 100},
-            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
-            { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100},
+            { id: "approval", name: "Approval Status", field: "approval", width: 100,sortable: true },
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 ,sortable: true },
+            { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100,sortable: true },
+            { id: "customerName", name: "Customer Name", field: "customerName", width: 100, sortable: true },
             { id: "approvalStatus", name: "Registered Status", field: "approvalStatus", width: 150, formatter: approvalSelectFormatter }
         ];
 

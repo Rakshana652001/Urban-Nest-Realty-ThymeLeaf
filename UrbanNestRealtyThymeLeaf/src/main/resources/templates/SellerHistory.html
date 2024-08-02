@@ -46,10 +46,15 @@
     </div>
 </nav>
 <h3>Transaction History</h3>
+
 <form action="SellerDate" class="fromDate" method="post">
-    <label><strong>From Date: </strong><input type="date" name="fromDate" id="fromDate" min="2014-01-01" th:max="${#dates.format(today, 'yyyy-MM-dd')}"></label>
-    <label><strong>To Date:</strong> <input type="date" name="toDate" id="toDate" th:value="${#dates.format(today, 'yyyy-MM-dd')}"></label>
-    <button style="position: relative; top: 4px; left: 10px;">Submit</button>
+        <label><strong>From Date: </strong>
+            <input type="date" name="fromDate" id="fromDate" min="2014-01-01" th:max="${#dates.format(today, 'yyyy-MM-dd')}">
+        </label>
+        <label><strong>To Date:</strong> 
+            <input type="date" name="toDate" id="toDate">
+        </label>
+        <button style="position: relative; top: 4px; left: 10px;">Submit</button>
 </form>
 
 <input placeholder="Search" type="text" id="searchInput">
@@ -65,11 +70,10 @@
 <script th:inline="javascript">
     $(document).ready(function () {
         var columns = [
-            { id: "accountNumber", name: "Your Account Number", field: "accountNumber", width: 100 },
-            { id: "customerAccount", name: "Sender Account Number", field: "customerAccount", sortable: true },
-            { id: "customerName", name: "Customer Name", field: "customerName" },
-            { id: "purchasedDate", name: "Transaction Date", field: "purchasedDate" },
-            { id: "payableAmount", name: "Amount", field: "payableAmount" }
+            { id: "customerAccount", name: "Customer Account Number", field: "customerAccount", sortable: true },
+            { id: "customerName", name: "Customer Name", field: "customerName" , sortable: true},
+            { id: "purchasedDate", name: "Transaction Date", field: "purchasedDate" , sortable: true},
+            { id: "payableAmount", name: "Amount", field: "payableAmount" , sortable: true}
             ];
 
         var options = {
@@ -107,6 +111,15 @@
             grid.render();
         });
     });
+</script>
+<script>
+        document.addEventListener('DOMContentLoaded', function () 
+        {
+            const toDateInput = document.getElementById('toDate');
+            const today = new Date().toISOString().split('T')[0];
+            toDateInput.setAttribute('max', today);
+            toDateInput.value = today; 
+        });
 </script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

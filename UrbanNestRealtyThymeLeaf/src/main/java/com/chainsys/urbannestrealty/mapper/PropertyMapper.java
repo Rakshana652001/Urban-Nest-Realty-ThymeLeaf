@@ -67,9 +67,9 @@ public class PropertyMapper implements RowMapper<Property>
         String purchasedDate = rs.getString("purchased_date");
         property.setPurchasedDate(purchasedDate);
         
-		String customerId = rs.getString("customer_name");
-		property.setCustomerName(customerId);
-        
+        String customerName = rs.getString("customer_name");
+		property.setCustomerName(customerName);
+			        
         String registeredStatus = rs.getString("register_status");
         property.setRegisterStatus(registeredStatus);
         

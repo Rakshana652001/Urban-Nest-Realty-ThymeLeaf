@@ -43,7 +43,7 @@
                 <li class="nav-item dropdown" id ="logout">
                     <img th:src="@{/Assets/profile.png}" alt="Cinque Terre" width="50" height="50" style="position: relative; left: 2rem;">
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" th:href="@{/AdminProfile}">Profile</a>
+                        <a class="dropdown-item" th:href="@{/AdProfile}">Profile</a>
                         <a class="dropdown-item" th:href="@{/LogOut}">LogOut</a>
                     </div>
                 </li>
@@ -51,6 +51,7 @@
         </div>
     </div>
 </nav>
+
 <h3>Profile</h3>
 <div class="cardContainer">
     <div th:each="object : ${list}" class="card">
@@ -58,10 +59,6 @@
         <p><strong>Name: </strong><span th:text="${object.name}"></span></p>
         <p><strong>Phone Number: </strong><span th:text="${object.phoneNumber}"></span></p>
         <p><strong>Email ID: </strong><span th:text="${object.emailID}"></span></p>
-        <p><strong>Address: </strong><span th:text="${object.address}"></span></p>
-        <p><strong>District: </strong><span th:text="${object.district}"></span></p>
-        <p><strong>State: </strong><span th:text="${object.state}"></span></p>
-        
         <form th:action="@{/UpdateAdmin}">
             <input type="hidden" th:value="${object.name}" name="name">
             <button type="submit">Update</button>

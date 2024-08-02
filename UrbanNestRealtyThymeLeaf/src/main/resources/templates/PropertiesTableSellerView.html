@@ -56,16 +56,17 @@
 <script th:src="@{/lib/slick.dataview.js}"></script>
 <script th:src="@{/lib/slick.grid.js}"></script>
 <script th:inline="javascript">
-$(document).ready(function () {
+	$(document).ready(function (){
     var columns = [
         { id: "propertyName", name: "Property Name", field: "propertyName", sortable: true },
         { id: "propertyAddress", name: "Property Documents Photo Copy", field: "propertyAddress", width: 100, formatter: viewButtonFormatter },
-        { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100 },
-        { id: "registeredDate", name: "Registered Date", field: "registeredDate", width: 100 },
-        { id: "purchasedDate", name: "Purchased Date", field: "purchasedDate", width: 100 },
-        { id: "customerName", name: "Customer name", field: "customerName", width: 100 },
-        { id: "registerStatus", name: "Registered Status", field: "registerStatus", width: 100 },
-        { id: "paymentStatus", name: "Payment Status", field: "paymentStatus", width: 100 }
+        { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100 ,sortable: true},
+        { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 ,sortable: true},
+        { id: "registeredDate", name: "Registered Date", field: "registeredDate", width: 100 ,sortable: true},
+        { id: "purchasedDate", name: "Purchased Date", field: "purchasedDate", width: 100 ,sortable: true},
+        { id: "customerName", name: "Customer name", field: "customerName", width: 100 ,sortable: true},
+        { id: "registerStatus", name: "Registered Status", field: "registerStatus", width: 100 ,sortable: true},
+        { id: "paymentStatus", name: "Payment Status", field: "paymentStatus", width: 100 ,sortable: true}
     ];
 
     var options = {

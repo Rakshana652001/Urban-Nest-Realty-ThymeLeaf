@@ -29,9 +29,6 @@
                     <a class="nav-link active" href="/RegisterBuyProperties">Ready-to-Purchase</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/PurchasedProperties">Purchased Properties</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link active" href="/CustomerHistory">Transaction History</a>
                 </li>
                 <li class="nav-item dropdown" id="logout">
@@ -48,10 +45,15 @@
 
 
 <h3>Transaction History</h3>
+
 <form action="customerDate" class="fromDate" method="post">
-    <label>From Date: <input type="date" name="fromDate" id="fromDate" min="2014-01-01" th:max="${#dates.format(today, 'yyyy-MM-dd')}"></label>
-    <label>To Date: <input type="date" name="toDate" id="toDate" th:value="${#dates.format(today, 'yyyy-MM-dd')}"></label>
-    <button style="position: relative; bottom: 3px; left: 10px;" >Submit</button>
+        <label><strong>From Date: </strong>
+            <input type="date" name="fromDate" id="fromDate" min="2014-01-01" th:max="${#dates.format(today, 'yyyy-MM-dd')}">
+        </label>
+        <label><strong>To Date:</strong> 
+            <input type="date" name="toDate" id="toDate">
+        </label>
+        <button style="position: relative; bottom: 3px; left: 10px;">Submit</button>
 </form>
 
 
@@ -68,8 +70,7 @@
 <script th:inline="javascript">
     $(document).ready(function () {
         var columns = [
-            { id: "customerAccount", name: "Your Account Number", field: "customerAccount", width: 100 },
-            { id: "accountNumber", name: "Sender Account Number", field: "accountNumber", sortable: true },
+            { id: "accountNumber", name: "Seller Account Number", field: "accountNumber", sortable: true },
             { id: "sellerName", name: "Seller Name", field: "sellerName" },
             { id: "purchasedDate", name: "Transaction Date", field: "purchasedDate" },
             { id: "payableAmount", name: "Amount", field: "payableAmount" }
@@ -110,6 +111,15 @@
             grid.render();
         });
     });
+</script>
+<script>
+        document.addEventListener('DOMContentLoaded', function () 
+        {
+            const toDateInput = document.getElementById('toDate');
+            const today = new Date().toISOString().split('T')[0];
+            toDateInput.setAttribute('max', today);
+            toDateInput.value = today; 
+        });
 </script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

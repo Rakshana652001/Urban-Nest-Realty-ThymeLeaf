@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Image</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="/Assets/Nest Realty.jpg">
+    <link rel="stylesheet" href="/CSS/BuyedProperties.css">
+    <style>
+#view
+{
+	width: 30%;
+	height: 30%;
+	position: relative;
+}
+</style>
+</head>
+<body>
+
+
+<button type="button" onclick="history.back()">Back</button>
+            <tr th:each="sales : ${list}">
+                    <img id="view" alt="documents" th:src="'data:image/jpeg;base64,' + ${sales.base64}"/>                
+              
+            </tr>            
+    
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

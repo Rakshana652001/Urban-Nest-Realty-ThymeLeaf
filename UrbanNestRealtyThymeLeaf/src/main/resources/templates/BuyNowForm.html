@@ -29,7 +29,7 @@
         Seller Name: <input type="text" id="sellerName" name="sellerName" th:value="${param.sellerName}" readonly>
         </label>
         
-        <input type="hidden" id="name" name="name" th:value=${session.customerName}>
+        <input type="hidden" id="customerName" name="customerName" th:value=${session.customerName}>
 
         <label for="propertyId">Property ID:
             <input type="text" id="propertyId" name="propertyId" 
@@ -57,7 +57,7 @@
 
         <label for="paymentMethod">Payment Method:
             <select id="paymentMethod" name="paymentMethod" required>
-                <option value="bankTransfer">Bank Transfer</option>
+                <option value="Bank Transfer">Bank Transfer</option>
             </select>
         </label><br><br>
         

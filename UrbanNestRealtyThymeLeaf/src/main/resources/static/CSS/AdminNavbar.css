@@ -19,11 +19,11 @@
 	border-bottom: 2.5px solid white;
 	}
 
+
 .dropdown-menu {
-    background-color: gray;
+    background-color: #818589;
     border: none;
 }
-
 .navbar-brand img {
 	position: relative;
 	right: 4rem;
@@ -56,10 +56,6 @@
   border-radius: 12px;
 }
 
-.dropdown-menu {
-    background-color: #818589;
-    border: none;
-}
 
 .dropdown-item{
      color: white;

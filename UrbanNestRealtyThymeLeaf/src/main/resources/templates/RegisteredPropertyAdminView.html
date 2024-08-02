@@ -59,6 +59,43 @@
 <input placeholder="Search" type="text" id="searchInput">
 <div id="myGrid"></div>
 
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Property Image</h5>
+            </div>
+            
+            <div class="modal-body">
+                <img id="modalImage" alt="Property" style="position: relative; left: 150px;">
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" style="position: relative; margin-right: 250px;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="documentModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Property Document</h5>
+            </div>
+            
+            <div class="modal-body">
+                <img id="modalDocument" alt="Property" style="position: relative; left: 150px;">
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" style="position: relative; margin-right: 250px;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:src="@{/lib/jquery-1.7.min.js}"></script>
 <script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
 <script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
@@ -73,8 +110,8 @@
             { id: "sellerName", name: "Seller Name", field: "sellerName", width: 100, sortable: true },
             { id: "propertyAddress", name: "Property Images", field: "propertyAddress", width: 100, formatter: viewButtonFormatter },
             { id: "propertyAddress", name: "Property Documents Photo Copy", field: "propertyAddress", width: 100, formatter: viewButtonFormatter1 },
-            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
-            { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100},
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100,sortable: true },
+            { id: "propertyPrice", name: "Property Price", field: "propertyPrice", width: 100,sortable: true},
             { id: "approvalStatus", name: "Approval Status", field: "approvalStatus", width: 150, formatter: approvalSelectFormatter }
         ];
 
@@ -90,18 +127,12 @@
 
         function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
             return `
-                <form action="/viewProperty" method="post">
-                    <input type="hidden" name="address" value="${dataContext.propertyAddress}">
-                    <button type="submit" style="position: relative; left:20px; bottom:10px;">View</button>
-                </form>`;
+                <button type="submit"  onclick="showImageModal('${dataContext.base64Image}')">View</button>`;
         }
         
         function viewButtonFormatter1(row, cell, value, columnDef, dataContext) {
             return `
-                <form action="/view" method="post">
-                    <input type="hidden" name="address" value="${dataContext.propertyAddress}">
-                    <button type="submit" style="position: relative; left:20px; bottom:10px;">View</button>
-                </form>`;
+                <button type="submit" onclick="showbase64Document('${dataContext.base64Document}')">View</button>`;
         }
 
     
@@ -112,7 +143,7 @@
                     <select name="approvalStatus" style="position:relative; bottom:12px;">
                         <option value="Select">Select</option>
                         <option value="Approved">Approved</option>
-                        <option value="Not Approved">Rejected</option>
+                        <option value="Rejected">Rejected</option>
                     </select>
                     <input type="submit" value="Submit" style="position:relative; bottom:10px;">
                 </form>`;
@@ -142,9 +173,19 @@
             grid.render();
         });
     });
+
+    function showImageModal(base64Image) {
+        $('#modalImage').attr('src', 'data:image/jpeg;base64,' + base64Image);
+        $('#imageModal').modal('show');
+    }
+    
+    function showbase64Document(base64Document)
+    {
+    	$('#modalDocument').attr('src', 'data:image/jpeg;base64,' + base64Document);
+    	$('#documentModal').modal('show');
+    }
 </script>
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
- 

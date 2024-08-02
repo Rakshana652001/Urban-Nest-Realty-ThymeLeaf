@@ -50,9 +50,6 @@
             <p><strong>Name: </strong><span th:text="${user.name}"></span></p>
             <p><strong>Phone Number: </strong><span th:text="${user.phoneNumber}"></span></p>
             <p><strong>Email ID: </strong><span th:text="${user.emailID}"></span></p>
-            <p><strong>Address: </strong><span th:text="${user.address}"></span></p>
-            <p><strong>District: </strong><span th:text="${user.district}"></span></p>
-            <p><strong>State: </strong><span th:text="${user.state}"></span></p>
             <form th:action="@{/Updateseller}" method="get">
                 <input type="hidden" id="name" th:value="${user.name}" name="name">
                 <button>Update</button>

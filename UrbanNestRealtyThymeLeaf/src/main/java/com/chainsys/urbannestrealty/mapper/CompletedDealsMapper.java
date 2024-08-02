@@ -28,7 +28,7 @@ public class CompletedDealsMapper implements RowMapper<Sales>
                 
         String propertyAddress = rs.getString("property_address");
         sales.setPropertyAddress(propertyAddress);
-        
+
         String paymentMethod = rs.getString("payment_method");
         sales.setPaymentMethod(paymentMethod);
         

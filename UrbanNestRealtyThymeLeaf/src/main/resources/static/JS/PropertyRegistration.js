@@ -11,9 +11,9 @@ function autoFillPropertyDistrict()
 {
 	var propertyDistrict = document.getElementById('propertyDistrict');
 	var selectedOptions = propertyDistrict.options[propertyDistrict.selectedIndex];
-	var propertyDistrict = selectedOptions.value;
+	var propertyDistricts = selectedOptions.value;
 	
-	document.getElementById('propertyDistrict').value = propertyDistrict;
+	document.getElementById('propertyDistrict').value = propertyDistricts;
 }
 function validateForm()
 {

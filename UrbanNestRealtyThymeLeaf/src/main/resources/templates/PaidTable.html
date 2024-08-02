@@ -59,12 +59,13 @@
 <script th:inline="javascript">
     $(document).ready(function () {
         var columns = [
-            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100 },
+            { id: "customerName", name: "Customer Name", field: "customerName", width: 100, sortable: true },
+            { id: "propertyAddress", name: "Property Address", field: "propertyAddress", width: 100, sortable: true },
             { id: "paymentMethod", name: "Payment Method", field: "paymentMethod", sortable: true },
-            { id: "totalAmount", name: "Property Total Amount", field: "totalAmount" },
-            { id: "payableAmount", name: "Payable Amount", field: "payableAmount" },
-            { id: "paidStatus", name: "Paid Status", field: "paidStatus" },
-            { id: "download", name: "Download Receipt", field: "download", formatter: downloadButtonFormatter }
+            { id: "totalAmount", name: "Property Total Amount", field: "totalAmount", sortable: true },
+            { id: "payableAmount", name: "Payable Amount", field: "payableAmount", sortable: true },
+            { id: "paidStatus", name: "Payment Status", field: "paidStatus", sortable: true },
+            { id: "download", name: "Receipt", field: "download", formatter: downloadButtonFormatter }
         ];
 
         var options = {
@@ -79,11 +80,13 @@
 
         function downloadButtonFormatter(row, cell, value, columnDef, dataContext) {
             return `
-                <form action="/downloads" method="post">
-            <input type="hidden" name="address" value="${dataContext.propertyAddress}">
-                    <button id="submit" style="position:relative; bottom:10px; left:20px;">Download</button>
-                </form>`;
+                <div>
+                    <button id="submit" style="position:relative; bottom:10px; left:5px;" onclick="viewPdf('${dataContext.propertyAddress}')">View Receipt</button>
+                </div>`;
         }
+        
+/*         <button onclick="downloadPdf('${dataContext.propertyAddress}')">Download</button>
+ */
 
         var grid = new Slick.Grid("#myGrid", data, columns, options);
 
@@ -109,6 +112,14 @@
             grid.render();
         });
     });
+
+    function viewPdf(address) {
+        window.open(`/downloads?address=${address}&action=view`, '_blank');
+    }
+
+    /* function downloadPdf(address) {
+        window.open(`/downloads?address=${address}&action=download`, '_blank');
+    } */
 </script>
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

@@ -22,9 +22,17 @@
         <label for="purchasedDate">Purchased Date</label>
         <input type="date" id="purchasedDate" name="purchasedDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly/>
         
+        <input type="hidden" id="address" name="address" th:value="${param.address}">
+        
         <input type="submit" value="Send Money">
     </form>
 </div>
 <script src="/JS/PayNow.js"></script>
+<script type="text/javascript">
+function validateForm() 
+{
+    return confirm("Are you sure you want to proceed with the payment?");
+}
+</script>
 </body>
 </html>

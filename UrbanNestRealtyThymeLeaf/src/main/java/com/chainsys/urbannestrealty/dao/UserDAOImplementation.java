@@ -1,8 +1,13 @@
 package com.chainsys.urbannestrealty.dao;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import com.chainsys.urbannestrealty.mapper.ApproveSalesMapper;
 import com.chainsys.urbannestrealty.mapper.ClosedPropertyMapper;
@@ -30,10 +35,11 @@ public class UserDAOImplementation implements UserDAO
 	JdbcTemplate jdbcTemplate;
 		
 	@Override
-	public void saveUserDetails(User user)
+	public void saveUserDetails(String generatedUserID, String name, long phoneNumber, String designation, String emailID,
+			String password, String district, String state, String address)
 	{
 		String insert = "insert into user (id, name, phone_number, designation, email_id, password, address, district, state)values(?,?,?,?,?,?,?,?,?)";
-		Object[] params = {user.getGeneratedUserID() ,user.getName(),user.getPhoneNumber(), user.getDesignation(),  user.getEmailID(),user.getPassword(), user.getAddress(), user.getDistrict(), user.getState()};
+		Object[] params = {generatedUserID ,name,phoneNumber, designation,  emailID,password, address, district,state};
 		jdbcTemplate.update(insert, params);
 	}
 
@@ -178,7 +184,7 @@ public class UserDAOImplementation implements UserDAO
 	@Override
 	public List<Property> sellerRegisteredProperties(String sellerId) 
 	{
-		String select = "select property_name, property_id, approval, property_document, property_price, property_address, property_district, property_state, registered_date, purchased_date, customer_name, register_status,payment_status from property_registration where seller_id=? and (approval='Approved' or approval='Rejected' or approval='Not Approved') and payment_status='Not Paid'";
+		String select = "select property_name, property_id, approval, property_document, property_price, property_address, property_district, property_state, registered_date, purchased_date, customer_name, register_status,payment_status from property_registration where seller_id=? and (approval='Approved' or approval='Rejected' or approval='Not Approved') and register_status='Not Registered' and payment_status='Not Paid'";
 		List<Property> list = jdbcTemplate.query(select, new PropertyMappers(), sellerId);
 		return list;
 	}
@@ -334,50 +340,57 @@ public class UserDAOImplementation implements UserDAO
 	public int landCount() 
 	{
 	    String retrive = "select count(property_name) from property_registration where property_name = 'land' or property_name = 'Land'";
-	    return jdbcTemplate.queryForObject(retrive, Integer.class);
+	    Optional<Integer> result = Optional.ofNullable(jdbcTemplate.queryForObject(retrive, Integer.class));
+	    return result.orElse(0); 
 	}
 	
 	
 	public int residentialCount()
 	{
 		String retrive = "select count(property_name) from property_registration where property_name = 'Residential' or property_name = 'residential'";
-	    return jdbcTemplate.queryForObject(retrive, Integer.class);
+		Optional<Integer> result = Optional.ofNullable(jdbcTemplate.queryForObject(retrive, Integer.class));
+	    return result.orElse(0); 
 	}
 
 	public int commercialCount()
 	{
 		String retrive = "select count(property_name) from property_registration where property_name = 'Commercial' or property_name = 'commercial'";
-	    return jdbcTemplate.queryForObject(retrive, Integer.class);
+		Optional<Integer> result = Optional.ofNullable(jdbcTemplate.queryForObject(retrive, Integer.class));
+	    return result.orElse(0); 
 	}
 	
 	public int pgCount()
 	{
 		String retrive = "select count(property_name) from property_registration where property_name = 'pg' or property_name = 'PG'";
-	    return jdbcTemplate.queryForObject(retrive, Integer.class);
+		Optional<Integer> result = Optional.ofNullable(jdbcTemplate.queryForObject(retrive, Integer.class));
+		return result.orElse(0);
 	}
 	
 	public int showroomCount()
 	{
 		String retrive = "select count(property_name) from property_registration where property_name = 'Showroom' or property_name = 'showroom'";
-	    return jdbcTemplate.queryForObject(retrive, Integer.class);
+		Optional<Integer> result = Optional.ofNullable(jdbcTemplate.queryForObject(retrive, Integer.class));
+	    return result.orElse(0);
 	}
 	
 	public int plotCount()
 	{
 		String retrive = "select count(property_name) from property_registration where property_name = 'Plot' or property_name = 'plot'";
-	    return jdbcTemplate.queryForObject(retrive, Integer.class);
+		Optional<Integer> result = Optional.ofNullable(jdbcTemplate.queryForObject(retrive, Integer.class));
+	    return result.orElse(0);
 	}
 	
-	public int factoryCount()
-	{
-		String retrive = "select count(property_name) from property_registration where property_name = 'Factory' or property_name = 'factory'";
-	    return jdbcTemplate.queryForObject(retrive, Integer.class);
-	}
+	public int factoryCount() {
+	    String retrieve = "select count(property_name) from property_registration where property_name = 'Factory' or property_name = 'factory'";
+	    Optional<Integer> result = Optional.ofNullable(jdbcTemplate.queryForObject(retrieve, Integer.class));
+	    return result.orElse(0);
+	    }
 	
 	public int floorCount()
 	{
 		String retrive = "select count(property_name) from property_registration where property_name = 'Floor' or property_name = 'floor'";
-	    return jdbcTemplate.queryForObject(retrive, Integer.class);
+		Optional<Integer> result = Optional.ofNullable(jdbcTemplate.queryForObject(retrive, Integer.class));
+	    return result.orElse(0);
 	}
 	
 	@Override
@@ -521,7 +534,10 @@ public class UserDAOImplementation implements UserDAO
 	public List<Sales> download(String address)
 	{
 		String retrive = "select customer_name, government_id, property_address, payment_method, total_amount, payabel_amount, customer_account, seller_account, purchased_date, payed_status from sales_record where property_address=? and payed_status = 'Paid'";
+//		String retrive2 = "select property_name from property_registration where property_address=?";		
+//		String get = "SELECT sr.customer_name,sr.government_id,sr.property_address,sr.payment_method,sr.total_amount,sr.payabel_amount,sr.customer_account,sr.seller_account, sr.purchased_date,sr.payed_status, pr.property_name FROM sales_record sr JOIN property_registration pr ON sr.property_address = pr.property_address WHERE sr.property_address = ? AND sr.payed_status = 'Paid'";
 		List<Sales> list = jdbcTemplate.query(retrive, new CompletedDealsMapper(), address);
+
 		return list;
 	}
 
@@ -531,6 +547,30 @@ public class UserDAOImplementation implements UserDAO
 		String retrive = "select property_images, property_document from property_registration where property_address=?";
 		List<Property> list = jdbcTemplate.query(retrive, new ImageMapper(), address);
 		return list;
+	}
+
+	
+	@Override
+	public ArrayList<String> getPropertyList(String generatedUserID) 
+	{
+		String getList = "select property_name from property_registration where customer_id=?";
+		@SuppressWarnings("deprecation")
+		List<String> list = jdbcTemplate.query(getList, new Object[]{generatedUserID}, new RowMapper<String>() 
+		{
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException 
+			{
+				return rs.getString("property_name");
+			}
+		});
+		return new ArrayList<>(list);
+	}
+
+	@Override
+	public String getpropertyName(String address)
+	{
+		String name = "select property_name from property_registration where property_address=?";
+				
+		return jdbcTemplate.queryForObject(name, String.class, address);
 	}
 	
 }
